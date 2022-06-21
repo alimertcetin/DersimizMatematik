@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 0c9b238e9b12e554abeaf023fb4ecd3a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - UyariUI: {fileID: 8405411773147299669, guid: 38a44c52743f4b5479f1286383068655,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

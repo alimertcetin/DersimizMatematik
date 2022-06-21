@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d112d4cf86e004f46b083527074ae5f6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - ManageThisDoor: {instanceID: 0}
+  - LockedDoor_UI: {fileID: 4290365642990300263, guid: 8bfd8a03fdd37474e9beb3fd248843cc,
+      type: 3}
+  - Notification_GO: {fileID: 7438879576141421755, guid: caac79b6abbcbda4496d73e130cef386,
+      type: 3}
+  - Txt_Notification: {fileID: 7438879576141421757, guid: caac79b6abbcbda4496d73e130cef386,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,472 @@
+fileFormatVersion: 2
+guid: 103d7cbf30d186649bfd43fd082539a7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3808493007727183201
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_0"
+  - first:
+      213: 9043528476767391006
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_1"
+  - first:
+      213: 8232270755879815798
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_2"
+  - first:
+      213: -8042354620942966903
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_3"
+  - first:
+      213: 8079907151000990764
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_4"
+  - first:
+      213: -7562002572651227583
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_5"
+  - first:
+      213: 1493664578410988437
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_6"
+  - first:
+      213: 5583907677329488686
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_7"
+  - first:
+      213: 4004829164461475355
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_8"
+  - first:
+      213: -16947398469400750
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_9"
+  - first:
+      213: 7910285008656788127
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_10"
+  - first:
+      213: -7902091942467964775
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_11"
+  - first:
+      213: -682023993409102046
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_12"
+  - first:
+      213: 1629408455430976278
+    second: "\u2014Pngtree\u2014game ui kit to build_5344099_13"
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_0"
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 3224
+        width: 1266
+        height: 505
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9abcd8a9c3852bc0800000000000000
+      internalID: -3808493007727183201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_1"
+      rect:
+        serializedVersion: 2
+        x: 2171
+        y: 3497
+        width: 1002
+        height: 373
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1d89d52c31118d70800000000000000
+      internalID: 9043528476767391006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_2"
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 2608
+        width: 1268
+        height: 506
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67a8d03d2a6ee3270800000000000000
+      internalID: 8232270755879815798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_3"
+      rect:
+        serializedVersion: 2
+        x: 1880
+        y: 1669
+        width: 1998
+        height: 1740
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98f19fc1511d36090800000000000000
+      internalID: -8042354620942966903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_4"
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 1983
+        width: 1268
+        height: 506
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c247d81aeb8912070800000000000000
+      internalID: 8079907151000990764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_5"
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 1388
+        width: 1268
+        height: 506
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1469882b9be5e0790800000000000000
+      internalID: -7562002572651227583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_6"
+      rect:
+        serializedVersion: 2
+        x: 1698
+        y: 622
+        width: 776
+        height: 826
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59345c135009ab410800000000000000
+      internalID: 1493664578410988437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_7"
+      rect:
+        serializedVersion: 2
+        x: 3065
+        y: 1126
+        width: 399
+        height: 541
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2bfccd92760e7d40800000000000000
+      internalID: 5583907677329488686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_8"
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 804
+        width: 1267
+        height: 504
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 147, y: 207, z: 163, w: 149}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b16c9d518e2049730800000000000000
+      internalID: 4004829164461475355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_9"
+      rect:
+        serializedVersion: 2
+        x: 2548
+        y: 687
+        width: 517
+        height: 421
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2574d5e4e6ac3cff0800000000000000
+      internalID: -16947398469400750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_10"
+      rect:
+        serializedVersion: 2
+        x: 3440
+        y: 687
+        width: 518
+        height: 421
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9ae51d0e4af6cd60800000000000000
+      internalID: 7910285008656788127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_11"
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 253
+        width: 1002
+        height: 371
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99078b2de31265290800000000000000
+      internalID: -7902091942467964775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_12"
+      rect:
+        serializedVersion: 2
+        x: 1743
+        y: 81
+        width: 1002
+        height: 373
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22f9e80aac6f886f0800000000000000
+      internalID: -682023993409102046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u2014Pngtree\u2014game ui kit to build_5344099_13"
+      rect:
+        serializedVersion: 2
+        x: 3065
+        y: 110
+        width: 399
+        height: 541
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6133bf37b52dc9610800000000000000
+      internalID: 1629408455430976278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: b47a4120ceb2e2a49bcaee487b735f5b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      "\u2014Pngtree\u2014game ui kit to build_5344099_2": 8232270755879815798
+      "\u2014Pngtree\u2014game ui kit to build_5344099_3": -8042354620942966903
+      "\u2014Pngtree\u2014game ui kit to build_5344099_13": 1629408455430976278
+      "\u2014Pngtree\u2014game ui kit to build_5344099_10": 7910285008656788127
+      "\u2014Pngtree\u2014game ui kit to build_5344099_11": -7902091942467964775
+      "\u2014Pngtree\u2014game ui kit to build_5344099_8": 4004829164461475355
+      "\u2014Pngtree\u2014game ui kit to build_5344099_7": 5583907677329488686
+      "\u2014Pngtree\u2014game ui kit to build_5344099_1": 9043528476767391006
+      "\u2014Pngtree\u2014game ui kit to build_5344099_6": 1493664578410988437
+      "\u2014Pngtree\u2014game ui kit to build_5344099_0": -3808493007727183201
+      "\u2014Pngtree\u2014game ui kit to build_5344099_9": -16947398469400750
+      "\u2014Pngtree\u2014game ui kit to build_5344099_5": -7562002572651227583
+      "\u2014Pngtree\u2014game ui kit to build_5344099_12": -682023993409102046
+      "\u2014Pngtree\u2014game ui kit to build_5344099_4": 8079907151000990764
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
