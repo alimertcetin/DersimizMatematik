@@ -10,11 +10,11 @@ namespace XIV.UI
         [SerializeField] private TMP_Text Hud_Button_Text = default;
         [SerializeField] private TMP_Text Animation_Button_Text = default;
 
-        private Player_AnimController playerAnimController;
+        private PlayerAnimationController playerAnimController;
 
         private void Awake()
         {
-            playerAnimController = FindObjectOfType<Player_AnimController>();
+            playerAnimController = FindObjectOfType<PlayerAnimationController>();
         }
 
         public void btn_Hud()

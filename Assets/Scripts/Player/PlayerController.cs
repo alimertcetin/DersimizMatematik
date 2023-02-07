@@ -10,8 +10,13 @@ public class PlayerController : MonoBehaviour, ISaveable
     private float TurnSmoothVelocity;
     private float TurnSmoothTime = 0.1f;
 
-    [SerializeField]
-    private float moveSpeed = 2.1f, runSpeed = 5, jumpForce = 3.2f, gravityScale = .7f, MaxGravityForce = -3;
+    [SerializeField] float moveSpeed = 2.1f;
+    [SerializeField] float runSpeed = 5;
+    [SerializeField] float jumpForce = 3.2f;
+    [SerializeField] float gravityScale = .7f;
+    [SerializeField] float MaxGravityForce = -3;
+    PlayerAnimationController playerAnimationController;
+
     private float storedVerticalAcceleration;
     private float Vertical, Horizontal;
 
@@ -28,6 +33,7 @@ public class PlayerController : MonoBehaviour, ISaveable
         cam = Camera.main.transform;
 
         charController = GetComponent<CharacterController>();
+        playerAnimationController = GetComponentInChildren<PlayerAnimationController>();
     }
 
     private void OnEnable()
@@ -62,7 +68,7 @@ public class PlayerController : MonoBehaviour, ISaveable
 
     private void Movement()
     {
-        moveDir = new Vector3(Horizontal, 0f, Vertical);
+        moveDir = new Vector3(Horizontal, 0f, Vertical).normalized;
 
         //Karakterin bakması gereken yeri belirle.
         targetAngle = Mathf.Atan2(Horizontal, Vertical) * Mathf.Rad2Deg + cam.eulerAngles.y;
@@ -70,32 +76,31 @@ public class PlayerController : MonoBehaviour, ISaveable
         //Karakteri yumuşak bir şekilde y ekseninde döndür
         Angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref TurnSmoothVelocity, TurnSmoothTime);
 
-        if (moveDir.magnitude > 1f)
-        {
-            moveDir.Normalize();
-        }
-
-        if (Horizontal != 0 || Vertical != 0)
+        if (moveDir.magnitude > Mathf.Epsilon)
         {
             transform.rotation = Quaternion.Euler(0f, Angle, 0f);
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             charController.Move(moveDir * Time.deltaTime);
         }
 
+        playerAnimationController.PlayWalk(RunPressed ? moveDir.magnitude : moveDir.magnitude * 0.5f);
         //IsRunning
-        moveDir = RunPressed ? moveDir * runSpeed : moveDir * moveSpeed;
+        var movement = RunPressed ? moveDir * runSpeed : moveDir * moveSpeed;
 
-        moveDir.y = storedVerticalAcceleration;
-        moveDir.y += Physics.gravity.y * gravityScale * Time.deltaTime;
+        movement.y = storedVerticalAcceleration;
+        movement.y += Physics.gravity.y * gravityScale * Time.deltaTime;
 
-        if (moveDir.y < MaxGravityForce)
-            moveDir.y = MaxGravityForce;
+        if (movement.y < MaxGravityForce)
+            movement.y = MaxGravityForce;
 
         if (IsGrounded && JumpPressed)
-            moveDir.y = jumpForce;
+        {
+            playerAnimationController.PlayJump();
+            movement.y = jumpForce;
+        }
 
-        charController.Move(moveDir * Time.deltaTime);
-        storedVerticalAcceleration = moveDir.y;
+        charController.Move(movement * Time.deltaTime);
+        storedVerticalAcceleration = movement.y;
         JumpPressed = false;
     }
 
