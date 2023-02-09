@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
     /// </summary>
     private bool MenuIsOpen()
     {
-        if (InputManager.PlayerControls.IslemYapUI.enabled)
+        if (InputManager.PlayerControls.MakeOperationUI.enabled)
         {
             return true;
         }
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
         {
             return true;
         }
-        else if (InputManager.PlayerControls.SayiAlUI.enabled)
+        else if (InputManager.PlayerControls.EarnNumberUI.enabled)
         {
             return true;
         }

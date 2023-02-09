@@ -567,7 +567,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""IslemYapUI"",
+            ""name"": ""MakeOperationUI"",
             ""id"": ""40df712c-b71b-4366-bbbe-7d2e421af636"",
             ""actions"": [
                 {
@@ -1018,7 +1018,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""SayiAlUI"",
+            ""name"": ""EarnNumberUI"",
             ""id"": ""cd9b1a17-a397-4ea9-9c18-8b81295b15d7"",
             ""actions"": [
                 {
@@ -1559,39 +1559,39 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_LockedDoorUI_Enter = m_LockedDoorUI.FindAction("Enter", throwIfNotFound: true);
         m_LockedDoorUI_Exit = m_LockedDoorUI.FindAction("Exit", throwIfNotFound: true);
         m_LockedDoorUI_Delete = m_LockedDoorUI.FindAction("Delete", throwIfNotFound: true);
-        // IslemYapUI
-        m_IslemYapUI = asset.FindActionMap("IslemYapUI", throwIfNotFound: true);
-        m_IslemYapUI_Zero = m_IslemYapUI.FindAction("Zero", throwIfNotFound: true);
-        m_IslemYapUI_One = m_IslemYapUI.FindAction("One", throwIfNotFound: true);
-        m_IslemYapUI_Two = m_IslemYapUI.FindAction("Two", throwIfNotFound: true);
-        m_IslemYapUI_Three = m_IslemYapUI.FindAction("Three", throwIfNotFound: true);
-        m_IslemYapUI_Four = m_IslemYapUI.FindAction("Four", throwIfNotFound: true);
-        m_IslemYapUI_Five = m_IslemYapUI.FindAction("Five", throwIfNotFound: true);
-        m_IslemYapUI_Six = m_IslemYapUI.FindAction("Six", throwIfNotFound: true);
-        m_IslemYapUI_Seven = m_IslemYapUI.FindAction("Seven", throwIfNotFound: true);
-        m_IslemYapUI_Eight = m_IslemYapUI.FindAction("Eight", throwIfNotFound: true);
-        m_IslemYapUI_Nine = m_IslemYapUI.FindAction("Nine", throwIfNotFound: true);
-        m_IslemYapUI_Enter = m_IslemYapUI.FindAction("Enter", throwIfNotFound: true);
-        m_IslemYapUI_Exit = m_IslemYapUI.FindAction("Exit", throwIfNotFound: true);
-        m_IslemYapUI_Delete = m_IslemYapUI.FindAction("Delete", throwIfNotFound: true);
-        m_IslemYapUI_Minus = m_IslemYapUI.FindAction("Minus", throwIfNotFound: true);
-        m_IslemYapUI_Plus = m_IslemYapUI.FindAction("Plus", throwIfNotFound: true);
-        // SayiAlUI
-        m_SayiAlUI = asset.FindActionMap("SayiAlUI", throwIfNotFound: true);
-        m_SayiAlUI_Delete = m_SayiAlUI.FindAction("Delete", throwIfNotFound: true);
-        m_SayiAlUI_Exit = m_SayiAlUI.FindAction("Exit", throwIfNotFound: true);
-        m_SayiAlUI_Enter = m_SayiAlUI.FindAction("Enter", throwIfNotFound: true);
-        m_SayiAlUI_Nine = m_SayiAlUI.FindAction("Nine", throwIfNotFound: true);
-        m_SayiAlUI_Eight = m_SayiAlUI.FindAction("Eight", throwIfNotFound: true);
-        m_SayiAlUI_Seven = m_SayiAlUI.FindAction("Seven", throwIfNotFound: true);
-        m_SayiAlUI_Six = m_SayiAlUI.FindAction("Six", throwIfNotFound: true);
-        m_SayiAlUI_Five = m_SayiAlUI.FindAction("Five", throwIfNotFound: true);
-        m_SayiAlUI_Four = m_SayiAlUI.FindAction("Four", throwIfNotFound: true);
-        m_SayiAlUI_Three = m_SayiAlUI.FindAction("Three", throwIfNotFound: true);
-        m_SayiAlUI_Two = m_SayiAlUI.FindAction("Two", throwIfNotFound: true);
-        m_SayiAlUI_One = m_SayiAlUI.FindAction("One", throwIfNotFound: true);
-        m_SayiAlUI_Zero = m_SayiAlUI.FindAction("Zero", throwIfNotFound: true);
-        m_SayiAlUI_GenerateQuestion = m_SayiAlUI.FindAction("GenerateQuestion", throwIfNotFound: true);
+        // MakeOperationUI
+        m_MakeOperationUI = asset.FindActionMap("MakeOperationUI", throwIfNotFound: true);
+        m_MakeOperationUI_Zero = m_MakeOperationUI.FindAction("Zero", throwIfNotFound: true);
+        m_MakeOperationUI_One = m_MakeOperationUI.FindAction("One", throwIfNotFound: true);
+        m_MakeOperationUI_Two = m_MakeOperationUI.FindAction("Two", throwIfNotFound: true);
+        m_MakeOperationUI_Three = m_MakeOperationUI.FindAction("Three", throwIfNotFound: true);
+        m_MakeOperationUI_Four = m_MakeOperationUI.FindAction("Four", throwIfNotFound: true);
+        m_MakeOperationUI_Five = m_MakeOperationUI.FindAction("Five", throwIfNotFound: true);
+        m_MakeOperationUI_Six = m_MakeOperationUI.FindAction("Six", throwIfNotFound: true);
+        m_MakeOperationUI_Seven = m_MakeOperationUI.FindAction("Seven", throwIfNotFound: true);
+        m_MakeOperationUI_Eight = m_MakeOperationUI.FindAction("Eight", throwIfNotFound: true);
+        m_MakeOperationUI_Nine = m_MakeOperationUI.FindAction("Nine", throwIfNotFound: true);
+        m_MakeOperationUI_Enter = m_MakeOperationUI.FindAction("Enter", throwIfNotFound: true);
+        m_MakeOperationUI_Exit = m_MakeOperationUI.FindAction("Exit", throwIfNotFound: true);
+        m_MakeOperationUI_Delete = m_MakeOperationUI.FindAction("Delete", throwIfNotFound: true);
+        m_MakeOperationUI_Minus = m_MakeOperationUI.FindAction("Minus", throwIfNotFound: true);
+        m_MakeOperationUI_Plus = m_MakeOperationUI.FindAction("Plus", throwIfNotFound: true);
+        // EarnNumberUI
+        m_EarnNumberUI = asset.FindActionMap("EarnNumberUI", throwIfNotFound: true);
+        m_EarnNumberUI_Delete = m_EarnNumberUI.FindAction("Delete", throwIfNotFound: true);
+        m_EarnNumberUI_Exit = m_EarnNumberUI.FindAction("Exit", throwIfNotFound: true);
+        m_EarnNumberUI_Enter = m_EarnNumberUI.FindAction("Enter", throwIfNotFound: true);
+        m_EarnNumberUI_Nine = m_EarnNumberUI.FindAction("Nine", throwIfNotFound: true);
+        m_EarnNumberUI_Eight = m_EarnNumberUI.FindAction("Eight", throwIfNotFound: true);
+        m_EarnNumberUI_Seven = m_EarnNumberUI.FindAction("Seven", throwIfNotFound: true);
+        m_EarnNumberUI_Six = m_EarnNumberUI.FindAction("Six", throwIfNotFound: true);
+        m_EarnNumberUI_Five = m_EarnNumberUI.FindAction("Five", throwIfNotFound: true);
+        m_EarnNumberUI_Four = m_EarnNumberUI.FindAction("Four", throwIfNotFound: true);
+        m_EarnNumberUI_Three = m_EarnNumberUI.FindAction("Three", throwIfNotFound: true);
+        m_EarnNumberUI_Two = m_EarnNumberUI.FindAction("Two", throwIfNotFound: true);
+        m_EarnNumberUI_One = m_EarnNumberUI.FindAction("One", throwIfNotFound: true);
+        m_EarnNumberUI_Zero = m_EarnNumberUI.FindAction("Zero", throwIfNotFound: true);
+        m_EarnNumberUI_GenerateQuestion = m_EarnNumberUI.FindAction("GenerateQuestion", throwIfNotFound: true);
         // GameManager
         m_GameManager = asset.FindActionMap("GameManager", throwIfNotFound: true);
         m_GameManager_Escape = m_GameManager.FindAction("Escape", throwIfNotFound: true);
@@ -1841,99 +1841,99 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     }
     public LockedDoorUIActions @LockedDoorUI => new LockedDoorUIActions(this);
 
-    // IslemYapUI
-    private readonly InputActionMap m_IslemYapUI;
-    private IIslemYapUIActions m_IslemYapUIActionsCallbackInterface;
-    private readonly InputAction m_IslemYapUI_Zero;
-    private readonly InputAction m_IslemYapUI_One;
-    private readonly InputAction m_IslemYapUI_Two;
-    private readonly InputAction m_IslemYapUI_Three;
-    private readonly InputAction m_IslemYapUI_Four;
-    private readonly InputAction m_IslemYapUI_Five;
-    private readonly InputAction m_IslemYapUI_Six;
-    private readonly InputAction m_IslemYapUI_Seven;
-    private readonly InputAction m_IslemYapUI_Eight;
-    private readonly InputAction m_IslemYapUI_Nine;
-    private readonly InputAction m_IslemYapUI_Enter;
-    private readonly InputAction m_IslemYapUI_Exit;
-    private readonly InputAction m_IslemYapUI_Delete;
-    private readonly InputAction m_IslemYapUI_Minus;
-    private readonly InputAction m_IslemYapUI_Plus;
-    public struct IslemYapUIActions
+    // MakeOperationUI
+    private readonly InputActionMap m_MakeOperationUI;
+    private IMakeOperationUIActions m_MakeOperationUIActionsCallbackInterface;
+    private readonly InputAction m_MakeOperationUI_Zero;
+    private readonly InputAction m_MakeOperationUI_One;
+    private readonly InputAction m_MakeOperationUI_Two;
+    private readonly InputAction m_MakeOperationUI_Three;
+    private readonly InputAction m_MakeOperationUI_Four;
+    private readonly InputAction m_MakeOperationUI_Five;
+    private readonly InputAction m_MakeOperationUI_Six;
+    private readonly InputAction m_MakeOperationUI_Seven;
+    private readonly InputAction m_MakeOperationUI_Eight;
+    private readonly InputAction m_MakeOperationUI_Nine;
+    private readonly InputAction m_MakeOperationUI_Enter;
+    private readonly InputAction m_MakeOperationUI_Exit;
+    private readonly InputAction m_MakeOperationUI_Delete;
+    private readonly InputAction m_MakeOperationUI_Minus;
+    private readonly InputAction m_MakeOperationUI_Plus;
+    public struct MakeOperationUIActions
     {
         private @PlayerControls m_Wrapper;
-        public IslemYapUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Zero => m_Wrapper.m_IslemYapUI_Zero;
-        public InputAction @One => m_Wrapper.m_IslemYapUI_One;
-        public InputAction @Two => m_Wrapper.m_IslemYapUI_Two;
-        public InputAction @Three => m_Wrapper.m_IslemYapUI_Three;
-        public InputAction @Four => m_Wrapper.m_IslemYapUI_Four;
-        public InputAction @Five => m_Wrapper.m_IslemYapUI_Five;
-        public InputAction @Six => m_Wrapper.m_IslemYapUI_Six;
-        public InputAction @Seven => m_Wrapper.m_IslemYapUI_Seven;
-        public InputAction @Eight => m_Wrapper.m_IslemYapUI_Eight;
-        public InputAction @Nine => m_Wrapper.m_IslemYapUI_Nine;
-        public InputAction @Enter => m_Wrapper.m_IslemYapUI_Enter;
-        public InputAction @Exit => m_Wrapper.m_IslemYapUI_Exit;
-        public InputAction @Delete => m_Wrapper.m_IslemYapUI_Delete;
-        public InputAction @Minus => m_Wrapper.m_IslemYapUI_Minus;
-        public InputAction @Plus => m_Wrapper.m_IslemYapUI_Plus;
-        public InputActionMap Get() { return m_Wrapper.m_IslemYapUI; }
+        public MakeOperationUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Zero => m_Wrapper.m_MakeOperationUI_Zero;
+        public InputAction @One => m_Wrapper.m_MakeOperationUI_One;
+        public InputAction @Two => m_Wrapper.m_MakeOperationUI_Two;
+        public InputAction @Three => m_Wrapper.m_MakeOperationUI_Three;
+        public InputAction @Four => m_Wrapper.m_MakeOperationUI_Four;
+        public InputAction @Five => m_Wrapper.m_MakeOperationUI_Five;
+        public InputAction @Six => m_Wrapper.m_MakeOperationUI_Six;
+        public InputAction @Seven => m_Wrapper.m_MakeOperationUI_Seven;
+        public InputAction @Eight => m_Wrapper.m_MakeOperationUI_Eight;
+        public InputAction @Nine => m_Wrapper.m_MakeOperationUI_Nine;
+        public InputAction @Enter => m_Wrapper.m_MakeOperationUI_Enter;
+        public InputAction @Exit => m_Wrapper.m_MakeOperationUI_Exit;
+        public InputAction @Delete => m_Wrapper.m_MakeOperationUI_Delete;
+        public InputAction @Minus => m_Wrapper.m_MakeOperationUI_Minus;
+        public InputAction @Plus => m_Wrapper.m_MakeOperationUI_Plus;
+        public InputActionMap Get() { return m_Wrapper.m_MakeOperationUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(IslemYapUIActions set) { return set.Get(); }
-        public void SetCallbacks(IIslemYapUIActions instance)
+        public static implicit operator InputActionMap(MakeOperationUIActions set) { return set.Get(); }
+        public void SetCallbacks(IMakeOperationUIActions instance)
         {
-            if (m_Wrapper.m_IslemYapUIActionsCallbackInterface != null)
+            if (m_Wrapper.m_MakeOperationUIActionsCallbackInterface != null)
             {
-                @Zero.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnZero;
-                @Zero.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnZero;
-                @Zero.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnZero;
-                @One.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnOne;
-                @One.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnOne;
-                @One.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnOne;
-                @Two.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnTwo;
-                @Two.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnTwo;
-                @Two.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnTwo;
-                @Three.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnThree;
-                @Three.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnThree;
-                @Three.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnThree;
-                @Four.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnFour;
-                @Four.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnFour;
-                @Four.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnFour;
-                @Five.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnFive;
-                @Five.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnFive;
-                @Five.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnFive;
-                @Six.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnSix;
-                @Six.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnSix;
-                @Six.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnSix;
-                @Seven.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnSeven;
-                @Seven.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnSeven;
-                @Seven.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnSeven;
-                @Eight.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnEight;
-                @Eight.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnEight;
-                @Eight.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnEight;
-                @Nine.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnNine;
-                @Nine.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnNine;
-                @Nine.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnNine;
-                @Enter.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnEnter;
-                @Enter.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnEnter;
-                @Enter.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnEnter;
-                @Exit.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnExit;
-                @Exit.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnExit;
-                @Exit.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnExit;
-                @Delete.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnDelete;
-                @Delete.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnDelete;
-                @Delete.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnDelete;
-                @Minus.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnMinus;
-                @Minus.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnMinus;
-                @Minus.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnMinus;
-                @Plus.started -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnPlus;
-                @Plus.performed -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnPlus;
-                @Plus.canceled -= m_Wrapper.m_IslemYapUIActionsCallbackInterface.OnPlus;
+                @Zero.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnZero;
+                @Zero.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnZero;
+                @Zero.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnZero;
+                @One.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnOne;
+                @One.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnOne;
+                @One.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnOne;
+                @Two.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnTwo;
+                @Two.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnTwo;
+                @Two.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnTwo;
+                @Three.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnThree;
+                @Three.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnThree;
+                @Three.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnThree;
+                @Four.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnFour;
+                @Four.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnFour;
+                @Four.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnFour;
+                @Five.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnFive;
+                @Five.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnFive;
+                @Five.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnFive;
+                @Six.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnSix;
+                @Six.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnSix;
+                @Six.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnSix;
+                @Seven.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnSeven;
+                @Seven.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnSeven;
+                @Seven.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnSeven;
+                @Eight.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnEight;
+                @Eight.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnEight;
+                @Eight.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnEight;
+                @Nine.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnNine;
+                @Nine.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnNine;
+                @Nine.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnNine;
+                @Enter.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnEnter;
+                @Enter.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnEnter;
+                @Enter.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnEnter;
+                @Exit.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnExit;
+                @Exit.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnExit;
+                @Exit.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnExit;
+                @Delete.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnDelete;
+                @Delete.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnDelete;
+                @Delete.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnDelete;
+                @Minus.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnMinus;
+                @Minus.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnMinus;
+                @Minus.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnMinus;
+                @Plus.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnPlus;
+                @Plus.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnPlus;
+                @Plus.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnPlus;
             }
-            m_Wrapper.m_IslemYapUIActionsCallbackInterface = instance;
+            m_Wrapper.m_MakeOperationUIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Zero.started += instance.OnZero;
@@ -1984,96 +1984,96 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             }
         }
     }
-    public IslemYapUIActions @IslemYapUI => new IslemYapUIActions(this);
+    public MakeOperationUIActions @MakeOperationUI => new MakeOperationUIActions(this);
 
-    // SayiAlUI
-    private readonly InputActionMap m_SayiAlUI;
-    private ISayiAlUIActions m_SayiAlUIActionsCallbackInterface;
-    private readonly InputAction m_SayiAlUI_Delete;
-    private readonly InputAction m_SayiAlUI_Exit;
-    private readonly InputAction m_SayiAlUI_Enter;
-    private readonly InputAction m_SayiAlUI_Nine;
-    private readonly InputAction m_SayiAlUI_Eight;
-    private readonly InputAction m_SayiAlUI_Seven;
-    private readonly InputAction m_SayiAlUI_Six;
-    private readonly InputAction m_SayiAlUI_Five;
-    private readonly InputAction m_SayiAlUI_Four;
-    private readonly InputAction m_SayiAlUI_Three;
-    private readonly InputAction m_SayiAlUI_Two;
-    private readonly InputAction m_SayiAlUI_One;
-    private readonly InputAction m_SayiAlUI_Zero;
-    private readonly InputAction m_SayiAlUI_GenerateQuestion;
-    public struct SayiAlUIActions
+    // EarnNumberUI
+    private readonly InputActionMap m_EarnNumberUI;
+    private IEarnNumberUIActions m_EarnNumberUIActionsCallbackInterface;
+    private readonly InputAction m_EarnNumberUI_Delete;
+    private readonly InputAction m_EarnNumberUI_Exit;
+    private readonly InputAction m_EarnNumberUI_Enter;
+    private readonly InputAction m_EarnNumberUI_Nine;
+    private readonly InputAction m_EarnNumberUI_Eight;
+    private readonly InputAction m_EarnNumberUI_Seven;
+    private readonly InputAction m_EarnNumberUI_Six;
+    private readonly InputAction m_EarnNumberUI_Five;
+    private readonly InputAction m_EarnNumberUI_Four;
+    private readonly InputAction m_EarnNumberUI_Three;
+    private readonly InputAction m_EarnNumberUI_Two;
+    private readonly InputAction m_EarnNumberUI_One;
+    private readonly InputAction m_EarnNumberUI_Zero;
+    private readonly InputAction m_EarnNumberUI_GenerateQuestion;
+    public struct EarnNumberUIActions
     {
         private @PlayerControls m_Wrapper;
-        public SayiAlUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Delete => m_Wrapper.m_SayiAlUI_Delete;
-        public InputAction @Exit => m_Wrapper.m_SayiAlUI_Exit;
-        public InputAction @Enter => m_Wrapper.m_SayiAlUI_Enter;
-        public InputAction @Nine => m_Wrapper.m_SayiAlUI_Nine;
-        public InputAction @Eight => m_Wrapper.m_SayiAlUI_Eight;
-        public InputAction @Seven => m_Wrapper.m_SayiAlUI_Seven;
-        public InputAction @Six => m_Wrapper.m_SayiAlUI_Six;
-        public InputAction @Five => m_Wrapper.m_SayiAlUI_Five;
-        public InputAction @Four => m_Wrapper.m_SayiAlUI_Four;
-        public InputAction @Three => m_Wrapper.m_SayiAlUI_Three;
-        public InputAction @Two => m_Wrapper.m_SayiAlUI_Two;
-        public InputAction @One => m_Wrapper.m_SayiAlUI_One;
-        public InputAction @Zero => m_Wrapper.m_SayiAlUI_Zero;
-        public InputAction @GenerateQuestion => m_Wrapper.m_SayiAlUI_GenerateQuestion;
-        public InputActionMap Get() { return m_Wrapper.m_SayiAlUI; }
+        public EarnNumberUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Delete => m_Wrapper.m_EarnNumberUI_Delete;
+        public InputAction @Exit => m_Wrapper.m_EarnNumberUI_Exit;
+        public InputAction @Enter => m_Wrapper.m_EarnNumberUI_Enter;
+        public InputAction @Nine => m_Wrapper.m_EarnNumberUI_Nine;
+        public InputAction @Eight => m_Wrapper.m_EarnNumberUI_Eight;
+        public InputAction @Seven => m_Wrapper.m_EarnNumberUI_Seven;
+        public InputAction @Six => m_Wrapper.m_EarnNumberUI_Six;
+        public InputAction @Five => m_Wrapper.m_EarnNumberUI_Five;
+        public InputAction @Four => m_Wrapper.m_EarnNumberUI_Four;
+        public InputAction @Three => m_Wrapper.m_EarnNumberUI_Three;
+        public InputAction @Two => m_Wrapper.m_EarnNumberUI_Two;
+        public InputAction @One => m_Wrapper.m_EarnNumberUI_One;
+        public InputAction @Zero => m_Wrapper.m_EarnNumberUI_Zero;
+        public InputAction @GenerateQuestion => m_Wrapper.m_EarnNumberUI_GenerateQuestion;
+        public InputActionMap Get() { return m_Wrapper.m_EarnNumberUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SayiAlUIActions set) { return set.Get(); }
-        public void SetCallbacks(ISayiAlUIActions instance)
+        public static implicit operator InputActionMap(EarnNumberUIActions set) { return set.Get(); }
+        public void SetCallbacks(IEarnNumberUIActions instance)
         {
-            if (m_Wrapper.m_SayiAlUIActionsCallbackInterface != null)
+            if (m_Wrapper.m_EarnNumberUIActionsCallbackInterface != null)
             {
-                @Delete.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnDelete;
-                @Delete.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnDelete;
-                @Delete.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnDelete;
-                @Exit.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnExit;
-                @Exit.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnExit;
-                @Exit.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnExit;
-                @Enter.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnEnter;
-                @Enter.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnEnter;
-                @Enter.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnEnter;
-                @Nine.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnNine;
-                @Nine.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnNine;
-                @Nine.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnNine;
-                @Eight.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnEight;
-                @Eight.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnEight;
-                @Eight.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnEight;
-                @Seven.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnSeven;
-                @Seven.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnSeven;
-                @Seven.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnSeven;
-                @Six.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnSix;
-                @Six.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnSix;
-                @Six.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnSix;
-                @Five.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnFive;
-                @Five.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnFive;
-                @Five.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnFive;
-                @Four.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnFour;
-                @Four.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnFour;
-                @Four.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnFour;
-                @Three.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnThree;
-                @Three.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnThree;
-                @Three.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnThree;
-                @Two.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnTwo;
-                @Two.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnTwo;
-                @Two.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnTwo;
-                @One.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnOne;
-                @One.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnOne;
-                @One.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnOne;
-                @Zero.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnZero;
-                @Zero.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnZero;
-                @Zero.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnZero;
-                @GenerateQuestion.started -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnGenerateQuestion;
-                @GenerateQuestion.performed -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnGenerateQuestion;
-                @GenerateQuestion.canceled -= m_Wrapper.m_SayiAlUIActionsCallbackInterface.OnGenerateQuestion;
+                @Delete.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnDelete;
+                @Delete.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnDelete;
+                @Delete.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnDelete;
+                @Exit.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnExit;
+                @Exit.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnExit;
+                @Exit.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnExit;
+                @Enter.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnEnter;
+                @Enter.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnEnter;
+                @Enter.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnEnter;
+                @Nine.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnNine;
+                @Nine.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnNine;
+                @Nine.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnNine;
+                @Eight.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnEight;
+                @Eight.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnEight;
+                @Eight.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnEight;
+                @Seven.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnSeven;
+                @Seven.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnSeven;
+                @Seven.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnSeven;
+                @Six.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnSix;
+                @Six.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnSix;
+                @Six.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnSix;
+                @Five.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnFive;
+                @Five.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnFive;
+                @Five.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnFive;
+                @Four.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnFour;
+                @Four.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnFour;
+                @Four.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnFour;
+                @Three.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnThree;
+                @Three.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnThree;
+                @Three.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnThree;
+                @Two.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnTwo;
+                @Two.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnTwo;
+                @Two.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnTwo;
+                @One.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnOne;
+                @One.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnOne;
+                @One.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnOne;
+                @Zero.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnZero;
+                @Zero.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnZero;
+                @Zero.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnZero;
+                @GenerateQuestion.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnGenerateQuestion;
+                @GenerateQuestion.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnGenerateQuestion;
+                @GenerateQuestion.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnGenerateQuestion;
             }
-            m_Wrapper.m_SayiAlUIActionsCallbackInterface = instance;
+            m_Wrapper.m_EarnNumberUIActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Delete.started += instance.OnDelete;
@@ -2121,7 +2121,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             }
         }
     }
-    public SayiAlUIActions @SayiAlUI => new SayiAlUIActions(this);
+    public EarnNumberUIActions @EarnNumberUI => new EarnNumberUIActions(this);
 
     // GameManager
     private readonly InputActionMap m_GameManager;
@@ -2219,7 +2219,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnExit(InputAction.CallbackContext context);
         void OnDelete(InputAction.CallbackContext context);
     }
-    public interface IIslemYapUIActions
+    public interface IMakeOperationUIActions
     {
         void OnZero(InputAction.CallbackContext context);
         void OnOne(InputAction.CallbackContext context);
@@ -2237,7 +2237,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnMinus(InputAction.CallbackContext context);
         void OnPlus(InputAction.CallbackContext context);
     }
-    public interface ISayiAlUIActions
+    public interface IEarnNumberUIActions
     {
         void OnDelete(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);

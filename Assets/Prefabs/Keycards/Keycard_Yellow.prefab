@@ -103,5 +103,11 @@ PrefabInstance:
       propertyPath: keycardType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7060087243012277494, guid: dafcc6ccb8cce6d4e84a88260cc14c03,
+        type: 3}
+      propertyPath: keycardItemSO
+      value: 
+      objectReference: {fileID: 11400000, guid: a924ca35315a3204a8b169e96f9be3eb,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dafcc6ccb8cce6d4e84a88260cc14c03, type: 3}

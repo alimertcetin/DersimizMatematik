@@ -545,7 +545,7 @@
             ]
         },
         {
-            "name": "IslemYapUI",
+            "name": "MakeOperationUI",
             "id": "40df712c-b71b-4366-bbbe-7d2e421af636",
             "actions": [
                 {
@@ -996,7 +996,7 @@
             ]
         },
         {
-            "name": "SayiAlUI",
+            "name": "EarnNumberUI",
             "id": "cd9b1a17-a397-4ea9-9c18-8b81295b15d7",
             "actions": [
                 {

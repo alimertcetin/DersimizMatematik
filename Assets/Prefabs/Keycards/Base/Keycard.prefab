@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4643772988902271325}
   m_Father: {fileID: 0}
@@ -45,7 +46,6 @@ GameObject:
   - component: {fileID: 4643772988902271330}
   - component: {fileID: 5115892062612419768}
   - component: {fileID: 7060087243012277494}
-  - component: {fileID: 7553033320396748151}
   - component: {fileID: 6888765827893129912}
   m_Layer: 0
   m_Name: Keycard
@@ -64,6 +64,7 @@ Transform:
   m_LocalRotation: {x: -0.46174863, y: -0, z: -0, w: 0.8870109}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.5, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4643772987627841128}
   m_RootOrder: 0
@@ -87,10 +88,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -115,9 +118,10 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!95 &4643772988902271330
 Animator:
-  serializedVersion: 3
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -130,6 +134,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -159,21 +164,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d884a8608b8a74786473c5b9133e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keycardType: 0
+  keycardItemSO: {fileID: 0}
+  inventoryLoadedChannel: {fileID: 11400000, guid: ab052fda52bf9e449a07470cb18d369b,
+    type: 2}
   CollectedParticle: {fileID: 7211662553991198926, guid: 555d197ef60ddc74981961e6d3ef6fda,
     type: 3}
---- !u!114 &7553033320396748151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4643772988902271324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cee2044d98422a3478e50c799dd68b6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   notificationChannel: {fileID: 11400000, guid: de2802bc8e1564e44bb84f930d58a887,
     type: 2}
 --- !u!114 &6888765827893129912

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.SaveSystem;
 
 [RequireComponent(typeof(SaveableEntity))]
 public class ObjectBasedEvents : MonoBehaviour, ISaveable

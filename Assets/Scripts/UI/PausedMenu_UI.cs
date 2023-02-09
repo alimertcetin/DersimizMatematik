@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using XIV.SaveSystem;
 
 namespace XIV.UI
 {
@@ -31,13 +32,13 @@ namespace XIV.UI
 
         public void btn_Load()
         {
-            SaveSystem.instance.Load();
+            Saver.Load();
         }
 
         public void btn_Save()
         {
             WarningUIChannel.RaiseEvent("Kayıt Edildi : " + Application.persistentDataPath);
-            SaveSystem.instance.Save();
+            Saver.Save();
         }
 
         public void btn_Settings()

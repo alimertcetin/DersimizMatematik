@@ -1,4 +1,7 @@
 ﻿using System.Collections;
+using GameCore.DoorSystem;
+using GameCore.ScriptableObjects.Channels;
+using GameCore.UI;
 using UnityEngine;
 using XIV.UI;
 
@@ -9,7 +12,7 @@ public class GamePlayCanvasManager : MonoBehaviour
 
     [Header("UI Elements")]
     [SerializeField] private PausedMenu_UI PauseMenuUI = default;
-    [SerializeField] private BlackBoard_UI BlackBoardUI = default;
+    [SerializeField] private BlackboardMainUI BlackBoardUI = default;
     [SerializeField] private LockedDoor_UI LockedDoorUI = default;
     [SerializeField] private HUD_UI HudUI = default;
     [SerializeField] private Notification Notification = default;
@@ -25,34 +28,32 @@ public class GamePlayCanvasManager : MonoBehaviour
     [Header("Listening To")]
     [SerializeField] private BoolEventChannelSO PauseMenuUIChannel = default;
     [SerializeField] private BoolEventChannelSO BlackBoardUIChannel = default;
-    [SerializeField] private LockedDoorUIEventChannel LockedDoorUIChannel = default;
+    [SerializeField] private ShowLockedDoorUIEventChannelSO LockedDoorUIChannel = default;
     [SerializeField] private BoolEventChannelSO HudUIChannel = default;
     [SerializeField] private StringEventChannelSO NotificationUIChannel = default;
     [SerializeField] private StringEventChannelSO WarningUIChannel = default;
 
     private void OnEnable()
     {
-        PauseMenuUIChannel.OnEventRaised += onPauseMenuRequested;
-        BlackBoardUIChannel.OnEventRaised += onBlackBoardRequested;
-        LockedDoorUIChannel.OnInteractPressed += onlockedDoorRequested;
-        LockedDoorUIChannel.ScriptTransfer += lockedDoorScriptTransfer;
-        HudUIChannel.OnEventRaised += onHudRequested;
-        NotificationUIChannel.OnEventRaised += onNotificationRequested;
-        WarningUIChannel.OnEventRaised += onWarningRequested;
+        PauseMenuUIChannel.OnEventRaised += ShowPauseMenuUI;
+        BlackBoardUIChannel.OnEventRaised += ShowBlackBoardUI;
+        LockedDoorUIChannel.ShowLockedDoorUI += ShowLockedDoorUI;
+        HudUIChannel.OnEventRaised += ShowHud;
+        NotificationUIChannel.OnEventRaised += ShowNotification;
+        WarningUIChannel.OnEventRaised += ShowWarning;
     }
 
     private void OnDisable()
     {
-        PauseMenuUIChannel.OnEventRaised -= onPauseMenuRequested;
-        BlackBoardUIChannel.OnEventRaised -= onBlackBoardRequested;
-        LockedDoorUIChannel.OnInteractPressed -= onlockedDoorRequested;
-        LockedDoorUIChannel.ScriptTransfer -= lockedDoorScriptTransfer;
-        HudUIChannel.OnEventRaised -= onHudRequested;
-        NotificationUIChannel.OnEventRaised -= onNotificationRequested;
-        WarningUIChannel.OnEventRaised -= onWarningRequested;
+        PauseMenuUIChannel.OnEventRaised -= ShowPauseMenuUI;
+        BlackBoardUIChannel.OnEventRaised -= ShowBlackBoardUI;
+        LockedDoorUIChannel.ShowLockedDoorUI -= ShowLockedDoorUI;
+        HudUIChannel.OnEventRaised -= ShowHud;
+        NotificationUIChannel.OnEventRaised -= ShowNotification;
+        WarningUIChannel.OnEventRaised -= ShowWarning;
     }
 
-    private void onPauseMenuRequested(bool value)
+    private void ShowPauseMenuUI(bool value)
     {
         if (value)
         {
@@ -65,41 +66,37 @@ public class GamePlayCanvasManager : MonoBehaviour
         PauseMenuUI.gameObject.SetActive(value);
     }
 
-    private void onBlackBoardRequested(bool value)
+    private void ShowBlackBoardUI(bool value)
     {
-        BlackBoardUI.gameObject.SetActive(value);
+        if (value) BlackBoardUI.ShowUI(); 
+        else BlackBoardUI.CloseUI();
     }
 
-    private void onlockedDoorRequested()
+    private void ShowLockedDoorUI(Door door)
     {
         if (LockedDoorUI.gameObject.activeSelf)
         {
-            LockedDoorUI.gameObject.SetActive(false);
+            LockedDoorUI.Close();
         }
         else
         {
-            LockedDoorUI.gameObject.SetActive(true);
+            LockedDoorUI.Show(door);
         }
     }
 
-    private void lockedDoorScriptTransfer(Door_Is_Locked door)
-    {
-        LockedDoorUI.RecieveScriptFromDoor(door);
-    }
-
-    private void onHudRequested(bool value)
+    private void ShowHud(bool value)
     {
         //TODO : Try to enable after disabled it.
         HudUI.gameObject.SetActive(value);
     }
 
-    private void onNotificationRequested(string str, bool value)
+    private void ShowNotification(string str, bool value)
     {
         Notification.gameObject.SetActive(value);
         Notification.SetText(str);
     }
 
-    private void onWarningRequested(string str, bool value)
+    private void ShowWarning(string str, bool value)
     {
         if (value)
         {

@@ -32,25 +32,25 @@ public class CursorManager
 
     public void LockCursor()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void LockCursor(CursorLockMode lockMode)
     {
-        Cursor.visible = false;
-        Cursor.lockState = lockMode;
+        //Cursor.visible = false;
+        //Cursor.lockState = lockMode;
     }
 
     public void UnlockCursor()
     {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        //Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void UnlockCursor(CursorLockMode lockMode)
     {
-        Cursor.visible = true;
-        Cursor.lockState = lockMode;
+        //Cursor.visible = true;
+        //Cursor.lockState = lockMode;
     }
 }

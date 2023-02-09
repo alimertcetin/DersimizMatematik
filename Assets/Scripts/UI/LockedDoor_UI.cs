@@ -1,231 +1,218 @@
-﻿using TMPro;
+﻿using System;
+using System.Collections.Generic;
+using GameCore.DoorSystem;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using XIV.InventorySystem;
+using XIV.InventorySystem.Items;
+using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
+using XIV.Utils;
+using static UnityEditor.Progress;
 
 namespace XIV.UI
 {
     public class LockedDoor_UI : MonoBehaviour, PlayerControls.ILockedDoorUIActions
     {
         [Header("Broadcasting To")]
-        [SerializeField]
-        private StringEventChannelSO WarningUIChannel = default;
-
-        public UnityAction SoruCevaplandi;
-        private PlayerInventory inventory;
-        private Door_Is_Locked LockedDoor_Script;
-
+        [SerializeField] StringEventChannelSO WarningUIChannel = default;
         [SerializeField] private TMP_Text txt_InputField = null;
         [SerializeField] private TMP_Text txt_Soru = null;
         [SerializeField] private int textMaxLenght = 14;
+        [SerializeField] InventoryChannelSO inventoryLoadedChannel;
+        [SerializeField] Timer deleteTimer = new Timer(0.3f);
 
-        private float maintimer;
-        private float timer;
-        private float controlEachDeleteTime = .3f;
-        private bool deleteStarted = false;
+        List<NumberItem> inputNumberItems = new List<NumberItem>();
+        Door currentDoor;
+        Inventory inventory;
+
+        bool deleteStarted = false;
 
         private void Awake()
         {
-            inventory = FindObjectOfType<PlayerInventory>();
             InputManager.PlayerControls.LockedDoorUI.SetCallbacks(this);
+            inventoryLoadedChannel.Register(OnInventoryLoaded);
         }
 
-        private void OnEnable()
+        private void OnDestroy()
         {
-            if (LockedDoor_Script != null)
-            {
-                txt_Soru.text = LockedDoor_Script.DoorLockedQuestion;
-            }
-
-            InputManager.LockedDoorUI.Enable();
-            InputManager.GameManager.Disable();
-            InputManager.GamePlay.Disable();
-        }
-
-        private void OnDisable()
-        {
-            TextiTamamenTemizle();
-
-            InputManager.LockedDoorUI.Disable();
-            InputManager.GameManager.Enable();
-            InputManager.GamePlay.Enable();
+            inventoryLoadedChannel.Unregister(OnInventoryLoaded);
         }
 
         private void Update()
         {
-            //TODO : Edit delete time.
-            if (deleteStarted)
+            if (deleteStarted == false) return;
+
+            if (deleteTimer.Update(Time.deltaTime))
             {
-                timer += Time.deltaTime;
-                maintimer += Time.deltaTime;
-                if (timer > controlEachDeleteTime)
-                {
-                    Sil();
-                    timer = 0;
-                }
-                if (maintimer > controlEachDeleteTime + 1)
-                {
-                    Sil();
-                    timer = 0;
-                }
+                Delete();
+                deleteTimer.Restart();
             }
         }
 
-        public void RecieveScriptFromDoor(Door_Is_Locked Door)
+        private void OnInventoryLoaded(Inventory inventory)
         {
-            LockedDoor_Script = Door;
+            this.inventory = inventory;
+        }
+
+        public void Show(Door door)
+        {
+            currentDoor = door;
+            txt_Soru.text = currentDoor.GetQuestionString();
+
+            InputManager.LockedDoorUI.Enable();
+            InputManager.GameManager.Disable();
+            InputManager.GamePlay.Disable();
+            this.gameObject.SetActive(true);
+        }
+
+        public void Close()
+        {
+            ClearTextCompletly();
+
+            InputManager.LockedDoorUI.Disable();
+            InputManager.GameManager.Enable();
+            InputManager.GamePlay.Enable();
+            this.gameObject.SetActive(false);
         }
 
         public void NumberOnClick(int value)
         {
             if (txt_InputField.text.Length > textMaxLenght)
             {
-                UyariVer("Daha fazla sayı giremezsin.");
+                ShowWarning("You cant enter anymore number");
                 return;
             }
-            //Eğer değer envanterde varsa
-            if (inventory.InventoryControl_Sayi(value))
-            {
-                txt_InputField.text += value.ToString();
-                inventory.Sayi_Cikar(value, 1);
-            }
-            else
-            {
-                UyariVer("Bu rakam envanterinde yok!");
-            }
-        }
 
-        public void TextiTamamenTemizle()
-        {
-            if (txt_InputField.text.Length != 0)
+            bool IsExist(out int index)
             {
-                while (true)
+                index = -1;
+                for (int i = 0; i < inventory.Count; i++)
                 {
-                    Sil();
-                    if (txt_InputField.text.Length == 0)
+                    if (inventory[i].Item is NumberItem item && item.Value == value)
                     {
-                        break;
+                        index = i;
+                        return true;
                     }
                 }
+                return false;
             }
-        }
 
-        public void Sil()
-        {
-            if (txt_InputField.text.Length != 0)
+            if (IsExist(out int index))
             {
-                //Son girilen yazıyı bul ve last input'a ata.
-                string last_input = txt_InputField.text.Substring(txt_InputField.text.Length - 1);
-                //Son girilen yazıyı sil.
-                txt_InputField.text = txt_InputField.text.Remove(txt_InputField.text.Length - 1);
-                inventory.Sayi_Ekle(int.Parse(last_input), 1);
-            }
-        }
+                txt_InputField.text += value.ToString();
+                inputNumberItems.Add(inventory[index].Item as NumberItem);
+                int amount = 1;
+                inventory.RemoveAt(index, ref amount);
 
-        public void Cevapla()
-        {
-            if (txt_InputField.text == LockedDoor_Script.DoorLockedAnswer.ToString())
-            {
-                LockedDoor_Script.DoorLocked = false;
-                txt_InputField.text = "";
-                SoruCevaplandi?.Invoke();
-                this.gameObject.SetActive(false);
             }
             else
             {
-                UyariVer("Şifre Yanlış");
+                ShowWarning("This number is not exists in your inventory!");
             }
         }
 
-        private void UyariVer(string text, bool value = true)
+        public void ClearTextCompletly()
+        {
+            while (txt_InputField.text.Length != 0)
+            {
+                Delete();
+            }
+        }
+
+        void Delete()
+        {
+            if (inputNumberItems.Count == 0) return;
+
+            txt_InputField.text = txt_InputField.text.Remove(txt_InputField.text.Length - 1);
+            int index = inputNumberItems.Count - 1;
+            int amount = 1;
+            inventory.TryAdd(inputNumberItems[index], ref amount);
+            inputNumberItems.RemoveAt(index);
+        }
+
+        void Answer()
+        {
+            if (currentDoor.SolveQuestion(int.Parse(txt_InputField.text))) Close();
+            else ShowWarning("Wrong answer");
+        }
+
+        private void ShowWarning(string text, bool value = true)
         {
             WarningUIChannel.RaiseEvent(text, value);
         }
 
         public void OnZero(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(0);
+            if (context.performed) NumberOnClick(0);
         }
 
         public void OnOne(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(1);
+            if (context.performed) NumberOnClick(1);
         }
 
         public void OnTwo(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(2);
+            if (context.performed) NumberOnClick(2);
         }
 
         public void OnThree(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(3);
+            if (context.performed) NumberOnClick(3);
         }
 
         public void OnFour(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(4);
+            if (context.performed) NumberOnClick(4);
         }
 
         public void OnFive(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(5);
+            if (context.performed) NumberOnClick(5);
         }
 
         public void OnSix(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(6);
+            if (context.performed) NumberOnClick(6);
         }
 
         public void OnSeven(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(7);
+            if (context.performed) NumberOnClick(7);
         }
 
         public void OnEight(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(8);
+            if (context.performed) NumberOnClick(8);
         }
 
         public void OnNine(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                NumberOnClick(9);
+            if (context.performed) NumberOnClick(9);
         }
 
         public void OnEnter(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                Cevapla();
+            if (context.performed) Answer();
         }
 
         public void OnExit(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                this.gameObject.SetActive(false);
+            if (context.performed) Close();
         }
 
         public void OnDelete(InputAction.CallbackContext context)
         {
             if (context.started)
             {
-                Sil();
+                Delete();
                 deleteStarted = true;
             }
-
-            if (context.canceled)
+            else if (context.canceled)
             {
-                timer = 0;
-                maintimer = 0;
+                deleteTimer.Restart();
                 deleteStarted = false;
             }
         }

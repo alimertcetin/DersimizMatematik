@@ -1,15 +1,16 @@
 ﻿using System;
+using UnityEngine.InputSystem;
 
 public static class InputManager
 {
     public static PlayerControls PlayerControls = new PlayerControls();
-    public static string InteractionKeyName { get => PlayerControls.Gameplay.Interact.name; }
+    public static string InteractionKeyName => PlayerControls.Gameplay.Interact.GetBindingDisplayString();
 
     public static void DisableAllInput()
     {
         GamePlay.Disable();
-        SayiAlUI.Disable();
-        IslemYapUI.Disable();
+        EarnNumberUI.Disable();
+        MakeOperationUI.Disable();
         GameManager.Disable();
         LockedDoorUI.Disable();
         BlackBoardUIManagement.Disable();
@@ -54,41 +55,41 @@ public static class InputManager
 
     }
 
-    public static class IslemYapUI
+    public static class MakeOperationUI
     {
-        public static Action IslemYapUI_Enabled = delegate { };
-        public static Action IslemYapUI_Disabled = delegate { };
+        public static Action MakeOperationUI_Enabled = delegate { };
+        public static Action MakeOperationUI_Disabled = delegate { };
 
         public static void Enable()
         {
             CursorManager.Instance.UnlockCursor();
-            PlayerControls.IslemYapUI.Enable();
-            IslemYapUI_Enabled.Invoke();
+            PlayerControls.MakeOperationUI.Enable();
+            MakeOperationUI_Enabled.Invoke();
         }
 
         public static void Disable()
         {
-            PlayerControls.IslemYapUI.Disable();
-            IslemYapUI_Disabled.Invoke();
+            PlayerControls.MakeOperationUI.Disable();
+            MakeOperationUI_Disabled.Invoke();
         }
     }
 
-    public static class SayiAlUI
+    public static class EarnNumberUI
     {
-        public static Action SayiAlUI_Enabled = delegate { };
-        public static Action SayiAlUI_Disabled = delegate { };
+        public static Action EarnNumberUI_Enabled = delegate { };
+        public static Action EarnNumberUI_Disabled = delegate { };
 
         public static void Enable()
         {
             CursorManager.Instance.UnlockCursor();
-            PlayerControls.SayiAlUI.Enable();
-            SayiAlUI_Enabled.Invoke();
+            PlayerControls.EarnNumberUI.Enable();
+            EarnNumberUI_Enabled.Invoke();
         }
 
         public static void Disable()
         {
-            PlayerControls.SayiAlUI.Disable();
-            SayiAlUI_Disabled.Invoke();
+            PlayerControls.EarnNumberUI.Disable();
+            EarnNumberUI_Disabled.Invoke();
         }
     }
 

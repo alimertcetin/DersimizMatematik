@@ -4,9 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(CinemachineFreeLook))]
 public class CameraController : MonoBehaviour
 {
-    private CinemachineFreeLook cameraLook;
-    private float CameraSpeed_X;
-    private float CameraSpeed_Y;
+    CinemachineFreeLook cameraLook;
+    float CameraSpeed_X;
+    float CameraSpeed_Y;
 
     private void Awake()
     {

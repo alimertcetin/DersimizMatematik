@@ -6,39 +6,40 @@ public class BlackBoard : MonoBehaviour
 {
     [SerializeField] private StringEventChannelSO notificationChannel = default;
     [SerializeField] private BoolEventChannelSO BlackBoardUIChannel = default;
-    private GamePlayCanvasManager gamePlayCanvas = default;
 
     private bool triggered = false;
-
-    private IEnumerator Start()
-    {
-        yield return new WaitForFixedUpdate();
-        gamePlayCanvas = FindObjectOfType<GamePlayCanvasManager>();
-    }
 
     private void OnEnable()
     {
         InputManager.PlayerControls.Gameplay.Interact.performed += Interact_performed;
+        BlackBoardUIChannel.OnEventRaised += OnBlackBoardInteract;
     }
 
     private void OnDisable()
     {
         InputManager.PlayerControls.Gameplay.Interact.performed -= Interact_performed;
+        BlackBoardUIChannel.OnEventRaised -= OnBlackBoardInteract;
+    }
+
+    private void OnBlackBoardInteract(bool value)
+    {
+        if (triggered == false) return;
+
+        if (value)
+        {
+            notificationChannel.RaiseEvent("", false);
+        }
+        else
+        {
+            notificationChannel.RaiseEvent("Press " + InputManager.InteractionKeyName + " to interact with BlackBoard");
+        }
     }
 
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (triggered)
-        {
-            if (gamePlayCanvas.BlackBoardUI_acitveSelf == false)
-            {
-                BlackBoardUIChannel.RaiseEvent(true);
-            }
-            else
-            {
-                BlackBoardUIChannel.RaiseEvent(false);
-            }
-        }
+        if (triggered == false) return;
+
+        BlackBoardUIChannel.RaiseEvent(true);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -47,21 +48,6 @@ public class BlackBoard : MonoBehaviour
         {
             triggered = true;
             notificationChannel.RaiseEvent("Press " + InputManager.InteractionKeyName + " to interact with BlackBoard");
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (triggered)
-        {
-            if (gamePlayCanvas.BlackBoardUI_acitveSelf)
-            {
-                notificationChannel.RaiseEvent("", false);
-            }
-            else
-            {
-                notificationChannel.RaiseEvent("Press " + InputManager.InteractionKeyName + " to interact with BlackBoard");
-            }
         }
     }
 
