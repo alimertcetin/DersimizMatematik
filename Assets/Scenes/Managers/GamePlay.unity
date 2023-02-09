@@ -2277,6 +2277,7 @@ MonoBehaviour:
   txt_ReviewInput: {fileID: 4413410045644543111}
   btn_Subtract: {fileID: 4413410046289993134}
   btn_Add: {fileID: 4413410045864663138}
+  btn_Answer: {fileID: 4413410045283980717}
   InputFiedlMaxTextLenght: 7
 --- !u!4 &351823738
 Transform:
@@ -5083,6 +5084,7 @@ GameObject:
   m_Component:
   - component: {fileID: 931449444}
   - component: {fileID: 931449445}
+  - component: {fileID: 931449446}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -5125,6 +5127,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb84d61697600749a941449db5acac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &931449446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931449443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 098f9fa323d4473886551fbae450a42e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryLoadedChannel: {fileID: 11400000, guid: ab052fda52bf9e449a07470cb18d369b,
+    type: 2}
+  inventoryChangedChannel: {fileID: 11400000, guid: 60b5a07e6b5fefb479993be56ed1f5d5,
+    type: 2}
+  contentParent: {fileID: 1067143936}
+  startIndex: 0
 --- !u!1001 &940921320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5680,7 +5700,7 @@ GameObject:
   - component: {fileID: 1067143936}
   - component: {fileID: 1067143937}
   m_Layer: 5
-  m_Name: Layout
+  m_Name: ContentParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6270,7 +6290,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -5}
+  m_AnchoredPosition: {x: 20, y: -10}
   m_SizeDelta: {x: 233.81952, y: 112.45975}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1316569485
