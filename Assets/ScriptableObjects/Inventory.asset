@@ -13,5 +13,45 @@ MonoBehaviour:
   m_Name: Inventory
   m_EditorClassIdentifier: 
   SlotCount: 13
-  items: []
-  runtimeItems: []
+  items:
+  - itemSO: {fileID: 11400000, guid: 07ceeb899b4d27e4497f54d88efa30b9, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: c887c16a81875f049973cb29a1c26d6f, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: e9fee995c4f057049830c2be4aa14e04, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: 5e961bcc06b89b844bd8a0f43cab7710, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: 3f453f7cbcbee714d9a38703b15527b4, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: a85ed79f1d83dfa4a9eb81cdf999c2c3, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: c7bc2ad5105ce6b4ba5c2d36fe122233, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: a37771fd2514d254ab5563ace9c96a93, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: cb84796a19e87ce4ba24aef8af2e4a0a, type: 2}
+    amount: 10
+  - itemSO: {fileID: 11400000, guid: 51bdcd87650013041aedcf3aa9ff29f4, type: 2}
+    amount: 10
+  runtimeItems:
+  - <Index>k__BackingField: 0
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 1
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 2
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 3
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 4
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 5
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 6
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 7
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 8
+    <Amount>k__BackingField: 10
+  - <Index>k__BackingField: 9
+    <Amount>k__BackingField: 10
