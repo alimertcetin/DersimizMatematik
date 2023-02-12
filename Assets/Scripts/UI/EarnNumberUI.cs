@@ -1,6 +1,5 @@
 ﻿using System;
 using LessonIsMath.Input;
-using LessonIsMath.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,7 +7,7 @@ using UnityEngine.UI;
 using XIV.Utils;
 using Random = UnityEngine.Random;
 
-namespace XIV.UI
+namespace LessonIsMath.UI
 {
     public class EarnNumberUI : OperationUI, PlayerControls.IEarnNumberUIActions
     {
@@ -99,7 +98,7 @@ namespace XIV.UI
 
         void ShowAnswerOnInputField()
         {
-            if(txt_EarnNumberInputField.text.Length == 0)
+            if (txt_EarnNumberInputField.text.Length == 0)
             {
                 warningUIChannel.RaiseEvent(OperationWarnings.ENTER_A_NUMBER);
                 return;

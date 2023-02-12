@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace XIV.UI
+namespace LessonIsMath.UI
 {
     public class Main_Menu_UI : MonoBehaviour
     {

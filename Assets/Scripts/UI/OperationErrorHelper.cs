@@ -1,6 +1,5 @@
 ﻿using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
-using XIV.UI;
 using XIV.Utils;
 
 namespace LessonIsMath.UI

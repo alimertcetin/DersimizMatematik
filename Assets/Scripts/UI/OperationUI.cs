@@ -1,4 +1,4 @@
-﻿using LessonIsMath.ScriptableObjects.Channels;
+﻿using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using XIV.InventorySystem;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;

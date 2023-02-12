@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using LessonIsMath.Input;
-using LessonIsMath.ScriptableObjects.Channels;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV.InventorySystem;

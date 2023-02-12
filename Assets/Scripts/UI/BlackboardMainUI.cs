@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using XIV.UI;
 
 namespace LessonIsMath.UI
 {

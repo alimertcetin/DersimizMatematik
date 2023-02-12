@@ -1,34 +1,37 @@
-﻿using LessonIsMath.ScriptableObjects.Channels;
+﻿using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 
-public class LoadingScreenManager : MonoBehaviour
+namespace LessonIsMath.UI
 {
-    [Header("Loading screen Event")]
-    //The loading screen event we are listening to
-    [SerializeField] private BoolEventChannelSO _ToggleLoadingScreen = default;
-
-    [Header("Loading screen ")]
-    public GameObject loadingInterface;
-
-    private void OnEnable()
+    public class LoadingScreenManager : MonoBehaviour
     {
-        if (_ToggleLoadingScreen != null)
+        [Header("Loading screen Event")]
+        //The loading screen event we are listening to
+        [SerializeField] private BoolEventChannelSO _ToggleLoadingScreen = default;
+
+        [Header("Loading screen ")]
+        public GameObject loadingInterface;
+
+        private void OnEnable()
         {
-            _ToggleLoadingScreen.OnEventRaised += ToggleLoadingScreen;
+            if (_ToggleLoadingScreen != null)
+            {
+                _ToggleLoadingScreen.OnEventRaised += ToggleLoadingScreen;
+            }
         }
-    }
 
-    private void OnDisable()
-    {
-        if (_ToggleLoadingScreen != null)
+        private void OnDisable()
         {
-            _ToggleLoadingScreen.OnEventRaised -= ToggleLoadingScreen;
+            if (_ToggleLoadingScreen != null)
+            {
+                _ToggleLoadingScreen.OnEventRaised -= ToggleLoadingScreen;
+            }
         }
-    }
 
-    private void ToggleLoadingScreen(bool state)
-    {
-        loadingInterface.SetActive(state);
-    }
+        private void ToggleLoadingScreen(bool state)
+        {
+            loadingInterface.SetActive(state);
+        }
 
+    }
 }

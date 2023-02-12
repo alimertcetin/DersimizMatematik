@@ -1,6 +1,6 @@
 ﻿using LessonIsMath.Input;
 using LessonIsMath.PlayerSystems;
-using LessonIsMath.ScriptableObjects.Channels;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 
 namespace LessonIsMath.World.Interactables.BlackboardSystems

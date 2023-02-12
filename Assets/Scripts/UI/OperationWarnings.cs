@@ -1,4 +1,4 @@
-﻿namespace XIV.UI
+﻿namespace LessonIsMath.UI
 {
     static class OperationWarnings
     {

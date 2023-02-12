@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace XIV.UI
+namespace LessonIsMath.UI
 {
     public class Spinning_UI : MonoBehaviour
     {

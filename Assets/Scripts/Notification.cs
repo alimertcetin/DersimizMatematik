@@ -5,7 +5,7 @@ namespace XIV.UI
 {
     public class Notification : MonoBehaviour
     {
-        private TMP_Text txt;
+        [SerializeField] TMP_Text txt;
 
         private void Awake()
         {

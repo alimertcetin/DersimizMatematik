@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace XIV.UI
+namespace LessonIsMath.UI
 {
     public class WarningScreen : MonoBehaviour
     {

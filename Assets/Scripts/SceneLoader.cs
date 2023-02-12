@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using LessonIsMath.ScriptableObjects.Channels;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;

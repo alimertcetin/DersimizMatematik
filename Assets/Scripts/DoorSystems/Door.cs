@@ -4,7 +4,7 @@ using XIV.Extensions;
 using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.Utils;
-using LessonIsMath.ScriptableObjects.Channels;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.Interactables;
 using LessonIsMath.Input;
 using LessonIsMath.PlayerSystems;

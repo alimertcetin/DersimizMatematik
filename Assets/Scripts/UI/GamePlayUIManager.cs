@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
-using LessonIsMath.ScriptableObjects.Channels;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using XIV.UI;
 

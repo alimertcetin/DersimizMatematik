@@ -1,9 +1,9 @@
 ﻿using LessonIsMath.Input;
-using LessonIsMath.ScriptableObjects.Channels;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using XIV.SaveSystems;
 
-namespace XIV.UI
+namespace LessonIsMath.UI
 {
     public class PausedMenu_UI : MonoBehaviour
     {
@@ -54,7 +54,7 @@ namespace XIV.UI
             onExitPressed.RaiseEvent(mainMenu, true);
             InputManager.DisableAllInput();
             gamePlayScene.sceneReference.UnLoadScene();
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }

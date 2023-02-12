@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using TMPro;
 using LessonIsMath.PlayerSystems;
+using XIV.UI;
 
-namespace XIV.UI
+namespace LessonIsMath.UI
 {
     public class Settings_UI : MonoBehaviour
     {
@@ -33,7 +34,7 @@ namespace XIV.UI
         public void btn_Back()
         {
             Main.SetActive(true);
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }
