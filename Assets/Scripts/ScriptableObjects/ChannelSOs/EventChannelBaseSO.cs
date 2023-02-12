@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace LessonIsMath.ScriptableObjects.Channels
+namespace LessonIsMath.ScriptableObjects.ChannelSOs
 {
     public class EventChannelBaseSO : ScriptableObject
     {

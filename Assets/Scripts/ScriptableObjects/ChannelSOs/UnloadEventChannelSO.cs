@@ -1,23 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace LessonIsMath.ScriptableObjects.Channels
+namespace LessonIsMath.ScriptableObjects.ChannelSOs
 {
 
     /// <summary>
     /// This class is used for scene-loading events.
     /// Takes a GameSceneSO of the location or menu that needs to be loaded, and a bool to specify if a loading screen needs to display.
     /// </summary>
-    [CreateAssetMenu(menuName = "Events/Load Event Channel")]
-    public class LoadEventChannelSO : EventChannelBaseSO
+    [CreateAssetMenu(menuName = "Events/UnLoad Event Channel")]
+    public class UnloadEventChannelSO : EventChannelBaseSO
     {
-        public UnityAction<GameSceneSO, bool> OnLoadingRequested;
+        public UnityAction<GameSceneSO> OnUnLoadingRequested;
 
-        public void RaiseEvent(GameSceneSO locationToLoad, bool showLoadingScreen = false)
+        public void RaiseEvent(GameSceneSO locationToUnLoad)
         {
-            if (OnLoadingRequested != null)
+            if (OnUnLoadingRequested != null)
             {
-                OnLoadingRequested.Invoke(locationToLoad, showLoadingScreen);
+                OnUnLoadingRequested.Invoke(locationToUnLoad);
             }
             else
             {

@@ -2,7 +2,7 @@
 using UnityEngine;
 using LessonIsMath.DoorSystems;
 
-namespace LessonIsMath.ScriptableObjects.Channels
+namespace LessonIsMath.ScriptableObjects.ChannelSOs
 {
     [CreateAssetMenu(menuName = "Events/Door Event Channel")]
     public class DoorEventChannelSO : EventChannelBaseSO

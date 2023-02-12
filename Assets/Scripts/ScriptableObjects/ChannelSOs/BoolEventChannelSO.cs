@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace LessonIsMath.ScriptableObjects.Channels
+namespace LessonIsMath.ScriptableObjects.ChannelSOs
 {
 
     /// <summary>
