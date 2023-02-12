@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using LessonIsMath.Input;
+using LessonIsMath.ScriptableObjects.Channels;
+using UnityEngine;
 
 
 /// <summary>

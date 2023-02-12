@@ -1,5 +1,6 @@
 ﻿using System;
-using GameCore.UI;
+using LessonIsMath.Input;
+using LessonIsMath.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -25,11 +26,10 @@ namespace XIV.UI
         [Tooltip("The maximum value of generated question's result")]
         [SerializeField] readonly int maxValueOfAnswer = 999;
         [SerializeField] protected int InputFiedlMaxTextLenght = 7;
-        OperationHelper operationHelper;
+        ArithmeticOperation operationHelper;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             InputManager.PlayerControls.EarnNumberUI.SetCallbacks(this);
         }
 
@@ -65,13 +65,13 @@ namespace XIV.UI
             var answer = Random.Range(0, maxValueOfAnswer);
             if (operation == 0)
             {
-                operationHelper.operation = ArithmeticOperation.Add;
+                operationHelper.operationType = ArithmeticOperationType.Add;
                 operationHelper.number1 = Random.Range(0, answer);
                 operationHelper.number2 = answer - operationHelper.number1;
             }
             else
             {
-                operationHelper.operation = ArithmeticOperation.Subtract;
+                operationHelper.operationType = ArithmeticOperationType.Subtract;
                 operationHelper.number1 = Random.Range(answer, answer + maxValueOfAnswer);
                 operationHelper.number2 = operationHelper.number1 - answer;
             }
@@ -105,7 +105,7 @@ namespace XIV.UI
                 return;
             }
             var answer = int.Parse(txt_EarnNumberInputField.text);
-            if (answer != operationHelper.GetAnswer())
+            if (answer != operationHelper.CalculateAnswer())
             {
                 txt_EarnNumberInputField.text = "";
                 warningUIChannel.RaiseEvent(OperationWarnings.WRONG_ANSWER);

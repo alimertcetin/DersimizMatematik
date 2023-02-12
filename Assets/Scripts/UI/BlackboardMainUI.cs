@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using LessonIsMath.Input;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using XIV.UI;
 
-namespace GameCore.UI
+namespace LessonIsMath.UI
 {
     public class BlackboardMainUI : MonoBehaviour, PlayerControls.IBlackBoardUIManagementActions
     {

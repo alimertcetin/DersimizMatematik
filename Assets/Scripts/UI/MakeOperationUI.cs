@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LessonIsMath.Input;
 using TMPro;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using XIV.InventorySystem.Items;
 using XIV.Utils;
 
-namespace GameCore.UI
+namespace LessonIsMath.UI
 {
     public class MakeOperationUI : OperationUI, PlayerControls.IMakeOperationUIActions
     {
@@ -19,28 +17,28 @@ namespace GameCore.UI
         [Header("UI Elements")]
         [SerializeField] TMP_Text txt_OperationInputField = null;
         [SerializeField] TMP_Text txt_ReviewInput = null;
-        [SerializeField] Button btn_Subtract;
-        [SerializeField] Button btn_Add;
-        [SerializeField] Button btn_Answer;
+        [SerializeField] CustomButton btn_Subtract;
+        [SerializeField] CustomButton btn_Add;
+        [SerializeField] CustomButton btn_Answer;
 
         [Header("UI Settings")]
-        [SerializeField] protected int InputFiedlMaxTextLenght = 7;
+        [SerializeField] int InputFiedlMaxTextLenght = 7;
 
-        OperationHelper operationHelper;
+        ArithmeticOperation operation;
         List<NumberItem> inputNumberItems = new List<NumberItem>();
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             InputManager.PlayerControls.MakeOperationUI.SetCallbacks(this);
         }
 
         public override void ShowUI()
         {
             makeOperationUI.SetActive(true);
-            btn_Subtract.onClick.AddListener(SelectSubtractOperation);
-            btn_Add.onClick.AddListener(SelectAddOperation);
-            btn_Answer.onClick.AddListener(Answer);
+            btn_Subtract.Register(() => SelectOperation(ArithmeticOperationType.Subtract));
+            btn_Add.Register(() => SelectOperation(ArithmeticOperationType.Add));
+            btn_Answer.Register(Answer);
+
             InputManager.MakeOperationUI.Enable();
             InputManager.BlackBoardUIManagement.Disable();
         }
@@ -48,71 +46,79 @@ namespace GameCore.UI
         public override void CloseUI()
         {
             makeOperationUI.SetActive(false);
-            btn_Subtract.onClick.RemoveListener(SelectSubtractOperation);
-            btn_Add.onClick.RemoveListener(SelectAddOperation);
-            btn_Answer.onClick.RemoveListener(Answer);
+
+            btn_Subtract.Unregister();
+            btn_Add.Unregister();
+            btn_Answer.Unregister();
+
             InputManager.MakeOperationUI.Disable();
             InputManager.BlackBoardUIManagement.Enable();
             blackBoardMainUI.ShowUI();
 
+            CancelOperation();
+        }
+
+        void CancelOperation()
+        {
             while (inputNumberItems.Count > 0)
             {
                 Delete();
             }
-
-            operationHelper.operation = ArithmeticOperation.None;
             txt_OperationInputField.text = "";
             txt_ReviewInput.text = "";
-        }
-
-        private void SelectSubtractOperation()
-        {
-            var currentInput = txt_OperationInputField.text;
-            if (OperationUIHelper.SelectSubtractOperation(ref operationHelper, ref currentInput, out var error) == false)
-            {
-                txt_OperationInputField.text = currentInput;
-                warningUIChannel.RaiseEvent(error);
-                return;
-            }
-            txt_OperationInputField.text = currentInput;
-            txt_ReviewInput.text = OperationUIHelper.GetCurrentOperationReviewString(ref operationHelper);
-        }
-
-        private void SelectAddOperation()
-        {
-            var currentInput = txt_OperationInputField.text;
-            if (OperationUIHelper.SelectAddOperation(ref operationHelper, ref currentInput, out var error) == false)
-            {
-                txt_OperationInputField.text = currentInput;
-                warningUIChannel.RaiseEvent(error);
-                return;
-            }
-            txt_OperationInputField.text = currentInput;
-            txt_ReviewInput.text = OperationUIHelper.GetCurrentOperationReviewString(ref operationHelper);
+            operation.Reset();
         }
 
         protected override void Delete()
         {
+            void Del(int inputLength)
+            {
+                int index = inputNumberItems.Count - 1;
+                int amount = 1;
+                inventory.TryAdd(inputNumberItems[index], ref amount);
+                inputNumberItems.RemoveAt(index);
+
+                if (inputLength > 0) txt_OperationInputField.text = txt_OperationInputField.text.Remove(inputLength - 1);
+            }
+
             if (inputNumberItems.Count == 0) return;
 
-            int index = inputNumberItems.Count - 1;
-            int amount = 1;
-            inventory.TryAdd(inputNumberItems[index], ref amount);
-            inputNumberItems.RemoveAt(index);
-            
-            if (txt_OperationInputField.text.Length == 0) return;
-            txt_OperationInputField.text = txt_OperationInputField.text.Remove(txt_OperationInputField.text.Length - 1);
+            int inputLength = txt_OperationInputField.text.Length;
+            if (operation.operationType == ArithmeticOperationType.None)
+            {
+                Del(inputLength);
+                return;
+            }
+            if (inputLength != 0)
+            {
+                Del(inputLength);
+                return;
+            }
+            // Operation is selected but input field is empty
+            // Clear the review field, fill input field with previous number and clear the operationType
+            operation.operationType = ArithmeticOperationType.None;
+            txt_OperationInputField.text = operation.number1.ToString();
+            txt_ReviewInput.text = "";
         }
+
 
         private void Answer()
         {
-            var currentInput = txt_OperationInputField.text;
-            if (OperationUIHelper.CalculateAnswer(ref operationHelper, ref currentInput, out var error) == false)
+            if (OperationErrorHelper.IsValidInput(txt_OperationInputField.text, out var error) == false)
             {
-                txt_OperationInputField.text = currentInput;
                 warningUIChannel.RaiseEvent(error);
                 return;
             }
+            operation.number2 = int.Parse(txt_OperationInputField.text);
+            if (OperationErrorHelper.CanCompleteOperation(operation, out error) == false)
+            {
+                warningUIChannel.RaiseEvent(error);
+                return;
+            }
+
+            var currentInput = operation.CalculateAnswer().ToString();
+            operation.Reset();
+
             txt_OperationInputField.text = currentInput;
             txt_ReviewInput.text = "";
             inputNumberItems.Clear();
@@ -122,6 +128,12 @@ namespace GameCore.UI
             {
                 int digit = int.Parse(currentInput[i].ToString());
 
+                if (digit < numberItems.Length && numberItems[digit].item.Value == digit)
+                {
+                    inputNumberItems.Add(numberItems[digit].GetItem());
+                    continue;
+                }
+
                 for (int j = 0; j < numberItems.Length; j++)
                 {
                     if (numberItems[j].item.Value == digit)
@@ -130,20 +142,19 @@ namespace GameCore.UI
                         break;
                     }
                 }
+
             }
         }
 
         protected override void OnNumberButtonClicked(int value)
         {
-            if (OperationUIHelper.IsInputExistInInventory(inventory, value, out var index, out var error) == false)
+            if (OperationErrorHelper.CanAddInput(txt_OperationInputField.text, InputFiedlMaxTextLenght, out var error) == false)
             {
                 warningUIChannel.RaiseEvent(error);
                 return;
             }
-            var currentInput = txt_OperationInputField.text;
-            if (OperationUIHelper.AddInput(InputFiedlMaxTextLenght, ref currentInput, value, out error) == false)
+            if (OperationErrorHelper.IsInputExistInInventory(inventory, value, out var index, out error) == false)
             {
-                txt_OperationInputField.text = currentInput;
                 warningUIChannel.RaiseEvent(error);
                 return;
             }
@@ -151,7 +162,28 @@ namespace GameCore.UI
             inputNumberItems.Add(inventory[index].Item as NumberItem);
             int amount = 1;
             inventory.RemoveAt(index, ref amount);
-            txt_OperationInputField.text = currentInput;
+            txt_OperationInputField.text += value;
+        }
+
+        void SelectOperation(ArithmeticOperationType operationType)
+        {
+            if (OperationErrorHelper.CanSelectAnOperation(operation, txt_OperationInputField.text, out var error) == false)
+            {
+                warningUIChannel.RaiseEvent(error);
+                return;
+            }
+            operation.number1 = int.Parse(txt_OperationInputField.text);
+            operation.operationType = operationType;
+            txt_OperationInputField.text = "";
+            txt_ReviewInput.text = GetCurrentOperationReviewString();
+        }
+
+        string GetCurrentOperationReviewString()
+        {
+            return
+                $"First Number : {operation.number1}, " +
+                $"Operation : {operation.operationType}, " +
+                $"Second Number : {operation.number2}";
         }
 
         #region INPUT HANDLING
@@ -233,12 +265,12 @@ namespace GameCore.UI
 
         void PlayerControls.IMakeOperationUIActions.OnMinus(InputAction.CallbackContext context)
         {
-            if (context.performed) SelectSubtractOperation();
+            if (context.performed) SelectOperation(ArithmeticOperationType.Subtract);
         }
         
         void PlayerControls.IMakeOperationUIActions.OnPlus(InputAction.CallbackContext context)
         {
-            if (context.performed) SelectAddOperation();
+            if (context.performed) SelectOperation(ArithmeticOperationType.Add);
         }
     }
 

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2551d240c64ddf9499776b49e6cf3b59, type: 3}
+  m_Script: {fileID: 11500000, guid: 67471215685369241a3f7efd530a5f35, type: 3}
   m_Name: HudUI_BoolEventChannel
   m_EditorClassIdentifier: 
   description: 

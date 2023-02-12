@@ -9,5 +9,6 @@
         public const string SELECT_AN_OPERATION = "You need to select an operation.";
         public const string RESULT_CANT_BE_LESS_THAN_ZERO = "The operation result cant be less than zero.";
         public const string WRONG_ANSWER = "Wrong answer.";
+        public const string NOT_A_VALID_INPUT = "Input is not valid.";
     }
 }

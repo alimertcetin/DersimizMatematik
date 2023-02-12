@@ -1,11 +1,14 @@
 ﻿using System;
+using LessonIsMath.Input;
+using LessonIsMath.ScriptableObjects.Channels;
+using LessonIsMath.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
 {
-    [SerializeField] private GamePlayCanvasManager gamePlayCanvasManager = default;
+    [SerializeField] private GamePlayUIManager gamePlayCanvasManager = default;
     [SerializeField] private BoolEventChannelSO PauseMenuUIChannel = default;
 
     private void Awake()
@@ -37,7 +40,7 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
 
     private void OnApplicationQuit()
     {
-        CursorManager.Instance.UnlockCursor(CursorLockMode.None);
+        CursorManager.UnlockCursor(CursorLockMode.None);
     }
 
     /// <summary>
@@ -77,13 +80,13 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
         {
             if (!gamePlayCanvasManager.pauseMenu_acitveSelf)
             {
-                CursorManager.Instance.UnlockCursor();
+                CursorManager.UnlockCursor();
                 InputManager.GamePlay.Disable();
                 PauseMenuUIChannel.RaiseEvent(true);
             }
             else
             {
-                CursorManager.Instance.LockCursor();
+                CursorManager.LockCursor();
                 InputManager.GamePlay.Enable();
                 PauseMenuUIChannel.RaiseEvent(false);
             }

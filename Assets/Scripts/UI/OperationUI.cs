@@ -1,19 +1,17 @@
-﻿using TMPro;
+﻿using LessonIsMath.ScriptableObjects.Channels;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 using XIV.InventorySystem;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.Utils;
 
-namespace GameCore.UI
+namespace LessonIsMath.UI
 {
     public abstract class OperationUI : MonoBehaviour
     {
-        [SerializeField] protected Button btn_Back;
-        [SerializeField] protected Button btn_Delete;
-        [SerializeField] protected Button[] btn_Numbers;
+        [SerializeField] protected CustomButton btn_Back;
+        [SerializeField] protected CustomButton btn_Delete;
+        [SerializeField] protected CustomButton[] btn_Numbers;
         [SerializeField] protected NumberItemSO[] numberItems;
 
         [Header("UI Settings")]
@@ -22,22 +20,8 @@ namespace GameCore.UI
         [Header("Channels")]
         [SerializeField] protected StringEventChannelSO warningUIChannel = default;
         [SerializeField] protected InventoryChannelSO inventoryLoadedChannel;
-
-        protected UnityAction[] numberButtonOnClickActions;
         protected Inventory inventory;
         protected bool deleteStarted = false;
-
-        protected virtual void Awake()
-        {
-            int length = btn_Numbers.Length;
-            numberButtonOnClickActions = new UnityAction[length];
-
-            for (int i = 0; i < length; i++)
-            {
-                int val = i;
-                numberButtonOnClickActions[i] = () => OnNumberButtonClicked(val);
-            }
-        }
 
         private void Update()
         {
@@ -49,12 +33,13 @@ namespace GameCore.UI
 
         protected virtual void OnEnable()
         {
-            btn_Back.onClick.AddListener(CloseUI);
-            btn_Delete.onClick.AddListener(Delete);
+            btn_Back.Register(CloseUI);
+            btn_Delete.Register(Delete);
 
             for (int i = 0; i < btn_Numbers.Length; i++)
             {
-                btn_Numbers[i].onClick.AddListener(numberButtonOnClickActions[i]);
+                int val = i;
+                btn_Numbers[i].Register(() => OnNumberButtonClicked(val));
             }
 
             inventoryLoadedChannel.Register(OnInventoryLoaded);
@@ -62,12 +47,12 @@ namespace GameCore.UI
 
         protected virtual void OnDisable()
         {
-            btn_Back.onClick.RemoveListener(CloseUI);
-            btn_Delete.onClick.RemoveListener(Delete);
+            btn_Back.Unregister();
+            btn_Delete.Unregister();
 
             for (int i = 0; i < btn_Numbers.Length; i++)
             {
-                btn_Numbers[i].onClick.RemoveListener(numberButtonOnClickActions[i]);
+                btn_Numbers[i].Unregister();
             }
 
             inventoryLoadedChannel.Unregister(OnInventoryLoaded);

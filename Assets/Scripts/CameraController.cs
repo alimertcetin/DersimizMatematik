@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using LessonIsMath.Input;
 using UnityEngine;
 
 [RequireComponent(typeof(CinemachineFreeLook))]

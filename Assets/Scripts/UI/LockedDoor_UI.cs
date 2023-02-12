@@ -1,87 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameCore.DoorSystem;
+using LessonIsMath.DoorSystems;
+using LessonIsMath.Input;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
-using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
-using XIV.Utils;
-using static UnityEditor.Progress;
 
-namespace XIV.UI
+namespace LessonIsMath.UI
 {
-    public class LockedDoor_UI : MonoBehaviour, PlayerControls.ILockedDoorUIActions
+    public class LockedDoor_UI : OperationUI, PlayerControls.ILockedDoorUIActions
     {
+        [SerializeField] GameObject lockedDoorUI;
         [Header("Broadcasting To")]
-        [SerializeField] StringEventChannelSO WarningUIChannel = default;
         [SerializeField] private TMP_Text txt_InputField = null;
         [SerializeField] private TMP_Text txt_Soru = null;
         [SerializeField] private int textMaxLenght = 14;
-        [SerializeField] InventoryChannelSO inventoryLoadedChannel;
-        [SerializeField] Timer deleteTimer = new Timer(0.3f);
 
         List<NumberItem> inputNumberItems = new List<NumberItem>();
         Door currentDoor;
-        Inventory inventory;
-
-        bool deleteStarted = false;
+        public bool isActive { get; private set; }
 
         private void Awake()
         {
             InputManager.PlayerControls.LockedDoorUI.SetCallbacks(this);
-            inventoryLoadedChannel.Register(OnInventoryLoaded);
         }
 
-        private void OnDestroy()
-        {
-            inventoryLoadedChannel.Unregister(OnInventoryLoaded);
-        }
+        public override void ShowUI() => throw new NotImplementedException();
 
-        private void Update()
+        public void ShowUI(Door door)
         {
-            if (deleteStarted == false) return;
-
-            if (deleteTimer.Update(Time.deltaTime))
-            {
-                Delete();
-                deleteTimer.Restart();
-            }
-        }
-
-        private void OnInventoryLoaded(Inventory inventory)
-        {
-            this.inventory = inventory;
-        }
-
-        public void Show(Door door)
-        {
+            isActive = true;
             currentDoor = door;
             txt_Soru.text = currentDoor.GetQuestionString();
 
             InputManager.LockedDoorUI.Enable();
             InputManager.GameManager.Disable();
             InputManager.GamePlay.Disable();
-            this.gameObject.SetActive(true);
+            lockedDoorUI.SetActive(true);
         }
 
-        public void Close()
+        public override void CloseUI()
         {
+            isActive = false;
             ClearTextCompletly();
 
             InputManager.LockedDoorUI.Disable();
             InputManager.GameManager.Enable();
             InputManager.GamePlay.Enable();
-            this.gameObject.SetActive(false);
+            lockedDoorUI.SetActive(false);
         }
 
-        public void NumberOnClick(int value)
+        protected override void OnNumberButtonClicked(int value)
         {
             if (txt_InputField.text.Length > textMaxLenght)
             {
-                ShowWarning("You cant enter anymore number");
+                warningUIChannel.RaiseEvent("You cant enter anymore number", true);
                 return;
             }
 
@@ -109,7 +83,7 @@ namespace XIV.UI
             }
             else
             {
-                ShowWarning("This number is not exists in your inventory!");
+                warningUIChannel.RaiseEvent("This number is not exists in your inventory!", true);
             }
         }
 
@@ -121,7 +95,7 @@ namespace XIV.UI
             }
         }
 
-        void Delete()
+        protected override void Delete()
         {
             if (inputNumberItems.Count == 0) return;
 
@@ -134,63 +108,58 @@ namespace XIV.UI
 
         void Answer()
         {
-            if (currentDoor.SolveQuestion(int.Parse(txt_InputField.text))) Close();
-            else ShowWarning("Wrong answer");
-        }
-
-        private void ShowWarning(string text, bool value = true)
-        {
-            WarningUIChannel.RaiseEvent(text, value);
+            if (currentDoor.SolveQuestion(int.Parse(txt_InputField.text))) CloseUI();
+            else warningUIChannel.RaiseEvent("Wrong answer", true);
         }
 
         public void OnZero(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(0);
+            if (context.performed) OnNumberButtonClicked(0);
         }
 
         public void OnOne(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(1);
+            if (context.performed) OnNumberButtonClicked(1);
         }
 
         public void OnTwo(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(2);
+            if (context.performed) OnNumberButtonClicked(2);
         }
 
         public void OnThree(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(3);
+            if (context.performed) OnNumberButtonClicked(3);
         }
 
         public void OnFour(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(4);
+            if (context.performed) OnNumberButtonClicked(4);
         }
 
         public void OnFive(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(5);
+            if (context.performed) OnNumberButtonClicked(5);
         }
 
         public void OnSix(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(6);
+            if (context.performed) OnNumberButtonClicked(6);
         }
 
         public void OnSeven(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(7);
+            if (context.performed) OnNumberButtonClicked(7);
         }
 
         public void OnEight(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(8);
+            if (context.performed) OnNumberButtonClicked(8);
         }
 
         public void OnNine(InputAction.CallbackContext context)
         {
-            if (context.performed) NumberOnClick(9);
+            if (context.performed) OnNumberButtonClicked(9);
         }
 
         public void OnEnter(InputAction.CallbackContext context)
@@ -200,7 +169,7 @@ namespace XIV.UI
 
         public void OnExit(InputAction.CallbackContext context)
         {
-            if (context.performed) Close();
+            if (context.performed) CloseUI();
         }
 
         public void OnDelete(InputAction.CallbackContext context)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 
 namespace XIV.InventorySystem.UI

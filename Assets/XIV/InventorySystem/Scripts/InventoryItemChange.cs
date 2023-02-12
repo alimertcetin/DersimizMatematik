@@ -2,7 +2,7 @@
 {
     public readonly struct InventoryItemChange
     {
-        public readonly int ChangedIndex;
+        public readonly int ChangedIndex; // same as ChangedItem.Index
         public readonly ReadOnlyInventoryItem ChangedItem;
         public readonly bool IsRemoved => ChangedItem.Amount <= 0;
 

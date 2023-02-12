@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using XIV.SaveSystem;
+﻿using LessonIsMath.Input;
+using LessonIsMath.ScriptableObjects.Channels;
+using UnityEngine;
+using XIV.SaveSystems;
 
 namespace XIV.UI
 {
@@ -32,13 +34,13 @@ namespace XIV.UI
 
         public void btn_Load()
         {
-            Saver.Load();
+            SaveSystem.Load();
         }
 
         public void btn_Save()
         {
             WarningUIChannel.RaiseEvent("Kayıt Edildi : " + Application.persistentDataPath);
-            Saver.Save();
+            SaveSystem.Save();
         }
 
         public void btn_Settings()

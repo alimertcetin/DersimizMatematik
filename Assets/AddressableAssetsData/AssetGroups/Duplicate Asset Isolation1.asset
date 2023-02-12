@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Duplicate Asset Isolation1
+  m_EditorClassIdentifier: 
+  m_GroupName: Duplicate Asset Isolation1
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 5bded4da9959dbc48b2c4aece8fcf890
+  m_SerializeEntries:
+  - m_GUID: 55a1efc60ddaa1641b264e301e829e43
+    m_Address: Assets/Textures/Keycard_Red_Sprite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f9382d8cbe54f354cafb7d93d950ec54
+    m_Address: Assets/Textures/Keycard_Yellow_Sprite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b3743ddda42f2b848bdf465885845e11
+    m_Address: Assets/Textures/Keycard_Green_Sprite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 2435c3594dc347e42831982649921157, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 4fc7e0324d8b3214ab4bd4d00edd1d3d, type: 2}
+    - {fileID: 11400000, guid: b26076e53b87bf447a070eea7e04332b, type: 2}

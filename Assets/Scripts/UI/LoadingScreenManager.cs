@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LessonIsMath.ScriptableObjects.Channels;
+using UnityEngine;
 
 public class LoadingScreenManager : MonoBehaviour
 {
