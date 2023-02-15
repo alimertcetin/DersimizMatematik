@@ -67,12 +67,14 @@ namespace LessonIsMath.Input
                 CursorManager.UnlockCursor();
                 PlayerControls.MakeOperationUI.Enable();
                 MakeOperationUI_Enabled.Invoke();
+                Keypad.Enable();
             }
 
             public static void Disable()
             {
                 PlayerControls.MakeOperationUI.Disable();
                 MakeOperationUI_Disabled.Invoke();
+                Keypad.Disable();
             }
         }
 
@@ -86,12 +88,14 @@ namespace LessonIsMath.Input
                 CursorManager.UnlockCursor();
                 PlayerControls.EarnNumberUI.Enable();
                 EarnNumberUI_Enabled.Invoke();
+                Keypad.Enable();
             }
 
             public static void Disable()
             {
                 PlayerControls.EarnNumberUI.Disable();
                 EarnNumberUI_Disabled.Invoke();
+                Keypad.Disable();
             }
         }
 
@@ -129,6 +133,24 @@ namespace LessonIsMath.Input
             public static void Disable()
             {
                 PlayerControls.BlackBoardUIManagement.Disable();
+                disabled.Invoke();
+            }
+        }
+
+        public static class Keypad
+        {
+            public static Action enabled = delegate { };
+            public static Action disabled = delegate { };
+
+            public static void Enable()
+            {
+                PlayerControls.Keypad.Enable();
+                enabled.Invoke();
+            }
+
+            public static void Disable()
+            {
+                PlayerControls.Keypad.Disable();
                 disabled.Invoke();
             }
         }

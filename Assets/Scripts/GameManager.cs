@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
 {
     [SerializeField] private GamePlayUIManager gamePlayCanvasManager = default;
     [SerializeField] private BoolEventChannelSO PauseMenuUIChannel = default;
+    bool isPaused = false;
 
     private void Awake()
     {
@@ -64,10 +65,6 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
         {
             return true;
         }
-        else if (gamePlayCanvasManager.pauseMenu_acitveSelf)
-        {
-            return true;
-        }
         else
         {
             return false;
@@ -78,7 +75,7 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
     {
         if (context.performed)
         {
-            if (!gamePlayCanvasManager.pauseMenu_acitveSelf)
+            if (!isPaused)
             {
                 CursorManager.UnlockCursor();
                 InputManager.GamePlay.Disable();
@@ -90,6 +87,7 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
                 InputManager.GamePlay.Enable();
                 PauseMenuUIChannel.RaiseEvent(false);
             }
+            isPaused = !isPaused;
         }
     }
 

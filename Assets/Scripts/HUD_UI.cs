@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using TMPro;
+using LessonIsMath.UI;
 
 namespace XIV.UI
 {
-    public class HUD_UI : MonoBehaviour
+    public class HUD_UI : GameUI
     {
         // TODO : Remove this class
     }

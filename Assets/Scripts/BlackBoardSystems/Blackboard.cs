@@ -1,47 +1,41 @@
 ﻿using LessonIsMath.Input;
-using LessonIsMath.PlayerSystems;
+using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
+using LessonIsMath.UI;
 using UnityEngine;
 
 namespace LessonIsMath.World.Interactables.BlackboardSystems
 {
-    public class Blackboard : MonoBehaviour
+    public class Blackboard : MonoBehaviour, IInteractable, IUIEventListener
     {
-        [SerializeField] private StringEventChannelSO notificationChannel = default;
         [SerializeField] private BoolEventChannelSO blackBoardUIChannel = default;
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.TryGetComponent<PlayerController>(out _) == false) return;
+        IInteractor interactor;
+        bool isUIActive;
 
-            InputManager.PlayerControls.Gameplay.Interact.performed += Interact_performed;
+        void OnEnable() => UIEventSystem.Register<BlackboardUI>(this);
+
+        void OnDisable() => UIEventSystem.Unregister<BlackboardUI>(this);
+
+        bool IInteractable.CanInteract() => !isUIActive;
+
+        void IInteractable.Interact(IInteractor interactor)
+        {
+            this.interactor = interactor;
+
+            blackBoardUIChannel.RaiseEvent(true);
             blackBoardUIChannel.OnEventRaised += OnBlackBoardInteract;
-            notificationChannel.RaiseEvent("Press " + InputManager.InteractionKeyName + " to interact with BlackBoard");
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.TryGetComponent<PlayerController>(out _) == false) return;
-
-            InputManager.PlayerControls.Gameplay.Interact.performed -= Interact_performed;
-            blackBoardUIChannel.OnEventRaised -= OnBlackBoardInteract;
-            notificationChannel.RaiseEvent("", false);
         }
 
         private void OnBlackBoardInteract(bool value)
         {
-            if (value)
-            {
-                notificationChannel.RaiseEvent("", false);
-                return;
-            }
-
-            notificationChannel.RaiseEvent("Press " + InputManager.InteractionKeyName + " to interact with BlackBoard");
+            blackBoardUIChannel.OnEventRaised -= OnBlackBoardInteract;
+            interactor.OnInteractionEnd(this);
         }
 
-        private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-        {
-            blackBoardUIChannel.RaiseEvent(true);
-        }
+        string IInteractable.GetInteractionString() => "Press " + InputManager.InteractionKeyName + " to interact with Blackboard";
+
+        void IUIEventListener.OnShowUI(GameUI ui) => isUIActive = true;
+        void IUIEventListener.OnHideUI(GameUI ui) => isUIActive = false;
     }
 }

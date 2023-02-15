@@ -2,63 +2,103 @@
 using System.Collections.Generic;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
+using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
+using XIV.InventorySystem.ScriptableObjects.ItemSOs;
+using XIV.Utils;
 
 namespace LessonIsMath.UI
 {
-    public class LockedDoor_UI : OperationUI, PlayerControls.ILockedDoorUIActions
+    public class LockedDoor_UI : GameUI, PlayerControls.ILockedDoorUIActions, IKeypadListener
     {
-        [SerializeField] GameObject lockedDoorUI;
-        [Header("Broadcasting To")]
-        [SerializeField] private TMP_Text txt_InputField = null;
-        [SerializeField] private TMP_Text txt_Soru = null;
-        [SerializeField] private int textMaxLenght = 14;
+        [SerializeField] Keypad keypad;
+        [SerializeField] CustomButton btn_Back;
+        [SerializeField] float waitDeleteDuration;
+        [SerializeField] float deleteDuration;
+        Timer waitDeleteTimer;
+        Timer deleteTimer;
+
+        // TODO : Remove event channel dependency
+        [SerializeField] DoorEventChannelSO lockedDoorUIChannel = default;
+        [SerializeField] StringEventChannelSO warningUIChannel = default;
+        [SerializeField] InventoryChannelSO inventoryLoadedChannel;
+        Inventory inventory;
+        bool deleteStarted = false;
+
+        [SerializeField] TMP_Text txt_InputField = null;
+        [SerializeField] TMP_Text txt_Soru = null;
+        [SerializeField] int textMaxLenght = 14;
 
         List<NumberItem> inputNumberItems = new List<NumberItem>();
         Door currentDoor;
-        public bool isActive { get; private set; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             InputManager.PlayerControls.LockedDoorUI.SetCallbacks(this);
+            keypad.SetListener(this);
         }
 
-        public override void ShowUI() => throw new NotImplementedException();
-
-        public void ShowUI(Door door)
+        void Update()
         {
-            isActive = true;
-            currentDoor = door;
-            txt_Soru.text = currentDoor.GetQuestionString();
+            if (deleteStarted == false || waitDeleteTimer.Update(Time.deltaTime) == false || deleteTimer.Update(Time.deltaTime) == false) return;
 
+            Delete();
+            var newDuration = deleteTimer.Duration - 0.025f;
+            newDuration = newDuration < 0 ? 0 : newDuration;
+            deleteTimer = new Timer(newDuration);
+        }
+
+        void OnEnable()
+        {
+            btn_Back.RegisterOnClick(() => lockedDoorUIChannel.RaiseEvent(null, false));
+            inventoryLoadedChannel.Register(OnInventoryLoaded);
+        }
+
+        void OnDisable()
+        {
+            btn_Back.UnregisterOnClick();
+            inventoryLoadedChannel.Unregister(OnInventoryLoaded);
+        }
+
+        void OnInventoryLoaded(Inventory obj)
+        {
+            this.inventory = obj;
+        }
+
+        public void SetDoor(Door door)
+        {
+            this.currentDoor = door;
+        }
+
+        public override void Show()
+        {
+            base.Show();
+            keypad.Enable();
+            txt_Soru.text = currentDoor.GetQuestionString();
             InputManager.LockedDoorUI.Enable();
             InputManager.GameManager.Disable();
             InputManager.GamePlay.Disable();
-            lockedDoorUI.SetActive(true);
         }
 
-        public override void CloseUI()
+        public override void Hide()
         {
-            isActive = false;
+            base.Hide();
+            keypad.Disable();
             ClearTextCompletly();
 
             InputManager.LockedDoorUI.Disable();
             InputManager.GameManager.Enable();
             InputManager.GamePlay.Enable();
-            lockedDoorUI.SetActive(false);
         }
 
-        protected override void OnNumberButtonClicked(int value)
+        void OnNumberButtonClicked(int value)
         {
-            if (txt_InputField.text.Length > textMaxLenght)
-            {
-                warningUIChannel.RaiseEvent("You cant enter anymore number", true);
-                return;
-            }
-
             bool IsExist(out int index)
             {
                 index = -1;
@@ -73,29 +113,34 @@ namespace LessonIsMath.UI
                 return false;
             }
 
-            if (IsExist(out int index))
+            if (txt_InputField.text.Length > textMaxLenght)
             {
-                txt_InputField.text += value.ToString();
-                inputNumberItems.Add(inventory[index].Item as NumberItem);
-                int amount = 1;
-                inventory.RemoveAt(index, ref amount);
-
+                warningUIChannel.RaiseEvent("You cant enter anymore number", true);
+                return;
             }
-            else
+
+            if (IsExist(out int index) == false)
             {
                 warningUIChannel.RaiseEvent("This number is not exists in your inventory!", true);
+                return;
             }
+
+            txt_InputField.text += value.ToString();
+            inputNumberItems.Add(inventory[index].Item as NumberItem);
+            int amount = 1;
+
+            inventory.RemoveAt(index, ref amount);
         }
 
-        public void ClearTextCompletly()
+        void ClearTextCompletly()
         {
-            while (txt_InputField.text.Length != 0)
+            while (inputNumberItems.Count != 0)
             {
                 Delete();
             }
         }
 
-        protected override void Delete()
+        void Delete()
         {
             if (inputNumberItems.Count == 0) return;
 
@@ -108,82 +153,34 @@ namespace LessonIsMath.UI
 
         void Answer()
         {
-            if (currentDoor.SolveQuestion(int.Parse(txt_InputField.text))) CloseUI();
-            else warningUIChannel.RaiseEvent("Wrong answer", true);
-        }
-
-        public void OnZero(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(0);
-        }
-
-        public void OnOne(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(1);
-        }
-
-        public void OnTwo(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(2);
-        }
-
-        public void OnThree(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(3);
-        }
-
-        public void OnFour(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(4);
-        }
-
-        public void OnFive(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(5);
-        }
-
-        public void OnSix(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(6);
-        }
-
-        public void OnSeven(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(7);
-        }
-
-        public void OnEight(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(8);
-        }
-
-        public void OnNine(InputAction.CallbackContext context)
-        {
-            if (context.performed) OnNumberButtonClicked(9);
-        }
-
-        public void OnEnter(InputAction.CallbackContext context)
-        {
-            if (context.performed) Answer();
-        }
-
-        public void OnExit(InputAction.CallbackContext context)
-        {
-            if (context.performed) CloseUI();
-        }
-
-        public void OnDelete(InputAction.CallbackContext context)
-        {
-            if (context.started)
+            if (currentDoor.SolveQuestion(int.Parse(txt_InputField.text)) == false)
             {
-                Delete();
-                deleteStarted = true;
+                warningUIChannel.RaiseEvent("Wrong answer", true);
+                return;
             }
-            else if (context.canceled)
-            {
-                deleteTimer.Restart();
-                deleteStarted = false;
-            }
+
+            txt_InputField.text = "";
+            inputNumberItems.Clear();
+            lockedDoorUIChannel.RaiseEvent(null, false);
         }
+
+        void PlayerControls.ILockedDoorUIActions.OnExit(InputAction.CallbackContext context)
+        {
+            if (context.performed) lockedDoorUIChannel.RaiseEvent(null, false);
+        }
+
+        void IKeypadListener.OnEnter() => Answer();
+        void IKeypadListener.OnDeleteStarted()
+        {
+            Delete();
+            deleteStarted = true;
+            waitDeleteTimer = new Timer(waitDeleteDuration);
+            deleteTimer = new Timer(deleteDuration);
+        }
+        void IKeypadListener.OnDeleteCanceled()
+        {
+            deleteStarted = false;
+        }
+        void IKeypadListener.OnNumberPressed(int value) => OnNumberButtonClicked(value);
     }
 }

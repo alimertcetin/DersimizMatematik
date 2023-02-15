@@ -58,12 +58,12 @@ namespace XIV.Utils
 
         public void GenerateQuestion()
         {
-            GenerateQuestion((ArithmeticOperationType)random.Next(1, 5), random.Next(0, MAX_VALUE_OF_ANSWER));
+            GenerateQuestion((ArithmeticOperationType)random.Next(1, 5), random.Next(0, MAX_VALUE_OF_ANSWER), MAX_VALUE_OF_ANSWER);
         }
 
         public void GenerateQuestion(ArithmeticOperationType operationType)
         {
-            GenerateQuestion(operationType, random.Next(0, MAX_VALUE_OF_ANSWER));
+            GenerateQuestion(operationType, random.Next(0, MAX_VALUE_OF_ANSWER), MAX_VALUE_OF_ANSWER);
         }
 
         public void GenerateQuestion(int answer, int maxValueOfAnswer)
@@ -76,7 +76,12 @@ namespace XIV.Utils
             GenerateQuestion((ArithmeticOperationType)random.Next(1, 5), random.Next(0, maxValueOfAnswer), maxValueOfAnswer);
         }
 
-        public void GenerateQuestion(ArithmeticOperationType operationType, int answer, int maxValueOfAnswer = MAX_VALUE_OF_ANSWER)
+        public void GenerateQuestion(ArithmeticOperationType operationType, int maxValueOfAnswer)
+        {
+            GenerateQuestion(operationType, random.Next(0, maxValueOfAnswer), maxValueOfAnswer);
+        }
+
+        public void GenerateQuestion(ArithmeticOperationType operationType, int answer, int maxValueOfAnswer)
         {
             this.operationType = operationType;
             this.answer = answer;

@@ -5,10 +5,10 @@ using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.Utils;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
-using LessonIsMath.Interactables;
+using LessonIsMath.InteractionSystems;
 using LessonIsMath.Input;
-using LessonIsMath.PlayerSystems;
 using XIV.SaveSystems;
+using LessonIsMath.UI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,10 +16,9 @@ using UnityEditor;
 namespace LessonIsMath.DoorSystems
 {
     [RequireComponent(typeof(DoorAnimation))]
-    public class Door : MonoBehaviour, IInteractable, ISaveable
+    public class Door : MonoBehaviour, IUIEventListener, IInteractable, ISaveable
     {
         [SerializeField] DoorEventChannelSO lockedDoorUIChannel = default;
-        [SerializeField] StringEventChannelSO notificationChannel = default;
         [SerializeField] KeycardItemSO[] requiredKeycards;
         [SerializeField] bool useArithmeticOperation;
         [SerializeField] int maxValueOfAnswer;
@@ -29,6 +28,8 @@ namespace LessonIsMath.DoorSystems
         bool[] removedKeycards;
         bool isOpen;
 
+        IInteractor interactor;
+
         private void Awake()
         {
             removedKeycards = new bool[requiredKeycards.Length];
@@ -36,73 +37,25 @@ namespace LessonIsMath.DoorSystems
             isLocked = useArithmeticOperation;
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.TryGetComponent<PlayerController>(out _) == false) return;
+        bool IInteractable.CanInteract() => true;
 
-            InputManager.PlayerControls.Gameplay.Interact.performed += Interact_performed;
-        }
-
-        private void OnTriggerExit(Collider other)
+        void IInteractable.Interact(IInteractor interactor)
         {
-            if (other.TryGetComponent<PlayerController>(out _) == false) return;
-            InputManager.PlayerControls.Gameplay.Interact.performed -= Interact_performed;
-            notificationChannel.RaiseEvent(null, false);
-        }
+            this.interactor = interactor;
 
-        void IInteractable.Interact()
-        {
-            // TODO : throw new NotImplementedException();
-        }
-
-        string IInteractable.GetInteractionString()
-        {
-            // TODO : throw new NotImplementedException();
-            return "";
-        }
-
-        private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-        {
-            notificationChannel.RaiseEvent(GetNotificationString(), false);
-            ;
+            // TODO : Keycard logic here
             if (useArithmeticOperation && isLocked)
             {
-                lockedDoorUIChannel.RaiseEvent(this);
+                lockedDoorUIChannel.RaiseEvent(this, true);
+                UIEventSystem.Register<LockedDoor_UI>(this);
                 return;
             }
             isOpen = !isOpen;
             doorAnimation.Interact(isOpen);
-            Debug.Log("Show Locked Door UI");
+            interactor.OnInteractionEnd(this);
         }
 
-        public bool SolveQuestion(int answer)
-        {
-            if (arithmeticOperation.CalculateAnswer() == answer)
-            {
-                isLocked = false;
-                return true;
-            }
-            return false;
-        }
-
-        void CountKeycards(out int greenCount, out int yellowCount, out int redCount)
-        {
-            greenCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Green);
-            yellowCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Yellow);
-            redCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Red);
-        }
-
-        bool IsRemovedAllKeycards()
-        {
-            int length = removedKeycards.Length;
-            for (int i = 0; i < length; i++)
-            {
-                if (removedKeycards[i] == false) return false;
-            }
-            return true;
-        }
-
-        string GetNotificationString()
+        string IInteractable.GetInteractionString()
         {
             if (InputManager.PlayerControls.LockedDoorUI.enabled)
             {
@@ -138,9 +91,43 @@ namespace LessonIsMath.DoorSystems
             }
         }
 
+        public bool SolveQuestion(int answer)
+        {
+            if (arithmeticOperation.CalculateAnswer() == answer)
+            {
+                isLocked = false;
+                return true;
+            }
+            return false;
+        }
+
+        void CountKeycards(out int greenCount, out int yellowCount, out int redCount)
+        {
+            greenCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Green);
+            yellowCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Yellow);
+            redCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Red);
+        }
+
+        bool IsRemovedAllKeycards()
+        {
+            int length = removedKeycards.Length;
+            for (int i = 0; i < length; i++)
+            {
+                if (removedKeycards[i] == false) return false;
+            }
+            return true;
+        }
+
         public string GetQuestionString()
         {
             return arithmeticOperation.ToString();
+        }
+
+        void IUIEventListener.OnShowUI(GameUI ui) { }
+        void IUIEventListener.OnHideUI(GameUI ui)
+        {
+            interactor.OnInteractionEnd(this);
+            UIEventSystem.Unregister<LockedDoor_UI>(this);
         }
 
 #if UNITY_EDITOR

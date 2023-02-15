@@ -5,12 +5,8 @@ using XIV.SaveSystems;
 
 namespace LessonIsMath.UI
 {
-    public class PausedMenu_UI : MonoBehaviour
+    public class PausedMenu_UI : GameUI
     {
-        [Header("UI Elements")]
-        [SerializeField] private GameObject Settings = default;
-        [SerializeField] private GameObject Main = default;
-
         [Header("Broadcasting To")]
         [SerializeField] private StringEventChannelSO WarningUIChannel = default;
         [SerializeField] private LoadEventChannelSO onExitPressed = default;
@@ -22,16 +18,6 @@ namespace LessonIsMath.UI
         [Header("Scenes To Load")]
         [SerializeField] private GameSceneSO mainMenu = default;
 
-        private void OnEnable()
-        {
-            Main.SetActive(true);
-        }
-
-        private void OnDisable()
-        {
-            Settings.SetActive(false);
-        }
-
         public void btn_Load()
         {
             SaveSystem.Load();
@@ -39,14 +25,13 @@ namespace LessonIsMath.UI
 
         public void btn_Save()
         {
-            WarningUIChannel.RaiseEvent("Kayıt Edildi : " + Application.persistentDataPath);
             SaveSystem.Save();
+            WarningUIChannel.RaiseEvent("Kayıt Edildi : " + Application.persistentDataPath);
         }
 
         public void btn_Settings()
         {
-            Settings.SetActive(true);
-            Main.SetActive(false);
+            UISystem.Show<Settings_UI>();
         }
 
         public void btn_Exit()
