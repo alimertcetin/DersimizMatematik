@@ -9,6 +9,8 @@ using LessonIsMath.InteractionSystems;
 using LessonIsMath.Input;
 using XIV.SaveSystems;
 using LessonIsMath.UI;
+using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
+using XIV.InventorySystem;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -18,6 +20,7 @@ namespace LessonIsMath.DoorSystems
     [RequireComponent(typeof(DoorAnimation))]
     public class Door : MonoBehaviour, IUIEventListener, IInteractable, ISaveable
     {
+        [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] DoorEventChannelSO lockedDoorUIChannel = default;
         [SerializeField] KeycardItemSO[] requiredKeycards;
         [SerializeField] bool useArithmeticOperation;
@@ -28,6 +31,7 @@ namespace LessonIsMath.DoorSystems
         bool[] removedKeycards;
         bool isOpen;
 
+        Inventory inventory;
         IInteractor interactor;
 
         private void Awake()
@@ -37,6 +41,17 @@ namespace LessonIsMath.DoorSystems
             isLocked = useArithmeticOperation;
         }
 
+        void OnEnable()
+        {
+            inventoryLoadedChannel.Register(OnInventoryLoaded);
+        }
+
+        void OnDisable()
+        {
+            inventoryLoadedChannel.Unregister(OnInventoryLoaded);
+        }
+
+        private void OnInventoryLoaded(Inventory obj) => this.inventory = obj;
         bool IInteractable.CanInteract() => true;
 
         void IInteractable.Interact(IInteractor interactor)
@@ -44,6 +59,20 @@ namespace LessonIsMath.DoorSystems
             this.interactor = interactor;
 
             // TODO : Keycard logic here
+            if (IsRemovedAllKeycards() == false)
+            {
+                for (int i = 0; i < removedKeycards.Length; i++)
+                {
+                    if (removedKeycards[i] || inventory.Contains(requiredKeycards[i].GetItem(), out var index) == false) continue;
+
+                    removedKeycards[i] = true;
+                    int amount = 1;
+                    inventory.RemoveAt(index, ref amount);
+                    break;
+                }
+                interactor.OnInteractionEnd(this);
+                return;
+            }
             if (useArithmeticOperation && isLocked)
             {
                 lockedDoorUIChannel.RaiseEvent(this, true);
@@ -103,9 +132,28 @@ namespace LessonIsMath.DoorSystems
 
         void CountKeycards(out int greenCount, out int yellowCount, out int redCount)
         {
-            greenCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Green);
-            yellowCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Yellow);
-            redCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Red);
+            //greenCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Green);
+            //yellowCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Yellow);
+            //redCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Red);
+            greenCount = 0;
+            yellowCount = 0;
+            redCount = 0;
+            for (int i = 0; i < requiredKeycards.Length; i++)
+            {
+                switch (requiredKeycards[i].item.KeycardType)
+                {
+                    case KeycardType.Green:
+                        if (removedKeycards[i] == false) greenCount++;
+                        break;
+                    case KeycardType.Yellow:
+                        if (removedKeycards[i] == false) yellowCount++;
+                        break;
+                    case KeycardType.Red:
+                        if (removedKeycards[i] == false) redCount++;
+                        break;
+                    default: throw new NotImplementedException(requiredKeycards[i].item.KeycardType + " is not implemented.");
+                }
+            }
         }
 
         bool IsRemovedAllKeycards()
