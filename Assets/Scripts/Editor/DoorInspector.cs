@@ -4,6 +4,7 @@ using UnityEditor;
 namespace Assets.Scripts.CustomInspector
 {
     [CustomEditor(typeof(Door))]
+    [CanEditMultipleObjects]
     public class DoorInspector : Editor
     {
         SerializedProperty useAirthmeticOperationSP;
