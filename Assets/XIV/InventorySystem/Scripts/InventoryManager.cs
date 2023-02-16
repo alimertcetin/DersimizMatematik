@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
+using UnityEngine;
 using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 
@@ -9,6 +11,7 @@ namespace XIV.InventorySystem
         [SerializeField] InventoryItemChannelSO useItemRequestChannel;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] InventoryChangeChannelSO inventoryChangedChannel;
+        [SerializeField] VoidEventChannelSO onSceneReady;
 
         [SerializeField] InventorySO inventorySO;
         
@@ -20,13 +23,20 @@ namespace XIV.InventorySystem
         void OnEnable()
         {
             useItemRequestChannel.Register(UseItem);
+            onSceneReady.OnEventRaised += OnSceneReady;
             inventory.AddListener(this);
         }
 
         void OnDisable()
         {
             useItemRequestChannel.Unregister(UseItem);
+            onSceneReady.OnEventRaised -= OnSceneReady;
             inventory.RemoveListener(this);
+        }
+
+        void OnSceneReady()
+        {
+            inventoryLoadedChannel.RaiseEvent(inventory);
         }
 
         void UseItem(IInventoryItem inventoryItem, int amount)
