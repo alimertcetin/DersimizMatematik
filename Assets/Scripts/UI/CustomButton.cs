@@ -34,15 +34,18 @@ namespace LessonIsMath.UI
             return this;
         }
 
+        // TODO : Learn what changes when overriding below methods
         public override void OnPointerDown(PointerEventData eventData)
         {
             onClickAction?.Invoke();
+            // if we call base.OnPointerDown(eventData) state is not changing correctly, dont know why
             DoStateTransition(SelectionState.Pressed, false);
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
             onPointerUp?.Invoke();
+            // if we call base.OnPointerUp(eventData) state is not changing correctly, dont know why
             DoStateTransition(SelectionState.Normal, false);
         }
     }
