@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 611044493}
   - component: {fileID: 611044492}
   - component: {fileID: 611044491}
-  - component: {fileID: 611044494}
+  - component: {fileID: 611044495}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -381,7 +381,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611044489}
   m_CullTransparentMesh: 0
---- !u!114 &611044494
+--- !u!114 &611044495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -390,10 +390,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 611044489}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90726c8899126c547a90fcac3da006c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 6acf81791da501d4e90a84ee12d10bc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 200
+  rotationSpeed: {x: 0, y: 0, z: 200}
 --- !u!1 &986826786
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,9 +508,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73d0e2b64a7bc14eb545e7c88f88644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ToggleLoadingScreen: {fileID: 11400000, guid: 4e05f22189e73674e8454a31f7d1e91f,
+  showLoadingScreenChannel: {fileID: 11400000, guid: 4e05f22189e73674e8454a31f7d1e91f,
     type: 2}
-  loadingInterface: {fileID: 1214775794}
+  loadingUI: {fileID: 1214775794}
 --- !u!4 &1634187353
 Transform:
   m_ObjectHideFlags: 0

@@ -5,32 +5,22 @@ namespace LessonIsMath.UI
 {
     public class LoadingScreenManager : MonoBehaviour
     {
-        [Header("Loading screen Event")]
-        //The loading screen event we are listening to
-        [SerializeField] private BoolEventChannelSO _ToggleLoadingScreen = default;
+        [SerializeField] BoolEventChannelSO showLoadingScreenChannel = default;
+        [SerializeField] GameObject loadingUI;
 
-        [Header("Loading screen ")]
-        public GameObject loadingInterface;
-
-        private void OnEnable()
+        void OnEnable()
         {
-            if (_ToggleLoadingScreen != null)
-            {
-                _ToggleLoadingScreen.OnEventRaised += ToggleLoadingScreen;
-            }
+            if (showLoadingScreenChannel != null) showLoadingScreenChannel.OnEventRaised += ToggleLoadingScreen;
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
-            if (_ToggleLoadingScreen != null)
-            {
-                _ToggleLoadingScreen.OnEventRaised -= ToggleLoadingScreen;
-            }
+            if (showLoadingScreenChannel != null) showLoadingScreenChannel.OnEventRaised -= ToggleLoadingScreen;
         }
 
-        private void ToggleLoadingScreen(bool state)
+        void ToggleLoadingScreen(bool value)
         {
-            loadingInterface.SetActive(state);
+            loadingUI.SetActive(value);
         }
 
     }

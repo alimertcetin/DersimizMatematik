@@ -1,5 +1,6 @@
 ﻿using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
+using LessonIsMath.UI.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV.InventorySystem;

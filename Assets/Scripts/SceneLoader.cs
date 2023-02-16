@@ -149,13 +149,13 @@ public class SceneLoader : MonoBehaviour
 #endif
         }
 
-        LoadNewScene();
+        StartCoroutine(LoadNewScene());
     }
 
     /// <summary>
     /// Kicks off the asynchronous loading of a scene, either menu or Location.
     /// </summary>
-    private void LoadNewScene()
+    private IEnumerator LoadNewScene()
     {
         if (_showLoadingScreen)
         {
@@ -163,7 +163,16 @@ public class SceneLoader : MonoBehaviour
         }
 
         _loadingOperationHandle = _sceneToLoad.sceneReference.LoadSceneAsync(LoadSceneMode.Additive, true, 0);
-        _loadingOperationHandle.Completed += OnNewSceneLoaded;
+        yield return _loadingOperationHandle;
+
+        _currentlyLoadedScene = _sceneToLoad;
+        yield return new WaitForSeconds(5);
+        SetActiveScene();
+        if (_showLoadingScreen)
+        {
+            _toggleLoadingScreen.RaiseEvent(false);
+        }
+        //_loadingOperationHandle.Completed += OnNewSceneLoaded;
     }
 
     private void OnNewSceneLoaded(AsyncOperationHandle<SceneInstance> obj)
@@ -183,7 +192,7 @@ public class SceneLoader : MonoBehaviour
     /// </summary>
     private void SetActiveScene()
     {
-        Scene s = ((SceneInstance)_loadingOperationHandle.Result).Scene;
+        Scene s = _loadingOperationHandle.Result.Scene;
         SceneManager.SetActiveScene(s);
 
         LightProbes.TetrahedralizeAsync();

@@ -1,4 +1,5 @@
 ﻿using LessonIsMath.Input;
+using LessonIsMath.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;

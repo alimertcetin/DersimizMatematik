@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3046,7 +3046,7 @@ GameObject:
   - component: {fileID: 1896991896}
   - component: {fileID: 1896991899}
   m_Layer: 0
-  m_Name: PlayerInventory
+  m_Name: InventoryManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3098,6 +3098,7 @@ MonoBehaviour:
     type: 2}
   inventoryChangedChannel: {fileID: 11400000, guid: 60b5a07e6b5fefb479993be56ed1f5d5,
     type: 2}
+  onSceneReady: {fileID: 11400000, guid: 054c4698ba8cb9143b451505200edd52, type: 2}
   inventorySO: {fileID: 11400000, guid: f3d3b9187a8872449a544bf775c96a21, type: 2}
 --- !u!1 &1920720303
 GameObject:
