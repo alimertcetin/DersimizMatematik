@@ -1461,6 +1461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 918857759}
+  - component: {fileID: 918857760}
   m_Layer: 5
   m_Name: BlackBoard_UI
   m_TagString: Untagged
@@ -1492,6 +1493,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &918857760
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918857758}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &931449443
 GameObject:
   m_ObjectHideFlags: 0
@@ -3691,6 +3704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5639339572069234041}
   - component: {fileID: 5639339572069234042}
+  - component: {fileID: 5639339572069234043}
   m_Layer: 5
   m_Name: LockedDoor_UI
   m_TagString: Untagged
@@ -20793,6 +20807,18 @@ MonoBehaviour:
   - {fileID: 4811765618412831763}
   - {fileID: 4811765618522637303}
   - {fileID: 4811765619228366932}
+--- !u!225 &5639339572069234043
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569319635432251908}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5665685306369147702
 GameObject:
   m_ObjectHideFlags: 0
