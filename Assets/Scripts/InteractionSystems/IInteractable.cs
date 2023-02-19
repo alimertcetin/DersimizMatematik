@@ -2,7 +2,7 @@
 {
     public interface IInteractable
     {
-        bool CanInteract();
+        bool IsAvailable();
         void Interact(IInteractor interactor);
         string GetInteractionString();
     }

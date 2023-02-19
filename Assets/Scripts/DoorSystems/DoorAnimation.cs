@@ -5,9 +5,9 @@ namespace LessonIsMath
     [DisallowMultipleComponent]
     public class DoorAnimation : MonoBehaviour
     {
-        [Header("Eğer bu ikili bir kapıysa bu alana LEFT HOLDER'ı atayın..")]
-        [SerializeField] bool IsThisLeftSide = true;
+        [Tooltip("Leave empty if there is no other door")]
         [SerializeField] DoorAnimation otherDoorAnimation = null;
+        [SerializeField] bool isThisRightSide = true;
         [SerializeField] Animator animator;
         [SerializeField] AudioSource audioSource;
         [SerializeField] AudioClip[] DoorOpeningClips = null;
@@ -15,58 +15,56 @@ namespace LessonIsMath
 
         float movementSpeed;
 
-        public void Interact(bool isOpen)
+        public void OpenDoor()
         {
-            if (IsThisLeftSide)
+            if (otherDoorAnimation != null) otherDoorAnimation.OpenDoor();
+            if (isThisRightSide)
             {
-                LeftSideMovement(!isOpen);
-                if (otherDoorAnimation != null)
-                {
-                    otherDoorAnimation.RightSideMovement(!isOpen);
-                }
+                OpenRightSide();
+                return;
             }
-            else
-            {
-                RightSideMovement(!isOpen);
-                if (otherDoorAnimation != null)
-                {
-                    otherDoorAnimation.LeftSideMovement(!isOpen);
-                }
-            }
+            OpenLeftSide();
         }
 
-        private void RightSideMovement(bool doorIsOpen)
+        public void CloseDoor()
         {
-            if (doorIsOpen == false)
+            if (otherDoorAnimation != null) otherDoorAnimation.CloseDoor();
+            if (isThisRightSide)
             {
-                StopAnimation(animator, "RightSide_Close");
-                PlayAnimation(animator, "RightSide_Open");
+                CloseRightSide();
+                return;
             }
-            else
-            {
-                StopAnimation(animator, "RightSide_Open");
-                PlayAnimation(animator, "RightSide_Close");
-            }
+            CloseLeftSide();
         }
 
-        private void LeftSideMovement(bool doorIsOpen)
+        void OpenLeftSide()
         {
-            if (doorIsOpen == false)
-            {
-                StopAnimation(animator, "LeftSide_Close");
-                PlayAnimation(animator, "LeftSide_Open");
-            }
-            else
-            {
-                StopAnimation(animator, "LeftSide_Open");
-                PlayAnimation(animator, "LeftSide_Close");
-            }
+            StopAnimation(animator, AnimationConstants.Door_LeftSide_Close_Bool);
+            PlayAnimation(animator, AnimationConstants.Door_LeftSide_Open_Bool);
+        }
+
+        void CloseLeftSide()
+        {
+            StopAnimation(animator, AnimationConstants.Door_LeftSide_Open_Bool);
+            PlayAnimation(animator, AnimationConstants.Door_LeftSide_Close_Bool);
+        }
+
+        void OpenRightSide()
+        {
+            StopAnimation(animator, AnimationConstants.Door_RightSide_Close_Bool);
+            PlayAnimation(animator, AnimationConstants.Door_RightSide_Open_Bool);
+        }
+
+        void CloseRightSide()
+        {
+            StopAnimation(animator, AnimationConstants.Door_RightSide_Open_Bool);
+            PlayAnimation(animator, AnimationConstants.Door_RightSide_Close_Bool);
         }
 
         void PlayAnimation(Animator animController, string animationName)
         {
             movementSpeed = Random.Range(0.5f, 1.5f);
-            animController.SetFloat("rndAnimSpeed", movementSpeed);
+            animController.SetFloat(AnimationConstants.Door_AnimationSpeed_Float, movementSpeed);
             animController.SetBool(animationName, true);
 
         }

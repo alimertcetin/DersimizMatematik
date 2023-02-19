@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using LessonIsMath.Input;
+using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +13,7 @@ using XIV.SaveSystems;
 namespace LessonIsMath.CollectableSystems
 {
     [RequireComponent(typeof(SaveableEntity))]
-    public class Keycard : MonoBehaviour, ISaveable
+    public class Keycard : MonoBehaviour, ISaveable, IInteractable
     {
         [SerializeField] KeycardItemSO keycardItemSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
@@ -20,7 +21,6 @@ namespace LessonIsMath.CollectableSystems
         [SerializeField] StringEventChannelSO notificationChannel = default;
 
         Inventory inventory;
-        bool triggerEntered;
         bool Collected;
         Collider col = default;
         new MeshRenderer renderer = default;
@@ -28,18 +28,16 @@ namespace LessonIsMath.CollectableSystems
         private void Awake()
         {
             col = GetComponent<Collider>();
-            renderer = GetComponent<MeshRenderer>();
+            renderer = GetComponentInChildren<MeshRenderer>();
         }
 
         private void OnEnable()
         {
-            InputManager.PlayerControls.Gameplay.Interact.performed += Interact_performed;
             inventoryLoadedChannel.Register(OnInventoryLoaded);
         }
 
         private void OnDisable()
         {
-            InputManager.PlayerControls.Gameplay.Interact.performed -= Interact_performed;
             inventoryLoadedChannel.Unregister(OnInventoryLoaded);
         }
 
@@ -48,36 +46,20 @@ namespace LessonIsMath.CollectableSystems
             inventory = obj;
         }
 
-        private void OnTriggerEnter(Collider other)
+        public bool IsAvailable()
         {
-            if (other.CompareTag("Player"))
-            {
-                triggerEntered = true;
-                notificationChannel.RaiseEvent();
-            }
+            return !Collected;
         }
 
-        private void OnTriggerExit(Collider other)
+        public void Interact(IInteractor interactor)
         {
-            if (other.CompareTag("Player"))
-            {
-                triggerEntered = false;
-            }
-        }
-
-        private void Interact_performed(InputAction.CallbackContext obj)
-        {
-            if (triggerEntered == false || Collected)
-            {
-                return;
-            }
-
             var item = keycardItemSO.GetItem();
             int amount = 1;
 
             if (inventory.CanAdd(item, amount) == false)
             {
                 notificationChannel.RaiseEvent("There is not enough space for this keycard", true);
+                interactor.OnInteractionEnd(this);
                 return;
             }
 
@@ -87,32 +69,20 @@ namespace LessonIsMath.CollectableSystems
             Collected = true;
             col.enabled = false;
             renderer.enabled = false;
-
-            if (TryGetComponent(out ObjectBasedEvents events))
-                StartCoroutine(disableEvents(2, events));
+            interactor.OnInteractionEnd(this);
         }
 
-        private IEnumerator disableEvents(float time, ObjectBasedEvents events)
+        public string GetInteractionString()
         {
-            yield return new WaitForSeconds(time);
-            events.enabled = false;
-
+            return "Press " + InputManager.InteractionKeyName + " to collect " + keycardItemSO.GetItem().GetColoredCardString();
         }
 
-        private void SpawnParicle()
+        void SpawnParicle()
         {
             GameObject go = Instantiate(CollectedParticle.gameObject);
             go.transform.position = transform.position;
             Destroy(go, 5.0f);
         }
-
-        private string SetKeycardText()
-        {
-            KeycardItem item = keycardItemSO.GetItem() as KeycardItem;
-            return "Press " + InputManager.InteractionKeyName
-                + " to collect " + item.GetColoredCardString();
-        }
-
 
         #region -_- SAVE -_-
 

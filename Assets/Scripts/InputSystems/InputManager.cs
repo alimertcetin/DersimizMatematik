@@ -45,12 +45,14 @@ namespace LessonIsMath.Input
             public static void Enable()
             {
                 CursorManager.UnlockCursor();
+                Keypad.Enable();
                 PlayerControls.LockedDoorUI.Enable();
                 enabled.Invoke();
             }
 
             public static void Disable()
             {
+                Keypad.Disable();
                 PlayerControls.LockedDoorUI.Disable();
                 disabled.Invoke();
             }
@@ -65,16 +67,16 @@ namespace LessonIsMath.Input
             public static void Enable()
             {
                 CursorManager.UnlockCursor();
+                Keypad.Enable();
                 PlayerControls.MakeOperationUI.Enable();
                 MakeOperationUI_Enabled.Invoke();
-                Keypad.Enable();
             }
 
             public static void Disable()
             {
+                Keypad.Disable();
                 PlayerControls.MakeOperationUI.Disable();
                 MakeOperationUI_Disabled.Invoke();
-                Keypad.Disable();
             }
         }
 
@@ -86,16 +88,16 @@ namespace LessonIsMath.Input
             public static void Enable()
             {
                 CursorManager.UnlockCursor();
+                Keypad.Enable();
                 PlayerControls.EarnNumberUI.Enable();
                 EarnNumberUI_Enabled.Invoke();
-                Keypad.Enable();
             }
 
             public static void Disable()
             {
+                Keypad.Disable();
                 PlayerControls.EarnNumberUI.Disable();
                 EarnNumberUI_Disabled.Invoke();
-                Keypad.Disable();
             }
         }
 

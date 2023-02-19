@@ -17,16 +17,15 @@ using UnityEditor;
 
 namespace LessonIsMath.DoorSystems
 {
-    [RequireComponent(typeof(DoorAnimation))]
     public class Door : MonoBehaviour, IUIEventListener, IInteractable, ISaveable
     {
+        [SerializeField] DoorAnimation doorAnimation;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] DoorEventChannelSO lockedDoorUIChannel = default;
         [SerializeField] KeycardItemSO[] requiredKeycards;
         [SerializeField] bool useArithmeticOperation;
         [SerializeField] int maxValueOfAnswer;
         [SerializeField] ArithmeticOperation arithmeticOperation;
-        DoorAnimation doorAnimation;
         bool isLocked;
         bool[] removedKeycards;
         bool isOpen;
@@ -37,7 +36,6 @@ namespace LessonIsMath.DoorSystems
         private void Awake()
         {
             removedKeycards = new bool[requiredKeycards.Length];
-            doorAnimation = GetComponent<DoorAnimation>();
             isLocked = useArithmeticOperation;
         }
 
@@ -52,13 +50,12 @@ namespace LessonIsMath.DoorSystems
         }
 
         private void OnInventoryLoaded(Inventory obj) => this.inventory = obj;
-        bool IInteractable.CanInteract() => true;
+        bool IInteractable.IsAvailable() => true;
 
         void IInteractable.Interact(IInteractor interactor)
         {
             this.interactor = interactor;
 
-            // TODO : Keycard logic here
             if (IsRemovedAllKeycards() == false)
             {
                 for (int i = 0; i < removedKeycards.Length; i++)
@@ -80,7 +77,8 @@ namespace LessonIsMath.DoorSystems
                 return;
             }
             isOpen = !isOpen;
-            doorAnimation.Interact(isOpen);
+            if (isOpen) doorAnimation.OpenDoor();
+            else doorAnimation.CloseDoor();
             interactor.OnInteractionEnd(this);
         }
 
@@ -236,7 +234,8 @@ namespace LessonIsMath.DoorSystems
             isOpen = saveData.isOpen;
             isLocked = saveData.isLocked;
 
-            doorAnimation.Interact(isOpen);
+            if (isOpen) doorAnimation.OpenDoor();
+            else doorAnimation.CloseDoor();
         }
 
         #endregion

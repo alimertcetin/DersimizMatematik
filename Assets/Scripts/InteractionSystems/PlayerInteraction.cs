@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace LessonIsMath.InteractionSystems
 {
@@ -11,7 +14,8 @@ namespace LessonIsMath.InteractionSystems
         [Tooltip("To define the interaction area")]
         [SerializeField] Collider triggerCollider;
         [SerializeField] StringEventChannelSO notificationChannel = default;
-        List<IInteractable> interactables = new List<IInteractable>(8);
+        HashSet<IInteractable> interactables = new HashSet<IInteractable>(8);
+        List<Collider> otherColliders = new List<Collider>();
         IInteractable currentInteractable;
 
         void Awake()
@@ -31,42 +35,92 @@ namespace LessonIsMath.InteractionSystems
 
         public void TriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<IInteractable>(out var otherInteractable) == false) return;
+            if (other.isTrigger == false)
+            {
+                otherColliders.Add(other);
+            }
 
-            if (interactables.Contains(otherInteractable) == false) interactables.Add(otherInteractable);
-            currentInteractable = otherInteractable;
-            notificationChannel.RaiseEvent(currentInteractable.GetInteractionString());
+            if (other.TryGetComponent<IInteractable>(out var otherInteractable))
+            {
+                interactables.Add(otherInteractable);
+                //if (IsAvailableForInteraction(other)) ChangeCurrentInteractable(otherInteractable);
+            }
+            ChangeCurrentInteractable(GetClosestInteractable());
         }
 
         public void TriggerExit(Collider other)
         {
-            if (other.TryGetComponent<IInteractable>(out var otherInteractable) == false) return;
+            if (other.isTrigger == false)
+            {
+                otherColliders.Remove(other);
+            }
 
-            interactables.Remove(otherInteractable);
-            currentInteractable = GetClosestInteractable();
-            if (currentInteractable != null) notificationChannel.RaiseEvent(currentInteractable.GetInteractionString());
-            else notificationChannel.RaiseEvent("", false);
+            if (other.TryGetComponent<IInteractable>(out var otherInteractable))
+            {
+                interactables.Remove(otherInteractable);
+            }
+            ChangeCurrentInteractable(GetClosestInteractable());
+        }
+
+        bool IsPointBetween(Vector3 current, Vector3 target, Vector3 point)
+        {
+            Vector3 line = target - current;
+            Vector3 lineToPoint = point - current;
+            float dot = Vector3.Dot(lineToPoint, line);
+            return dot >= 0f && dot <= line.sqrMagnitude;
         }
 
         IInteractable GetClosestInteractable()
         {
             float distance = float.MaxValue;
             IInteractable closestInteractable = default;
-            for (int i = 0; i < interactables.Count; i++)
+            var currentPos = this.transform.position;
+            foreach (IInteractable interactable in interactables)
             {
-                IInteractable interactable = interactables[i];
                 Component interactableComponent = interactable as Component;
-                var dist = Vector3.Distance(this.transform.position, interactableComponent.transform.position);
-                if (dist < distance)
+                var interactablePos = interactableComponent.transform.position;
+                var dist = Vector3.Distance(currentPos, interactablePos);
+                if (dist < distance && IsAvailableForInteraction(interactableComponent))
                 {
-                    distance= dist;
+                    distance = dist;
                     closestInteractable = interactable;
                 }
             }
             return closestInteractable;
         }
 
-        private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        bool IsAvailableForInteraction(Component other)
+        {
+            var currentPos = transform.position;
+            var targetPos = other.transform.position;
+            // A little cheat to workaround of overlapping object problems
+            var dir = (targetPos - currentPos).normalized;
+            targetPos -= dir;
+
+#if UNITY_EDITOR
+            const float lineDuration = 8;
+            Debug.DrawLine(targetPos, targetPos + Vector3.up * 5f, Color.cyan, lineDuration);
+            Debug.DrawLine(currentPos, targetPos, Color.red, lineDuration);
+#endif
+
+            for (int i = 0; i < otherColliders.Count; i++)
+            {
+                var possibleBlockPos = otherColliders[i].transform.position;
+                if (otherColliders[i] == other || IsPointBetween(currentPos, targetPos, possibleBlockPos) == false) continue;
+
+#if UNITY_EDITOR
+                Debug.Log($"{otherColliders[i]} is between {this.gameObject} and {other}");
+                Debug.DrawLine(currentPos, otherColliders[i].transform.position, Color.blue, lineDuration);
+                Selection.activeGameObject = otherColliders[i].gameObject;
+#endif
+
+                return false;
+            }
+
+            return true;
+        }
+
+        void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             if (currentInteractable == null) return;
 
@@ -76,10 +130,21 @@ namespace LessonIsMath.InteractionSystems
 
         void IInteractor.OnInteractionEnd(IInteractable interactable)
         {
-            if (interactable.CanInteract()) currentInteractable = interactable;
-            else currentInteractable = GetClosestInteractable();
+            if (interactable.IsAvailable())
+            {
+                ChangeCurrentInteractable(interactable);
+                return;
+            }
 
+            interactables.Remove(interactable);
+            ChangeCurrentInteractable(GetClosestInteractable());
+        }
+
+        void ChangeCurrentInteractable(IInteractable otherInteractable)
+        {
+            currentInteractable = otherInteractable;
             if (currentInteractable != null) notificationChannel.RaiseEvent(currentInteractable.GetInteractionString());
+            else notificationChannel.RaiseEvent("", false);
         }
 
         class InteractionHelper : MonoBehaviour
