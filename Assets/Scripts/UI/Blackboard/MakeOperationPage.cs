@@ -82,9 +82,9 @@ namespace LessonIsMath.UI
 
         void OnNumberButtonClicked(int value)
         {
-            if (OperationErrorHelper.CanAddInput(txt_InputField.text, InputFiedlMaxTextLenght, out var error) == false)
+            if (txt_InputField.text.Length >= InputFiedlMaxTextLenght)
             {
-                blackboardUI.ShowWarning(error);
+                blackboardUI.ShowWarning(OperationWarnings.CANT_ENTER_ANYMORE_DIGIT);
                 return;
             }
             if (blackboardUI.IsNumberExistsInInventory(value) == false)
@@ -140,19 +140,21 @@ namespace LessonIsMath.UI
 
         private void Answer()
         {
-            if (OperationErrorHelper.IsValidInput(txt_InputField.text, out var error) == false)
+            if (IsValidInput() == false) return;
+
+            operation.number2 = int.Parse(txt_InputField.text);
+            if (operation.operationType == ArithmeticOperationType.None)
             {
-                blackboardUI.ShowWarning(error);
+                blackboardUI.ShowWarning(OperationWarnings.SELECT_AN_OPERATION);
                 return;
             }
-            operation.number2 = int.Parse(txt_InputField.text);
-            if (OperationErrorHelper.CanCompleteOperation(operation, out error) == false)
+            var answer = operation.CalculateAnswer();
+            if (answer < 0)
             {
-                blackboardUI.ShowWarning(error);
+                blackboardUI.ShowWarning(OperationWarnings.RESULT_CANT_BE_LESS_THAN_ZERO);
                 return;
             }
 
-            var answer = operation.CalculateAnswer();
             var answerText = answer.ToString();
             txt_InputField.text = answerText;
             operation.Reset();
@@ -168,15 +170,48 @@ namespace LessonIsMath.UI
 
         void SelectOperation(ArithmeticOperationType operationType)
         {
-            if (OperationErrorHelper.CanSelectAnOperation(operation, txt_InputField.text, out var error) == false)
-            {
-                blackboardUI.ShowWarning(error);
-                return;
-            }
-            operation.number1 = int.Parse(txt_InputField.text);
+            if (CanSelectOperation(out var number) == false) return;
+
+            operation.number1 = number;
             operation.operationType = operationType;
             txt_InputField.text = "";
             txt_ReviewInput.text = GetCurrentOperationReviewString();
+        }
+
+        bool CanSelectOperation(out int number)
+        {
+            number = 0;
+            if (operation.operationType != ArithmeticOperationType.None)
+            {
+                blackboardUI.ShowWarning(OperationWarnings.COMPLETE_OR_CANCEL_OPERATION);
+                return false;
+            }
+            if (txt_InputField.text.Length == 0)
+            {
+                blackboardUI.ShowWarning(OperationWarnings.ENTER_A_NUMBER);
+                return false;
+            }
+            if (int.TryParse(txt_InputField.text, out number) == false)
+            {
+                blackboardUI.ShowWarning(OperationWarnings.NOT_A_VALID_INPUT);
+                return false;
+            }
+            return true;
+        }
+
+        bool IsValidInput()
+        {
+            if (txt_InputField.text.Length == 0)
+            {
+                blackboardUI.ShowWarning(OperationWarnings.ENTER_A_NUMBER);
+                return false;
+            }
+            if (int.TryParse(txt_InputField.text, out _) == false)
+            {
+                blackboardUI.ShowWarning(OperationWarnings.NOT_A_VALID_INPUT);
+                return false;
+            }
+            return true;
         }
 
         string GetCurrentOperationReviewString()
