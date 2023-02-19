@@ -23,6 +23,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 01de6989c3fac1642af1ce88e486c766,
         type: 2}
+    - target: {fileID: 2363526863470780350, guid: 500be8b2e4c9f2b4094f40c48ed93b04,
+        type: 3}
+      propertyPath: keycardItemSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 01de6989c3fac1642af1ce88e486c766,
+        type: 2}
     - target: {fileID: 3043099825838892700, guid: 500be8b2e4c9f2b4094f40c48ed93b04,
         type: 3}
       propertyPath: m_RootOrder

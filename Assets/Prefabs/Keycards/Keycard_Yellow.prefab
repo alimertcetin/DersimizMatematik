@@ -88,6 +88,12 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5f628154f971ce54eb672d12631b9476, type: 2}
+    - target: {fileID: 5370070789929721674, guid: dafcc6ccb8cce6d4e84a88260cc14c03,
+        type: 3}
+      propertyPath: keycardItemSO
+      value: 
+      objectReference: {fileID: 11400000, guid: a924ca35315a3204a8b169e96f9be3eb,
+        type: 2}
     - target: {fileID: 7060087243012277494, guid: dafcc6ccb8cce6d4e84a88260cc14c03,
         type: 3}
       propertyPath: Keycard
