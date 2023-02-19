@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
 using LessonIsMath.Input;
-using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using XIV.Collections;
-using XIV.InventorySystem.Items;
 using XIV.Utils;
 
 namespace LessonIsMath.UI
 {
-    public class MakeOperationPage : GameUI, PlayerControls.IMakeOperationUIActions, IKeypadListener
+    public class MakeOperationPage : PageUI, PlayerControls.IMakeOperationUIActions, IKeypadListener
     {
         [SerializeField] Keypad keypad;
         [SerializeField] TMP_Text txt_InputField = null;
@@ -30,9 +27,8 @@ namespace LessonIsMath.UI
         Stack<int> inputNumberItems;
         BlackboardUI blackboardUI;
 
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
             InputManager.PlayerControls.MakeOperationUI.SetCallbacks(this);
             keypad.SetListener(this);
             inputNumberItems = new Stack<int>(InputFiedlMaxTextLenght);
@@ -57,7 +53,8 @@ namespace LessonIsMath.UI
             keypad.Enable();
 
             InputManager.MakeOperationUI.Enable();
-            InputManager.BlackBoardUIManagement.Disable();
+            txt_ReviewInput.text = "";
+            txt_InputField.text = "";
         }
 
         public override void Hide()
@@ -70,7 +67,6 @@ namespace LessonIsMath.UI
 
             CancelOperation();
             InputManager.MakeOperationUI.Disable();
-            InputManager.BlackBoardUIManagement.Enable();
         }
 
         public void SetBlackboard(BlackboardUI blackboardUI)

@@ -78,12 +78,14 @@ namespace LessonIsMath.UI
 
         void ShowEarnNumberUI()
         {
+            InputManager.BlackBoardUIManagement.Disable();
             mainPageGo.SetActive(false);
             makeOperationPage.Show();
         }
 
         void ShowMakeOperationUI()
         {
+            InputManager.BlackBoardUIManagement.Disable();
             mainPageGo.SetActive(false);
             earnNumberPage.Show();
         }

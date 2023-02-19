@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ElRaccoone.Tweens;
+using UnityEngine;
 
 namespace LessonIsMath.UI
 {
@@ -6,8 +7,13 @@ namespace LessonIsMath.UI
     {
         [SerializeField] protected GameObject uiGameObject;
         public bool isActive { get; private set; }
-        public virtual void Show()       {
+        public virtual void Show()
+        {
+            uiGameObject.transform.localScale = Vector3.zero;
             uiGameObject.SetActive(true);
+            uiGameObject.TweenCancelAll();
+            uiGameObject.TweenLocalScale(Vector3.one, 0.5f)
+                .SetEaseExpoInOut();
             isActive = true;
         }
 

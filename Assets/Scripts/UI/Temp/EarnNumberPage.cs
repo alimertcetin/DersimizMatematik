@@ -99,7 +99,7 @@ namespace LessonIsMath.UI
             var operationType = Random.Range(0, 2) == 0 ? ArithmeticOperationType.Add : ArithmeticOperationType.Subtract;
             operation.GenerateQuestion(operationType, maxValueOfAnswer);
 
-            txt_Question.text = $"Question : {operation.number1} {operation.GetOperator()} {operation.number2}";
+            txt_Question.text = $"{operation.number1} {operation.GetOperator()} {operation.number2} = ?";
         }
 
         void Delete()
@@ -138,7 +138,7 @@ namespace LessonIsMath.UI
 
         void PlayerControls.IEarnNumberUIActions.OnExit(InputAction.CallbackContext context)
         {
-            if (context.performed) Hide();
+            if (context.performed) OnBackPressed();
         }
 
         void PlayerControls.IEarnNumberUIActions.OnGenerateQuestion(InputAction.CallbackContext context)

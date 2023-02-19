@@ -18,7 +18,7 @@ namespace LessonIsMath.CollectableSystems
         [SerializeField] KeycardItemSO keycardItemSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] ParticleSystem CollectedParticle = null;
-        [SerializeField] StringEventChannelSO notificationChannel = default;
+        [SerializeField] StringEventChannelSO warningChannel = default;
 
         Inventory inventory;
         bool Collected;
@@ -58,7 +58,7 @@ namespace LessonIsMath.CollectableSystems
 
             if (inventory.CanAdd(item, amount) == false)
             {
-                notificationChannel.RaiseEvent("There is not enough space for this keycard", true);
+                warningChannel.RaiseEvent("There is not enough space for this keycard", true);
                 interactor.OnInteractionEnd(this);
                 return;
             }

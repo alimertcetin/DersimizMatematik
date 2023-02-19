@@ -15,8 +15,7 @@ namespace LessonIsMath.UI
             uiGameObject.SetActive(true);
             uiGameObject.TweenCancelAll();
             uiGameObject.TweenLocalScale(scale, 0.5f)
-                .SetEaseElasticInOut()
-                .SetOnComplete(() => uiGameObject.GetComponent<CanvasGroup>().interactable = true);
+                .SetEaseExpoInOut();
             isActive = true;
         }
 
@@ -24,11 +23,10 @@ namespace LessonIsMath.UI
         {
             uiGameObject.TweenCancelAll();
             var scale = gameObject.transform.localScale;
-            uiGameObject.TweenLocalScale(Vector3.zero, 1f)
-                .SetEaseElasticInOut()
+            uiGameObject.TweenLocalScale(Vector3.zero, 0.5f)
+                .SetEaseExpoInOut()
                 .SetOnComplete(() =>
                 {
-                    uiGameObject.GetComponent<CanvasGroup>().interactable = false;
                     uiGameObject.SetActive(false);
                     uiGameObject.transform.localScale = scale;
                 });

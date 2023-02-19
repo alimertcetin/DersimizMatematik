@@ -65,8 +65,7 @@ MonoBehaviour:
     type: 2}
   CollectedParticle: {fileID: 7211662553991198926, guid: 555d197ef60ddc74981961e6d3ef6fda,
     type: 3}
-  notificationChannel: {fileID: 11400000, guid: de2802bc8e1564e44bb84f930d58a887,
-    type: 2}
+  warningChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
 --- !u!65 &3423504040407945649
 BoxCollider:
   m_ObjectHideFlags: 0
