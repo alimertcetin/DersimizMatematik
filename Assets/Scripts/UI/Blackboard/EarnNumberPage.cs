@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace LessonIsMath.UI
 {
-    public class EarnNumberPage : PageUI, PlayerControls.IEarnNumberUIActions, IKeypadListener
+    public class EarnNumberPage : PageUI, PlayerControls.IPageUIActions, PlayerControls.IEarnNumberUIActions, IKeypadListener
     {
         [SerializeField] Keypad keypad;
         [SerializeField] TMP_Text txt_InputField = null;
@@ -28,7 +28,6 @@ namespace LessonIsMath.UI
 
         void Awake()
         {
-            InputManager.PlayerControls.EarnNumberUI.SetCallbacks(this);
             keypad.SetListener(this);
         }
 
@@ -56,6 +55,8 @@ namespace LessonIsMath.UI
         {
             base.Show();
             InputManager.EarnNumberUI.Enable();
+            InputManager.PageUI.SetCallbacks(this);
+            InputManager.EarnNumberUI.SetCallbacks(this);
             keypad.Enable();
             txt_InputField.text = "";
 
@@ -136,7 +137,7 @@ namespace LessonIsMath.UI
             blackboardUI.ShowWarning("You earned " + number);
         }
 
-        void PlayerControls.IEarnNumberUIActions.OnExit(InputAction.CallbackContext context)
+        void PlayerControls.IPageUIActions.OnBack(InputAction.CallbackContext context)
         {
             if (context.performed) OnBackPressed();
         }

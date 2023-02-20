@@ -6,37 +6,24 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
+public class GameManager : MonoBehaviour, PlayerControls.IGameStateActions
 {
-    [SerializeField] private GamePlayUIManager gamePlayCanvasManager = default;
     [SerializeField] private BoolEventChannelSO PauseMenuUIChannel = default;
     bool isPaused = false;
 
     private void Awake()
     {
-        InputManager.PlayerControls.GameManager.SetCallbacks(this);
+        InputManager.GameState.SetCallbacks(this);
     }
 
     private void OnEnable()
     {
-        InputManager.GameManager.Enable();
-
-        //InputManager.BlackBoardUIManagement.enabled += CursorManager.Instance.UnlockCursor;
-        //InputManager.LockedDoorUI.enabled += CursorManager.Instance.UnlockCursor;
-
-        //InputManager.BlackBoardUIManagement.disabled += CursorManager.Instance.LockCursor;
-        //InputManager.LockedDoorUI.disabled += CursorManager.Instance.LockCursor;
+        InputManager.GameState.Enable();
     }
 
     private void OnDisable()
     {
-        InputManager.GameManager.Disable();
-
-        //InputManager.BlackBoardUIManagement.enabled -= CursorManager.Instance.UnlockCursor;
-        //InputManager.LockedDoorUI.enabled -= CursorManager.Instance.UnlockCursor;
-
-        //InputManager.BlackBoardUIManagement.disabled -= CursorManager.Instance.LockCursor;
-        //InputManager.LockedDoorUI.disabled -= CursorManager.Instance.LockCursor;
+        InputManager.GameState.Disable();
     }
 
     private void OnApplicationQuit()
@@ -44,61 +31,23 @@ public class GameManager : MonoBehaviour, PlayerControls.IGameManagerActions
         CursorManager.UnlockCursor(CursorLockMode.None);
     }
 
-    /// <summary>
-    /// Tanımlanan menüler açıksa true döner
-    /// </summary>
-    private bool MenuIsOpen()
+    void PlayerControls.IGameStateActions.OnEscape(InputAction.CallbackContext context)
     {
-        if (InputManager.PlayerControls.MakeOperationUI.enabled)
+        if (context.performed == false) return;
+
+        if (!isPaused)
         {
-            return true;
-        }
-        else if (InputManager.PlayerControls.LockedDoorUI.enabled)
-        {
-            return true;
-        }
-        else if (InputManager.PlayerControls.EarnNumberUI.enabled)
-        {
-            return true;
-        }
-        else if (InputManager.PlayerControls.BlackBoardUIManagement.enabled)
-        {
-            return true;
+            CursorManager.UnlockCursor();
+            InputManager.CharacterMovement.Disable();
+            PauseMenuUIChannel.RaiseEvent(true);
         }
         else
         {
-            return false;
+            CursorManager.LockCursor();
+            InputManager.CharacterMovement.Enable();
+            PauseMenuUIChannel.RaiseEvent(false);
         }
-    }
-
-    public void OnEscape(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if (!isPaused)
-            {
-                CursorManager.UnlockCursor();
-                InputManager.GamePlay.Disable();
-                PauseMenuUIChannel.RaiseEvent(true);
-            }
-            else
-            {
-                CursorManager.LockCursor();
-                InputManager.GamePlay.Enable();
-                PauseMenuUIChannel.RaiseEvent(false);
-            }
-            isPaused = !isPaused;
-        }
-    }
-
-    //TODO : Consider removing this method and also the input.
-    public void OnReloadScene(InputAction.CallbackContext context)
-    {
-        //if (context.performed)
-        //{
-        //    //TODO : Use loading system
-        //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        //}
+        isPaused = !isPaused;
     }
 
 }

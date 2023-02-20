@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
@@ -10,12 +9,11 @@ using UnityEngine.InputSystem;
 using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.Utils;
 
 namespace LessonIsMath.UI
 {
-    public class LockedDoor_UI : GameUI, PlayerControls.ILockedDoorUIActions, IKeypadListener
+    public class LockedDoor_UI : GameUI, PlayerControls.IGameUIActions, IKeypadListener
     {
         [SerializeField] Keypad keypad;
         [SerializeField] CustomButton btn_Back;
@@ -41,7 +39,6 @@ namespace LessonIsMath.UI
         protected override void Awake()
         {
             base.Awake();
-            InputManager.PlayerControls.LockedDoorUI.SetCallbacks(this);
             keypad.SetListener(this);
         }
 
@@ -82,9 +79,11 @@ namespace LessonIsMath.UI
             base.Show();
             keypad.Enable();
             txt_Soru.text = currentDoor.GetQuestionString();
-            InputManager.LockedDoorUI.Enable();
-            InputManager.GameManager.Disable();
-            InputManager.GamePlay.Disable();
+            InputManager.GameUI.Enable();
+            InputManager.GameUI.SetCallbacks(this);
+            InputManager.Keypad.Enable();
+            InputManager.GameState.Disable();
+            InputManager.CharacterMovement.Disable();
         }
 
         public override void Hide()
@@ -93,9 +92,10 @@ namespace LessonIsMath.UI
             keypad.Disable();
             ClearTextCompletly();
 
-            InputManager.LockedDoorUI.Disable();
-            InputManager.GameManager.Enable();
-            InputManager.GamePlay.Enable();
+            InputManager.GameUI.Disable();
+            InputManager.Keypad.Disable();
+            InputManager.GameState.Enable();
+            InputManager.CharacterMovement.Enable();
         }
 
         void OnNumberButtonClicked(int value)
@@ -165,7 +165,7 @@ namespace LessonIsMath.UI
             lockedDoorUIChannel.RaiseEvent(null, false);
         }
 
-        void PlayerControls.ILockedDoorUIActions.OnExit(InputAction.CallbackContext context)
+        void PlayerControls.IGameUIActions.OnExit(InputAction.CallbackContext context)
         {
             if (context.performed) lockedDoorUIChannel.RaiseEvent(null, false);
         }

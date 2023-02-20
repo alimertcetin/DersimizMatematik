@@ -5,20 +5,45 @@ namespace LessonIsMath.Input
 {
     public static class InputManager
     {
-        public static PlayerControls PlayerControls = new PlayerControls();
-        public static string InteractionKeyName => PlayerControls.Gameplay.Interact.GetBindingDisplayString();
+        static PlayerControls PlayerControls = new PlayerControls();
+        public static string InteractionKeyName => PlayerControls.Interaction.Interact.GetBindingDisplayString();
 
         public static void DisableAllInput()
         {
-            GamePlay.Disable();
-            EarnNumberUI.Disable();
+            GameState.Disable();
+            CharacterMovement.Disable();
+            Interaction.Disable();
+            GameUI.Disable();
+            PageUI.Disable();
             MakeOperationUI.Disable();
-            GameManager.Disable();
-            LockedDoorUI.Disable();
-            BlackBoardUIManagement.Disable();
+            EarnNumberUI.Disable();
         }
 
-        public static class GamePlay
+        public static class GameState
+        {
+            public static Action GameManagerEnabled = delegate { };
+            public static Action GameManagerDisabled = delegate { };
+
+            public static void Enable()
+            {
+                CursorManager.UnlockCursor();
+                PlayerControls.GameState.Enable();
+                GameManagerEnabled.Invoke();
+            }
+
+            public static void Disable()
+            {
+                PlayerControls.GameState.Disable();
+                GameManagerDisabled.Invoke();
+            }
+
+            public static void SetCallbacks(PlayerControls.IGameStateActions instance)
+            {
+                PlayerControls.GameState.SetCallbacks(instance);
+            }
+        }
+
+        public static class CharacterMovement
         {
             public static Action enabled = delegate { };
             public static Action disabled = delegate { };
@@ -26,37 +51,89 @@ namespace LessonIsMath.Input
             public static void Enable()
             {
                 CursorManager.LockCursor();
-                PlayerControls.Gameplay.Enable();
+                PlayerControls.CharacterMovement.Enable();
                 enabled.Invoke();
             }
 
             public static void Disable()
             {
-                PlayerControls.Gameplay.Disable();
+                PlayerControls.CharacterMovement.Disable();
                 disabled.Invoke();
+            }
+
+            public static void SetCallbacks(PlayerControls.ICharacterMovementActions instance)
+            {
+                PlayerControls.CharacterMovement.SetCallbacks(instance);
             }
         }
 
-        public static class LockedDoorUI
+        public static class Interaction
         {
             public static Action enabled = delegate { };
             public static Action disabled = delegate { };
 
             public static void Enable()
             {
-                CursorManager.UnlockCursor();
-                Keypad.Enable();
-                PlayerControls.LockedDoorUI.Enable();
+                PlayerControls.Interaction.Enable();
                 enabled.Invoke();
             }
 
             public static void Disable()
             {
-                Keypad.Disable();
-                PlayerControls.LockedDoorUI.Disable();
+                PlayerControls.Interaction.Disable();
                 disabled.Invoke();
             }
 
+            public static void SetCallbacks(PlayerControls.IInteractionActions instance)
+            {
+                PlayerControls.Interaction.SetCallbacks(instance);
+            }
+        }
+
+        public static class GameUI
+        {
+            public static Action enabled = delegate { };
+            public static Action disabled = delegate { };
+
+            public static void Enable()
+            {
+                PlayerControls.GameUI.Enable();
+                enabled.Invoke();
+            }
+
+            public static void Disable()
+            {
+                PlayerControls.GameUI.Disable();
+                disabled.Invoke();
+            }
+
+            public static void SetCallbacks(PlayerControls.IGameUIActions instance)
+            {
+                PlayerControls.GameUI.SetCallbacks(instance);
+            }
+        }
+
+        public static class PageUI
+        {
+            public static Action enabled = delegate { };
+            public static Action disabled = delegate { };
+
+            public static void Enable()
+            {
+                PlayerControls.PageUI.Enable();
+                enabled.Invoke();
+            }
+
+            public static void Disable()
+            {
+                PlayerControls.PageUI.Disable();
+                disabled.Invoke();
+            }
+
+            public static void SetCallbacks(PlayerControls.IPageUIActions instance)
+            {
+                PlayerControls.PageUI.SetCallbacks(instance);
+            }
         }
 
         public static class MakeOperationUI
@@ -68,6 +145,7 @@ namespace LessonIsMath.Input
             {
                 CursorManager.UnlockCursor();
                 Keypad.Enable();
+                PageUI.Enable();
                 PlayerControls.MakeOperationUI.Enable();
                 MakeOperationUI_Enabled.Invoke();
             }
@@ -75,8 +153,14 @@ namespace LessonIsMath.Input
             public static void Disable()
             {
                 Keypad.Disable();
+                PageUI.Disable();
                 PlayerControls.MakeOperationUI.Disable();
                 MakeOperationUI_Disabled.Invoke();
+            }
+
+            public static void SetCallbacks(PlayerControls.IMakeOperationUIActions instance)
+            {
+                PlayerControls.MakeOperationUI.SetCallbacks(instance);
             }
         }
 
@@ -89,6 +173,7 @@ namespace LessonIsMath.Input
             {
                 CursorManager.UnlockCursor();
                 Keypad.Enable();
+                PageUI.Enable();
                 PlayerControls.EarnNumberUI.Enable();
                 EarnNumberUI_Enabled.Invoke();
             }
@@ -96,46 +181,14 @@ namespace LessonIsMath.Input
             public static void Disable()
             {
                 Keypad.Disable();
+                PageUI.Disable();
                 PlayerControls.EarnNumberUI.Disable();
                 EarnNumberUI_Disabled.Invoke();
             }
-        }
 
-        public static class GameManager
-        {
-            public static Action GameManagerEnabled = delegate { };
-            public static Action GameManagerDisabled = delegate { };
-
-            public static void Enable()
+            public static void SetCallbacks(PlayerControls.IEarnNumberUIActions instance)
             {
-                CursorManager.UnlockCursor();
-                PlayerControls.GameManager.Enable();
-                GameManagerEnabled.Invoke();
-            }
-
-            public static void Disable()
-            {
-                PlayerControls.GameManager.Disable();
-                GameManagerDisabled.Invoke();
-            }
-        }
-
-        public static class BlackBoardUIManagement
-        {
-            public static Action enabled = delegate { };
-            public static Action disabled = delegate { };
-
-            public static void Enable()
-            {
-                CursorManager.UnlockCursor();
-                PlayerControls.BlackBoardUIManagement.Enable();
-                enabled.Invoke();
-            }
-
-            public static void Disable()
-            {
-                PlayerControls.BlackBoardUIManagement.Disable();
-                disabled.Invoke();
+                PlayerControls.EarnNumberUI.SetCallbacks(instance);
             }
         }
 
@@ -154,6 +207,11 @@ namespace LessonIsMath.Input
             {
                 PlayerControls.Keypad.Disable();
                 disabled.Invoke();
+            }
+
+            public static void SetCallbacks(PlayerControls.IKeypadActions instance)
+            {
+                PlayerControls.Keypad.SetCallbacks(instance);
             }
         }
 

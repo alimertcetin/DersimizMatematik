@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
+using UnityEngine.InputSystem;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 namespace LessonIsMath.InteractionSystems
 {
-    public class PlayerInteraction : MonoBehaviour, IInteractor
+    public class PlayerInteraction : MonoBehaviour, PlayerControls.IInteractionActions, IInteractor
     {
         [Tooltip("To define the interaction area")]
         [SerializeField] Collider triggerCollider;
@@ -21,16 +22,39 @@ namespace LessonIsMath.InteractionSystems
         void Awake()
         {
             triggerCollider.gameObject.AddComponent<InteractionHelper>().playerInteraction = this;
+            InputManager.Interaction.SetCallbacks(this);
         }
 
         void OnEnable()
         {
-            InputManager.PlayerControls.Gameplay.Interact.performed += Interact_performed;
+            InputManager.Interaction.Enable();
         }
 
         void OnDisable()
         {
-            InputManager.PlayerControls.Gameplay.Interact.performed -= Interact_performed;
+            InputManager.Interaction.Disable();
+        }
+
+        void PlayerControls.IInteractionActions.OnInteract(InputAction.CallbackContext context)
+        {
+            if (context.performed == false || currentInteractable == null) return;
+
+            InputManager.Interaction.Disable();
+            notificationChannel.RaiseEvent("", false);
+            currentInteractable.Interact(this);
+        }
+
+        void IInteractor.OnInteractionEnd(IInteractable interactable)
+        {
+            InputManager.Interaction.Enable();
+            if (interactable.IsAvailable())
+            {
+                ChangeCurrentInteractable(interactable);
+                return;
+            }
+
+            interactables.Remove(interactable);
+            ChangeCurrentInteractable(GetClosestInteractable());
         }
 
         public void TriggerEnter(Collider other)
@@ -118,26 +142,6 @@ namespace LessonIsMath.InteractionSystems
             }
 
             return true;
-        }
-
-        void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-        {
-            if (currentInteractable == null) return;
-
-            notificationChannel.RaiseEvent("", false);
-            currentInteractable.Interact(this);
-        }
-
-        void IInteractor.OnInteractionEnd(IInteractable interactable)
-        {
-            if (interactable.IsAvailable())
-            {
-                ChangeCurrentInteractable(interactable);
-                return;
-            }
-
-            interactables.Remove(interactable);
-            ChangeCurrentInteractable(GetClosestInteractable());
         }
 
         void ChangeCurrentInteractable(IInteractable otherInteractable)

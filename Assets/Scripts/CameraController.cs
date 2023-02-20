@@ -19,14 +19,14 @@ public class CameraController : MonoBehaviour
         CameraSpeed_Y = cameraLook.m_YAxis.m_MaxSpeed;
         CameraSpeed_X = cameraLook.m_XAxis.m_MaxSpeed;
 
-        InputManager.GamePlay.enabled += onGamePlayEnabled;
-        InputManager.GamePlay.disabled += onGamePlayDisabled;
+        InputManager.CharacterMovement.enabled += onGamePlayEnabled;
+        InputManager.CharacterMovement.disabled += onGamePlayDisabled;
     }
 
     private void OnDisable()
     {
-        InputManager.GamePlay.enabled -= onGamePlayEnabled;
-        InputManager.GamePlay.disabled -= onGamePlayDisabled;
+        InputManager.CharacterMovement.enabled -= onGamePlayEnabled;
+        InputManager.CharacterMovement.disabled -= onGamePlayDisabled;
     }
 
     private void onGamePlayEnabled()

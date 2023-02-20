@@ -84,11 +84,7 @@ namespace LessonIsMath.DoorSystems
 
         string IInteractable.GetInteractionString()
         {
-            if (InputManager.PlayerControls.LockedDoorUI.enabled)
-            {
-                return "";
-            }
-            else if (IsRemovedAllKeycards() == false)
+            if (IsRemovedAllKeycards() == false)
             {
                 CountKeycards(out int greenCount, out int yellowCount, out int redCount);
 

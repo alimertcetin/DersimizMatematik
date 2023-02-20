@@ -8,7 +8,7 @@ using XIV.Utils;
 
 namespace LessonIsMath.UI
 {
-    public class MakeOperationPage : PageUI, PlayerControls.IMakeOperationUIActions, IKeypadListener
+    public class MakeOperationPage : PageUI, PlayerControls.IMakeOperationUIActions, PlayerControls.IPageUIActions, IKeypadListener
     {
         [SerializeField] Keypad keypad;
         [SerializeField] TMP_Text txt_InputField = null;
@@ -29,7 +29,6 @@ namespace LessonIsMath.UI
 
         void Awake()
         {
-            InputManager.PlayerControls.MakeOperationUI.SetCallbacks(this);
             keypad.SetListener(this);
             inputNumberItems = new Stack<int>(InputFiedlMaxTextLenght);
         }
@@ -47,12 +46,15 @@ namespace LessonIsMath.UI
         public override void Show()
         {
             base.Show();
+            InputManager.MakeOperationUI.Enable();
+            InputManager.PageUI.SetCallbacks(this);
+            InputManager.MakeOperationUI.SetCallbacks(this);
+
             btn_Back.RegisterOnClick(OnBackPressed);
             btn_Subtract.RegisterOnClick(() => SelectOperation(ArithmeticOperationType.Subtract));
             btn_Add.RegisterOnClick(() => SelectOperation(ArithmeticOperationType.Add));
             keypad.Enable();
 
-            InputManager.MakeOperationUI.Enable();
             txt_ReviewInput.text = "";
             txt_InputField.text = "";
         }
@@ -239,7 +241,7 @@ namespace LessonIsMath.UI
 
         void IKeypadListener.OnNumberPressed(int value) => OnNumberButtonClicked(value);
 
-        void PlayerControls.IMakeOperationUIActions.OnExit(InputAction.CallbackContext context)
+        void PlayerControls.IPageUIActions.OnBack(InputAction.CallbackContext context)
         {
             if (context.performed) OnBackPressed();
         }

@@ -26,7 +26,35 @@ namespace LessonIsMath.Input
     ""name"": ""PlayerControls"",
     ""maps"": [
         {
-            ""name"": ""Gameplay"",
+            ""name"": ""GameState"",
+            ""id"": ""9620676d-d302-4f55-8be9-8e26311cf6df"",
+            ""actions"": [
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ad47a22-ecc6-4d74-a3de-a1d53864687d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""260be348-d009-4cfb-9fc5-a657202b80e4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""CharacterMovement"",
             ""id"": ""2d5a58c0-bc50-45ec-a3ea-885c9c3bd10c"",
             ""actions"": [
                 {
@@ -51,15 +79,6 @@ namespace LessonIsMath.Input
                     ""name"": ""Run"",
                     ""type"": ""Button"",
                     ""id"": ""b4906629-b8ea-4a00-835c-34e0a749f2e0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Interact"",
-                    ""type"": ""Button"",
-                    ""id"": ""dee687e2-e17d-40ca-9780-fb9ce4727185"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -143,10 +162,27 @@ namespace LessonIsMath.Input
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
+                }
+            ]
+        },
+        {
+            ""name"": ""Interaction"",
+            ""id"": ""908e9f1c-2f75-4852-9f66-6c5b3aafef05"",
+            ""actions"": [
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7378494-a6a7-4c8a-bc82-35c78ef20eee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""c7d6557e-ed4d-4211-ace4-e11c8d0447f4"",
+                    ""id"": ""2c3a65d4-ff3b-4f3d-8668-b926e3c46ab4"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -158,13 +194,13 @@ namespace LessonIsMath.Input
             ]
         },
         {
-            ""name"": ""LockedDoorUI"",
-            ""id"": ""6527b49d-c232-4401-bed3-e3fb63b9da31"",
+            ""name"": ""GameUI"",
+            ""id"": ""cd10dadb-8b4e-4001-a9a6-fa8dccad48d9"",
             ""actions"": [
                 {
                     ""name"": ""Exit"",
                     ""type"": ""Button"",
-                    ""id"": ""0fc26fa2-35e9-49ed-b4b6-3ab536c001bf"",
+                    ""id"": ""abbb7b15-d993-47d2-a5d7-46e632cdd813"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -174,8 +210,8 @@ namespace LessonIsMath.Input
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""0ce3b9d3-8422-40e9-9adb-fce6fb06bf49"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""id"": ""3105fb28-a96f-4580-82fd-8661a2589927"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -185,8 +221,8 @@ namespace LessonIsMath.Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c76ea3b7-446e-4506-94d9-d5a0d39fc1f8"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""13b28c18-04f7-4817-ab3e-2fc77c883318"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -197,18 +233,48 @@ namespace LessonIsMath.Input
             ]
         },
         {
-            ""name"": ""MakeOperationUI"",
-            ""id"": ""40df712c-b71b-4366-bbbe-7d2e421af636"",
+            ""name"": ""PageUI"",
+            ""id"": ""56671816-fe9e-4536-8adc-518719d376c1"",
             ""actions"": [
                 {
-                    ""name"": ""Exit"",
+                    ""name"": ""Back"",
                     ""type"": ""Button"",
-                    ""id"": ""9f05842e-aa03-4554-acee-9b0242d8c4e3"",
+                    ""id"": ""6b78a891-1ec3-4c9a-9312-24a6d0f6f8db"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""50420b43-be4c-4ddf-b8f0-9c11fe86b8e3"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
+                {
+                    ""name"": """",
+                    ""id"": ""5bc90600-8420-4936-84a8-e0bf005ca723"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""MakeOperationUI"",
+            ""id"": ""40df712c-b71b-4366-bbbe-7d2e421af636"",
+            ""actions"": [
                 {
                     ""name"": ""Minus"",
                     ""type"": ""Button"",
@@ -250,28 +316,6 @@ namespace LessonIsMath.Input
                     ""action"": ""Minus"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2c924283-8b2f-4bf6-b610-3d3934c9f5c3"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Exit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0e54cf83-f7ab-428b-824c-474e5cc1c51c"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Exit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -279,15 +323,6 @@ namespace LessonIsMath.Input
             ""name"": ""EarnNumberUI"",
             ""id"": ""cd9b1a17-a397-4ea9-9c18-8b81295b15d7"",
             ""actions"": [
-                {
-                    ""name"": ""Exit"",
-                    ""type"": ""Button"",
-                    ""id"": ""8014c589-9880-474f-bf27-09d4c4b25da4"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
                 {
                     ""name"": ""GenerateQuestion"",
                     ""type"": ""Button"",
@@ -301,121 +336,12 @@ namespace LessonIsMath.Input
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""eecd42c4-4e82-4380-b8e7-370dd49807ec"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Exit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1246d991-e7c3-4c7c-8f11-e1b2608336ea"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Exit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""c0e9a2d6-1ca5-4b96-9dd0-994b642ad727"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""GenerateQuestion"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""GameManager"",
-            ""id"": ""9620676d-d302-4f55-8be9-8e26311cf6df"",
-            ""actions"": [
-                {
-                    ""name"": ""Escape"",
-                    ""type"": ""Button"",
-                    ""id"": ""9ad47a22-ecc6-4d74-a3de-a1d53864687d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ReloadScene"",
-                    ""type"": ""Button"",
-                    ""id"": ""dc9ab595-7d80-45ba-8659-f99947d90085"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""260be348-d009-4cfb-9fc5-a657202b80e4"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Escape"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""943d12e3-cdfa-45fc-834e-2b5df7806059"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ReloadScene"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""BlackBoardUIManagement"",
-            ""id"": ""cd10dadb-8b4e-4001-a9a6-fa8dccad48d9"",
-            ""actions"": [
-                {
-                    ""name"": ""Exit"",
-                    ""type"": ""Button"",
-                    ""id"": ""abbb7b15-d993-47d2-a5d7-46e632cdd813"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""3105fb28-a96f-4580-82fd-8661a2589927"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Exit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""13b28c18-04f7-4817-ab3e-2fc77c883318"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Exit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -804,31 +730,30 @@ namespace LessonIsMath.Input
     ],
     ""controlSchemes"": []
 }");
-            // Gameplay
-            m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-            m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
-            m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
-            m_Gameplay_Run = m_Gameplay.FindAction("Run", throwIfNotFound: true);
-            m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
-            // LockedDoorUI
-            m_LockedDoorUI = asset.FindActionMap("LockedDoorUI", throwIfNotFound: true);
-            m_LockedDoorUI_Exit = m_LockedDoorUI.FindAction("Exit", throwIfNotFound: true);
+            // GameState
+            m_GameState = asset.FindActionMap("GameState", throwIfNotFound: true);
+            m_GameState_Escape = m_GameState.FindAction("Escape", throwIfNotFound: true);
+            // CharacterMovement
+            m_CharacterMovement = asset.FindActionMap("CharacterMovement", throwIfNotFound: true);
+            m_CharacterMovement_Move = m_CharacterMovement.FindAction("Move", throwIfNotFound: true);
+            m_CharacterMovement_Jump = m_CharacterMovement.FindAction("Jump", throwIfNotFound: true);
+            m_CharacterMovement_Run = m_CharacterMovement.FindAction("Run", throwIfNotFound: true);
+            // Interaction
+            m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
+            m_Interaction_Interact = m_Interaction.FindAction("Interact", throwIfNotFound: true);
+            // GameUI
+            m_GameUI = asset.FindActionMap("GameUI", throwIfNotFound: true);
+            m_GameUI_Exit = m_GameUI.FindAction("Exit", throwIfNotFound: true);
+            // PageUI
+            m_PageUI = asset.FindActionMap("PageUI", throwIfNotFound: true);
+            m_PageUI_Back = m_PageUI.FindAction("Back", throwIfNotFound: true);
             // MakeOperationUI
             m_MakeOperationUI = asset.FindActionMap("MakeOperationUI", throwIfNotFound: true);
-            m_MakeOperationUI_Exit = m_MakeOperationUI.FindAction("Exit", throwIfNotFound: true);
             m_MakeOperationUI_Minus = m_MakeOperationUI.FindAction("Minus", throwIfNotFound: true);
             m_MakeOperationUI_Plus = m_MakeOperationUI.FindAction("Plus", throwIfNotFound: true);
             // EarnNumberUI
             m_EarnNumberUI = asset.FindActionMap("EarnNumberUI", throwIfNotFound: true);
-            m_EarnNumberUI_Exit = m_EarnNumberUI.FindAction("Exit", throwIfNotFound: true);
             m_EarnNumberUI_GenerateQuestion = m_EarnNumberUI.FindAction("GenerateQuestion", throwIfNotFound: true);
-            // GameManager
-            m_GameManager = asset.FindActionMap("GameManager", throwIfNotFound: true);
-            m_GameManager_Escape = m_GameManager.FindAction("Escape", throwIfNotFound: true);
-            m_GameManager_ReloadScene = m_GameManager.FindAction("ReloadScene", throwIfNotFound: true);
-            // BlackBoardUIManagement
-            m_BlackBoardUIManagement = asset.FindActionMap("BlackBoardUIManagement", throwIfNotFound: true);
-            m_BlackBoardUIManagement_Exit = m_BlackBoardUIManagement.FindAction("Exit", throwIfNotFound: true);
             // Keypad
             m_Keypad = asset.FindActionMap("Keypad", throwIfNotFound: true);
             m_Keypad_Delete = m_Keypad.FindAction("Delete", throwIfNotFound: true);
@@ -899,44 +824,72 @@ namespace LessonIsMath.Input
             return asset.FindBinding(bindingMask, out action);
         }
 
-        // Gameplay
-        private readonly InputActionMap m_Gameplay;
-        private IGameplayActions m_GameplayActionsCallbackInterface;
-        private readonly InputAction m_Gameplay_Move;
-        private readonly InputAction m_Gameplay_Jump;
-        private readonly InputAction m_Gameplay_Run;
-        private readonly InputAction m_Gameplay_Interact;
-        public struct GameplayActions
+        // GameState
+        private readonly InputActionMap m_GameState;
+        private IGameStateActions m_GameStateActionsCallbackInterface;
+        private readonly InputAction m_GameState_Escape;
+        public struct GameStateActions
         {
             private @PlayerControls m_Wrapper;
-            public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_Gameplay_Move;
-            public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
-            public InputAction @Run => m_Wrapper.m_Gameplay_Run;
-            public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
-            public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
+            public GameStateActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Escape => m_Wrapper.m_GameState_Escape;
+            public InputActionMap Get() { return m_Wrapper.m_GameState; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(GameplayActions set) { return set.Get(); }
-            public void SetCallbacks(IGameplayActions instance)
+            public static implicit operator InputActionMap(GameStateActions set) { return set.Get(); }
+            public void SetCallbacks(IGameStateActions instance)
             {
-                if (m_Wrapper.m_GameplayActionsCallbackInterface != null)
+                if (m_Wrapper.m_GameStateActionsCallbackInterface != null)
                 {
-                    @Move.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
-                    @Move.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
-                    @Move.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMove;
-                    @Jump.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
-                    @Jump.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
-                    @Jump.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
-                    @Run.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRun;
-                    @Run.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRun;
-                    @Run.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRun;
-                    @Interact.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
-                    @Interact.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
-                    @Interact.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                    @Escape.started -= m_Wrapper.m_GameStateActionsCallbackInterface.OnEscape;
+                    @Escape.performed -= m_Wrapper.m_GameStateActionsCallbackInterface.OnEscape;
+                    @Escape.canceled -= m_Wrapper.m_GameStateActionsCallbackInterface.OnEscape;
                 }
-                m_Wrapper.m_GameplayActionsCallbackInterface = instance;
+                m_Wrapper.m_GameStateActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Escape.started += instance.OnEscape;
+                    @Escape.performed += instance.OnEscape;
+                    @Escape.canceled += instance.OnEscape;
+                }
+            }
+        }
+        public GameStateActions @GameState => new GameStateActions(this);
+
+        // CharacterMovement
+        private readonly InputActionMap m_CharacterMovement;
+        private ICharacterMovementActions m_CharacterMovementActionsCallbackInterface;
+        private readonly InputAction m_CharacterMovement_Move;
+        private readonly InputAction m_CharacterMovement_Jump;
+        private readonly InputAction m_CharacterMovement_Run;
+        public struct CharacterMovementActions
+        {
+            private @PlayerControls m_Wrapper;
+            public CharacterMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Move => m_Wrapper.m_CharacterMovement_Move;
+            public InputAction @Jump => m_Wrapper.m_CharacterMovement_Jump;
+            public InputAction @Run => m_Wrapper.m_CharacterMovement_Run;
+            public InputActionMap Get() { return m_Wrapper.m_CharacterMovement; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(CharacterMovementActions set) { return set.Get(); }
+            public void SetCallbacks(ICharacterMovementActions instance)
+            {
+                if (m_Wrapper.m_CharacterMovementActionsCallbackInterface != null)
+                {
+                    @Move.started -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnMove;
+                    @Jump.started -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnJump;
+                    @Jump.performed -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnJump;
+                    @Jump.canceled -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnJump;
+                    @Run.started -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnRun;
+                    @Run.performed -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnRun;
+                    @Run.canceled -= m_Wrapper.m_CharacterMovementActionsCallbackInterface.OnRun;
+                }
+                m_Wrapper.m_CharacterMovementActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @Move.started += instance.OnMove;
@@ -948,37 +901,67 @@ namespace LessonIsMath.Input
                     @Run.started += instance.OnRun;
                     @Run.performed += instance.OnRun;
                     @Run.canceled += instance.OnRun;
+                }
+            }
+        }
+        public CharacterMovementActions @CharacterMovement => new CharacterMovementActions(this);
+
+        // Interaction
+        private readonly InputActionMap m_Interaction;
+        private IInteractionActions m_InteractionActionsCallbackInterface;
+        private readonly InputAction m_Interaction_Interact;
+        public struct InteractionActions
+        {
+            private @PlayerControls m_Wrapper;
+            public InteractionActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Interact => m_Wrapper.m_Interaction_Interact;
+            public InputActionMap Get() { return m_Wrapper.m_Interaction; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(InteractionActions set) { return set.Get(); }
+            public void SetCallbacks(IInteractionActions instance)
+            {
+                if (m_Wrapper.m_InteractionActionsCallbackInterface != null)
+                {
+                    @Interact.started -= m_Wrapper.m_InteractionActionsCallbackInterface.OnInteract;
+                    @Interact.performed -= m_Wrapper.m_InteractionActionsCallbackInterface.OnInteract;
+                    @Interact.canceled -= m_Wrapper.m_InteractionActionsCallbackInterface.OnInteract;
+                }
+                m_Wrapper.m_InteractionActionsCallbackInterface = instance;
+                if (instance != null)
+                {
                     @Interact.started += instance.OnInteract;
                     @Interact.performed += instance.OnInteract;
                     @Interact.canceled += instance.OnInteract;
                 }
             }
         }
-        public GameplayActions @Gameplay => new GameplayActions(this);
+        public InteractionActions @Interaction => new InteractionActions(this);
 
-        // LockedDoorUI
-        private readonly InputActionMap m_LockedDoorUI;
-        private ILockedDoorUIActions m_LockedDoorUIActionsCallbackInterface;
-        private readonly InputAction m_LockedDoorUI_Exit;
-        public struct LockedDoorUIActions
+        // GameUI
+        private readonly InputActionMap m_GameUI;
+        private IGameUIActions m_GameUIActionsCallbackInterface;
+        private readonly InputAction m_GameUI_Exit;
+        public struct GameUIActions
         {
             private @PlayerControls m_Wrapper;
-            public LockedDoorUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Exit => m_Wrapper.m_LockedDoorUI_Exit;
-            public InputActionMap Get() { return m_Wrapper.m_LockedDoorUI; }
+            public GameUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Exit => m_Wrapper.m_GameUI_Exit;
+            public InputActionMap Get() { return m_Wrapper.m_GameUI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(LockedDoorUIActions set) { return set.Get(); }
-            public void SetCallbacks(ILockedDoorUIActions instance)
+            public static implicit operator InputActionMap(GameUIActions set) { return set.Get(); }
+            public void SetCallbacks(IGameUIActions instance)
             {
-                if (m_Wrapper.m_LockedDoorUIActionsCallbackInterface != null)
+                if (m_Wrapper.m_GameUIActionsCallbackInterface != null)
                 {
-                    @Exit.started -= m_Wrapper.m_LockedDoorUIActionsCallbackInterface.OnExit;
-                    @Exit.performed -= m_Wrapper.m_LockedDoorUIActionsCallbackInterface.OnExit;
-                    @Exit.canceled -= m_Wrapper.m_LockedDoorUIActionsCallbackInterface.OnExit;
+                    @Exit.started -= m_Wrapper.m_GameUIActionsCallbackInterface.OnExit;
+                    @Exit.performed -= m_Wrapper.m_GameUIActionsCallbackInterface.OnExit;
+                    @Exit.canceled -= m_Wrapper.m_GameUIActionsCallbackInterface.OnExit;
                 }
-                m_Wrapper.m_LockedDoorUIActionsCallbackInterface = instance;
+                m_Wrapper.m_GameUIActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @Exit.started += instance.OnExit;
@@ -987,19 +970,50 @@ namespace LessonIsMath.Input
                 }
             }
         }
-        public LockedDoorUIActions @LockedDoorUI => new LockedDoorUIActions(this);
+        public GameUIActions @GameUI => new GameUIActions(this);
+
+        // PageUI
+        private readonly InputActionMap m_PageUI;
+        private IPageUIActions m_PageUIActionsCallbackInterface;
+        private readonly InputAction m_PageUI_Back;
+        public struct PageUIActions
+        {
+            private @PlayerControls m_Wrapper;
+            public PageUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Back => m_Wrapper.m_PageUI_Back;
+            public InputActionMap Get() { return m_Wrapper.m_PageUI; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PageUIActions set) { return set.Get(); }
+            public void SetCallbacks(IPageUIActions instance)
+            {
+                if (m_Wrapper.m_PageUIActionsCallbackInterface != null)
+                {
+                    @Back.started -= m_Wrapper.m_PageUIActionsCallbackInterface.OnBack;
+                    @Back.performed -= m_Wrapper.m_PageUIActionsCallbackInterface.OnBack;
+                    @Back.canceled -= m_Wrapper.m_PageUIActionsCallbackInterface.OnBack;
+                }
+                m_Wrapper.m_PageUIActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Back.started += instance.OnBack;
+                    @Back.performed += instance.OnBack;
+                    @Back.canceled += instance.OnBack;
+                }
+            }
+        }
+        public PageUIActions @PageUI => new PageUIActions(this);
 
         // MakeOperationUI
         private readonly InputActionMap m_MakeOperationUI;
         private IMakeOperationUIActions m_MakeOperationUIActionsCallbackInterface;
-        private readonly InputAction m_MakeOperationUI_Exit;
         private readonly InputAction m_MakeOperationUI_Minus;
         private readonly InputAction m_MakeOperationUI_Plus;
         public struct MakeOperationUIActions
         {
             private @PlayerControls m_Wrapper;
             public MakeOperationUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Exit => m_Wrapper.m_MakeOperationUI_Exit;
             public InputAction @Minus => m_Wrapper.m_MakeOperationUI_Minus;
             public InputAction @Plus => m_Wrapper.m_MakeOperationUI_Plus;
             public InputActionMap Get() { return m_Wrapper.m_MakeOperationUI; }
@@ -1011,9 +1025,6 @@ namespace LessonIsMath.Input
             {
                 if (m_Wrapper.m_MakeOperationUIActionsCallbackInterface != null)
                 {
-                    @Exit.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnExit;
-                    @Exit.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnExit;
-                    @Exit.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnExit;
                     @Minus.started -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnMinus;
                     @Minus.performed -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnMinus;
                     @Minus.canceled -= m_Wrapper.m_MakeOperationUIActionsCallbackInterface.OnMinus;
@@ -1024,9 +1035,6 @@ namespace LessonIsMath.Input
                 m_Wrapper.m_MakeOperationUIActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Exit.started += instance.OnExit;
-                    @Exit.performed += instance.OnExit;
-                    @Exit.canceled += instance.OnExit;
                     @Minus.started += instance.OnMinus;
                     @Minus.performed += instance.OnMinus;
                     @Minus.canceled += instance.OnMinus;
@@ -1041,13 +1049,11 @@ namespace LessonIsMath.Input
         // EarnNumberUI
         private readonly InputActionMap m_EarnNumberUI;
         private IEarnNumberUIActions m_EarnNumberUIActionsCallbackInterface;
-        private readonly InputAction m_EarnNumberUI_Exit;
         private readonly InputAction m_EarnNumberUI_GenerateQuestion;
         public struct EarnNumberUIActions
         {
             private @PlayerControls m_Wrapper;
             public EarnNumberUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Exit => m_Wrapper.m_EarnNumberUI_Exit;
             public InputAction @GenerateQuestion => m_Wrapper.m_EarnNumberUI_GenerateQuestion;
             public InputActionMap Get() { return m_Wrapper.m_EarnNumberUI; }
             public void Enable() { Get().Enable(); }
@@ -1058,9 +1064,6 @@ namespace LessonIsMath.Input
             {
                 if (m_Wrapper.m_EarnNumberUIActionsCallbackInterface != null)
                 {
-                    @Exit.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnExit;
-                    @Exit.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnExit;
-                    @Exit.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnExit;
                     @GenerateQuestion.started -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnGenerateQuestion;
                     @GenerateQuestion.performed -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnGenerateQuestion;
                     @GenerateQuestion.canceled -= m_Wrapper.m_EarnNumberUIActionsCallbackInterface.OnGenerateQuestion;
@@ -1068,9 +1071,6 @@ namespace LessonIsMath.Input
                 m_Wrapper.m_EarnNumberUIActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Exit.started += instance.OnExit;
-                    @Exit.performed += instance.OnExit;
-                    @Exit.canceled += instance.OnExit;
                     @GenerateQuestion.started += instance.OnGenerateQuestion;
                     @GenerateQuestion.performed += instance.OnGenerateQuestion;
                     @GenerateQuestion.canceled += instance.OnGenerateQuestion;
@@ -1078,80 +1078,6 @@ namespace LessonIsMath.Input
             }
         }
         public EarnNumberUIActions @EarnNumberUI => new EarnNumberUIActions(this);
-
-        // GameManager
-        private readonly InputActionMap m_GameManager;
-        private IGameManagerActions m_GameManagerActionsCallbackInterface;
-        private readonly InputAction m_GameManager_Escape;
-        private readonly InputAction m_GameManager_ReloadScene;
-        public struct GameManagerActions
-        {
-            private @PlayerControls m_Wrapper;
-            public GameManagerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Escape => m_Wrapper.m_GameManager_Escape;
-            public InputAction @ReloadScene => m_Wrapper.m_GameManager_ReloadScene;
-            public InputActionMap Get() { return m_Wrapper.m_GameManager; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(GameManagerActions set) { return set.Get(); }
-            public void SetCallbacks(IGameManagerActions instance)
-            {
-                if (m_Wrapper.m_GameManagerActionsCallbackInterface != null)
-                {
-                    @Escape.started -= m_Wrapper.m_GameManagerActionsCallbackInterface.OnEscape;
-                    @Escape.performed -= m_Wrapper.m_GameManagerActionsCallbackInterface.OnEscape;
-                    @Escape.canceled -= m_Wrapper.m_GameManagerActionsCallbackInterface.OnEscape;
-                    @ReloadScene.started -= m_Wrapper.m_GameManagerActionsCallbackInterface.OnReloadScene;
-                    @ReloadScene.performed -= m_Wrapper.m_GameManagerActionsCallbackInterface.OnReloadScene;
-                    @ReloadScene.canceled -= m_Wrapper.m_GameManagerActionsCallbackInterface.OnReloadScene;
-                }
-                m_Wrapper.m_GameManagerActionsCallbackInterface = instance;
-                if (instance != null)
-                {
-                    @Escape.started += instance.OnEscape;
-                    @Escape.performed += instance.OnEscape;
-                    @Escape.canceled += instance.OnEscape;
-                    @ReloadScene.started += instance.OnReloadScene;
-                    @ReloadScene.performed += instance.OnReloadScene;
-                    @ReloadScene.canceled += instance.OnReloadScene;
-                }
-            }
-        }
-        public GameManagerActions @GameManager => new GameManagerActions(this);
-
-        // BlackBoardUIManagement
-        private readonly InputActionMap m_BlackBoardUIManagement;
-        private IBlackBoardUIManagementActions m_BlackBoardUIManagementActionsCallbackInterface;
-        private readonly InputAction m_BlackBoardUIManagement_Exit;
-        public struct BlackBoardUIManagementActions
-        {
-            private @PlayerControls m_Wrapper;
-            public BlackBoardUIManagementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Exit => m_Wrapper.m_BlackBoardUIManagement_Exit;
-            public InputActionMap Get() { return m_Wrapper.m_BlackBoardUIManagement; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(BlackBoardUIManagementActions set) { return set.Get(); }
-            public void SetCallbacks(IBlackBoardUIManagementActions instance)
-            {
-                if (m_Wrapper.m_BlackBoardUIManagementActionsCallbackInterface != null)
-                {
-                    @Exit.started -= m_Wrapper.m_BlackBoardUIManagementActionsCallbackInterface.OnExit;
-                    @Exit.performed -= m_Wrapper.m_BlackBoardUIManagementActionsCallbackInterface.OnExit;
-                    @Exit.canceled -= m_Wrapper.m_BlackBoardUIManagementActionsCallbackInterface.OnExit;
-                }
-                m_Wrapper.m_BlackBoardUIManagementActionsCallbackInterface = instance;
-                if (instance != null)
-                {
-                    @Exit.started += instance.OnExit;
-                    @Exit.performed += instance.OnExit;
-                    @Exit.canceled += instance.OnExit;
-                }
-            }
-        }
-        public BlackBoardUIManagementActions @BlackBoardUIManagement => new BlackBoardUIManagementActions(this);
 
         // Keypad
         private readonly InputActionMap m_Keypad;
@@ -1273,36 +1199,36 @@ namespace LessonIsMath.Input
             }
         }
         public KeypadActions @Keypad => new KeypadActions(this);
-        public interface IGameplayActions
+        public interface IGameStateActions
+        {
+            void OnEscape(InputAction.CallbackContext context);
+        }
+        public interface ICharacterMovementActions
         {
             void OnMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
+        }
+        public interface IInteractionActions
+        {
             void OnInteract(InputAction.CallbackContext context);
         }
-        public interface ILockedDoorUIActions
+        public interface IGameUIActions
         {
             void OnExit(InputAction.CallbackContext context);
+        }
+        public interface IPageUIActions
+        {
+            void OnBack(InputAction.CallbackContext context);
         }
         public interface IMakeOperationUIActions
         {
-            void OnExit(InputAction.CallbackContext context);
             void OnMinus(InputAction.CallbackContext context);
             void OnPlus(InputAction.CallbackContext context);
         }
         public interface IEarnNumberUIActions
         {
-            void OnExit(InputAction.CallbackContext context);
             void OnGenerateQuestion(InputAction.CallbackContext context);
-        }
-        public interface IGameManagerActions
-        {
-            void OnEscape(InputAction.CallbackContext context);
-            void OnReloadScene(InputAction.CallbackContext context);
-        }
-        public interface IBlackBoardUIManagementActions
-        {
-            void OnExit(InputAction.CallbackContext context);
         }
         public interface IKeypadActions
         {

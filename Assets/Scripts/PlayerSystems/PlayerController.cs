@@ -5,7 +5,7 @@ using XIV.SaveSystems;
 
 namespace LessonIsMath.PlayerSystems
 {
-    public class PlayerController : MonoBehaviour, ISaveable
+    public class PlayerController : MonoBehaviour, PlayerControls.ICharacterMovementActions, ISaveable
     {
         private CharacterController charController;
         private Transform cam;
@@ -38,31 +38,17 @@ namespace LessonIsMath.PlayerSystems
 
             charController = GetComponent<CharacterController>();
             playerAnimationController = GetComponentInChildren<PlayerAnimationController>();
+            InputManager.CharacterMovement.SetCallbacks(this);
         }
 
         private void OnEnable()
         {
-            InputManager.PlayerControls.Gameplay.Move.performed += Move_performed;
-            InputManager.PlayerControls.Gameplay.Move.canceled += Move_canceled;
-
-            InputManager.PlayerControls.Gameplay.Jump.performed += Jump_performed;
-
-            InputManager.PlayerControls.Gameplay.Run.performed += Run_performed;
-            InputManager.PlayerControls.Gameplay.Run.canceled += Run_canceled;
-
-            InputManager.GamePlay.Enable();
+            InputManager.CharacterMovement.Enable();
         }
 
         private void OnDisable()
         {
-            InputManager.PlayerControls.Gameplay.Move.performed -= Move_performed;
-            InputManager.PlayerControls.Gameplay.Move.canceled -= Move_canceled;
-
-            InputManager.PlayerControls.Gameplay.Jump.performed -= Jump_performed;
-
-            InputManager.PlayerControls.Gameplay.Run.performed -= Run_performed;
-
-            InputManager.GamePlay.Disable();
+            InputManager.CharacterMovement.Disable();
         }
 
         private void FixedUpdate()
@@ -108,26 +94,42 @@ namespace LessonIsMath.PlayerSystems
             JumpPressed = false;
         }
 
-        private void Move_performed(InputAction.CallbackContext obj)
+        void PlayerControls.ICharacterMovementActions.OnMove(InputAction.CallbackContext context)
         {
-            Vector2 vector = obj.ReadValue<Vector2>();
-            Horizontal = vector.x;
-            Vertical = vector.y;
+            if (context.performed)
+            {
+                Vector2 vector = context.ReadValue<Vector2>();
+                Horizontal = vector.x;
+                Vertical = vector.y;
+                return;
+            }
+            if (context.canceled)
+            {
+                Horizontal = 0;
+                Vertical = 0;
+            }
         }
 
-        private void Move_canceled(InputAction.CallbackContext obj)
+        void PlayerControls.ICharacterMovementActions.OnJump(InputAction.CallbackContext context)
         {
-            Horizontal = 0;
-            Vertical = 0;
+            if (context.performed == false) return;
+            JumpPressed = true;
         }
 
-        private void Jump_performed(InputAction.CallbackContext obj) => JumpPressed = true;
+        void PlayerControls.ICharacterMovementActions.OnRun(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                RunPressed = true;
+                return;
+            }
+            if (context.canceled)
+            {
+                RunPressed = false;
+            }
+        }
 
-        private void Run_performed(InputAction.CallbackContext obj) => RunPressed = true;
-
-        private void Run_canceled(InputAction.CallbackContext obj) => RunPressed = false;
-
-        #region Data Saving -----------
+        #region Save
 
         public object CaptureState()
         {

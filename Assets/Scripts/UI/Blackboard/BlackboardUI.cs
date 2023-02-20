@@ -10,7 +10,7 @@ using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 
 namespace LessonIsMath.UI
 {
-    public class BlackboardUI : GameUI, PlayerControls.IBlackBoardUIManagementActions
+    public class BlackboardUI : GameUI, PlayerControls.IGameUIActions
     {
         // TODO : Remove channel dependency
         [SerializeField] BoolEventChannelSO blackBoardUIChannel = default;
@@ -31,7 +31,7 @@ namespace LessonIsMath.UI
             base.Awake();
             earnNumberPage.SetBlackboard(this);
             makeOperationPage.SetBlackboard(this);
-            InputManager.PlayerControls.BlackBoardUIManagement.SetCallbacks(this);
+            InputManager.GameUI.SetCallbacks(this);
         }
 
         void OnEnable()
@@ -54,9 +54,9 @@ namespace LessonIsMath.UI
 
             btn_EarnNumber.onClick.AddListener(ShowEarnNumberUI);
             btn_MakeOperation.onClick.AddListener(ShowMakeOperationUI);
-            InputManager.BlackBoardUIManagement.Enable();
-            InputManager.GameManager.Disable();
-            InputManager.GamePlay.Disable();
+            InputManager.GameUI.Enable();
+            InputManager.GameState.Disable();
+            InputManager.CharacterMovement.Disable();
         }
 
         public override void Hide()
@@ -71,26 +71,26 @@ namespace LessonIsMath.UI
             earnNumberPage.Hide();
             makeOperationPage.Hide();
 
-            InputManager.BlackBoardUIManagement.Disable();
-            InputManager.GameManager.Enable();
-            InputManager.GamePlay.Enable();
+            InputManager.GameUI.Disable();
+            InputManager.GameState.Enable();
+            InputManager.CharacterMovement.Enable();
         }
 
         void ShowEarnNumberUI()
         {
-            InputManager.BlackBoardUIManagement.Disable();
+            InputManager.GameUI.Disable();
             mainPageGo.SetActive(false);
             makeOperationPage.Show();
         }
 
         void ShowMakeOperationUI()
         {
-            InputManager.BlackBoardUIManagement.Disable();
+            InputManager.GameUI.Disable();
             mainPageGo.SetActive(false);
             earnNumberPage.Show();
         }
 
-        void PlayerControls.IBlackBoardUIManagementActions.OnExit(InputAction.CallbackContext context)
+        void PlayerControls.IGameUIActions.OnExit(InputAction.CallbackContext context)
         {
             if (context.performed) blackBoardUIChannel.RaiseEvent(false);
         }

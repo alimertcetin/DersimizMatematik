@@ -2,7 +2,35 @@
     "name": "PlayerControls",
     "maps": [
         {
-            "name": "Gameplay",
+            "name": "GameState",
+            "id": "9620676d-d302-4f55-8be9-8e26311cf6df",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "9ad47a22-ecc6-4d74-a3de-a1d53864687d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "260be348-d009-4cfb-9fc5-a657202b80e4",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "CharacterMovement",
             "id": "2d5a58c0-bc50-45ec-a3ea-885c9c3bd10c",
             "actions": [
                 {
@@ -27,15 +55,6 @@
                     "name": "Run",
                     "type": "Button",
                     "id": "b4906629-b8ea-4a00-835c-34e0a749f2e0",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "dee687e2-e17d-40ca-9780-fb9ce4727185",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -119,10 +138,27 @@
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "Interaction",
+            "id": "908e9f1c-2f75-4852-9f66-6c5b3aafef05",
+            "actions": [
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "c7378494-a6a7-4c8a-bc82-35c78ef20eee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "c7d6557e-ed4d-4211-ace4-e11c8d0447f4",
+                    "id": "2c3a65d4-ff3b-4f3d-8668-b926e3c46ab4",
                     "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
@@ -134,13 +170,13 @@
             ]
         },
         {
-            "name": "LockedDoorUI",
-            "id": "6527b49d-c232-4401-bed3-e3fb63b9da31",
+            "name": "GameUI",
+            "id": "cd10dadb-8b4e-4001-a9a6-fa8dccad48d9",
             "actions": [
                 {
                     "name": "Exit",
                     "type": "Button",
-                    "id": "0fc26fa2-35e9-49ed-b4b6-3ab536c001bf",
+                    "id": "abbb7b15-d993-47d2-a5d7-46e632cdd813",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -150,8 +186,8 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "0ce3b9d3-8422-40e9-9adb-fce6fb06bf49",
-                    "path": "<Keyboard>/f",
+                    "id": "3105fb28-a96f-4580-82fd-8661a2589927",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -161,8 +197,8 @@
                 },
                 {
                     "name": "",
-                    "id": "c76ea3b7-446e-4506-94d9-d5a0d39fc1f8",
-                    "path": "<Keyboard>/escape",
+                    "id": "13b28c18-04f7-4817-ab3e-2fc77c883318",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -173,18 +209,48 @@
             ]
         },
         {
-            "name": "MakeOperationUI",
-            "id": "40df712c-b71b-4366-bbbe-7d2e421af636",
+            "name": "PageUI",
+            "id": "56671816-fe9e-4536-8adc-518719d376c1",
             "actions": [
                 {
-                    "name": "Exit",
+                    "name": "Back",
                     "type": "Button",
-                    "id": "9f05842e-aa03-4554-acee-9b0242d8c4e3",
+                    "id": "6b78a891-1ec3-4c9a-9312-24a6d0f6f8db",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "50420b43-be4c-4ddf-b8f0-9c11fe86b8e3",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
+                {
+                    "name": "",
+                    "id": "5bc90600-8420-4936-84a8-e0bf005ca723",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MakeOperationUI",
+            "id": "40df712c-b71b-4366-bbbe-7d2e421af636",
+            "actions": [
                 {
                     "name": "Minus",
                     "type": "Button",
@@ -226,28 +292,6 @@
                     "action": "Minus",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2c924283-8b2f-4bf6-b610-3d3934c9f5c3",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Exit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0e54cf83-f7ab-428b-824c-474e5cc1c51c",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Exit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -255,15 +299,6 @@
             "name": "EarnNumberUI",
             "id": "cd9b1a17-a397-4ea9-9c18-8b81295b15d7",
             "actions": [
-                {
-                    "name": "Exit",
-                    "type": "Button",
-                    "id": "8014c589-9880-474f-bf27-09d4c4b25da4",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
                 {
                     "name": "GenerateQuestion",
                     "type": "Button",
@@ -277,121 +312,12 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "eecd42c4-4e82-4380-b8e7-370dd49807ec",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Exit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1246d991-e7c3-4c7c-8f11-e1b2608336ea",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Exit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c0e9a2d6-1ca5-4b96-9dd0-994b642ad727",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "GenerateQuestion",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "GameManager",
-            "id": "9620676d-d302-4f55-8be9-8e26311cf6df",
-            "actions": [
-                {
-                    "name": "Escape",
-                    "type": "Button",
-                    "id": "9ad47a22-ecc6-4d74-a3de-a1d53864687d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ReloadScene",
-                    "type": "Button",
-                    "id": "dc9ab595-7d80-45ba-8659-f99947d90085",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "260be348-d009-4cfb-9fc5-a657202b80e4",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Escape",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "943d12e3-cdfa-45fc-834e-2b5df7806059",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ReloadScene",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "BlackBoardUIManagement",
-            "id": "cd10dadb-8b4e-4001-a9a6-fa8dccad48d9",
-            "actions": [
-                {
-                    "name": "Exit",
-                    "type": "Button",
-                    "id": "abbb7b15-d993-47d2-a5d7-46e632cdd813",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "3105fb28-a96f-4580-82fd-8661a2589927",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Exit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "13b28c18-04f7-4817-ab3e-2fc77c883318",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Exit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

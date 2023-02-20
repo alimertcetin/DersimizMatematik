@@ -31,8 +31,8 @@ namespace LessonIsMath.UI
         void StartNewGame()
         {
             _startGameEvent.RaiseEvent(_locationsToLoad, _showLoadScreen);
-            InputManager.GameManager.Enable();
-            InputManager.GamePlay.Enable();
+            InputManager.GameState.Enable();
+            InputManager.CharacterMovement.Enable();
         }
 
         void ShowSettings()

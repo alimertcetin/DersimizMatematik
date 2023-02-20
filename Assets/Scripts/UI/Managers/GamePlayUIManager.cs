@@ -45,12 +45,12 @@ namespace LessonIsMath.UI
         {
             if (value)
             {
-                InputManager.GamePlay.Disable();
+                InputManager.CharacterMovement.Disable();
                 UISystem.Show<PausedMenu_UI>();
             }
             else
             {
-                InputManager.GamePlay.Enable();
+                InputManager.CharacterMovement.Enable();
                 UISystem.Hide<PausedMenu_UI>();
             }
         }

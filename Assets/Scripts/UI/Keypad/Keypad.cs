@@ -24,7 +24,7 @@ namespace LessonIsMath.UI
         {
             isActive = true;
             Register();
-            InputManager.PlayerControls.Keypad.SetCallbacks(this);
+            InputManager.Keypad.SetCallbacks(this);
         }
 
         public void Disable()
