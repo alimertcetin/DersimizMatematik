@@ -1,4 +1,6 @@
-﻿using LessonIsMath.Input;
+﻿using ElRaccoone.Tweens;
+using LessonIsMath.Input;
+using LessonIsMath.Tween;
 using LessonIsMath.UI.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,18 +31,26 @@ namespace LessonIsMath.UI
         {
             isActive = false;
             Unregister();
+            btn_Delete.TweenCancelAll();
+            btn_Enter.TweenCancelAll();
+            for (int i = 0; i < btn_Numbers.Length; i++)
+            {
+                btn_Numbers[i].TweenCancelAll();
+            }
         }
 
         void OnEnter()
         {
             if (isActive == false) return;
             listener?.OnEnter();
+            btn_Enter.ClickTween(0.1f);
         }
 
         void OnDeleteStarted()
         {
             if (isActive == false) return;
             listener?.OnDeleteStarted();
+            btn_Delete.ClickTween(0.1f);
         }
 
         void OnDeleteCanceled()
@@ -53,6 +63,7 @@ namespace LessonIsMath.UI
         {
             if (isActive == false) return;
             listener?.OnNumberPressed(val);
+            btn_Numbers[val].ClickTween(0.1f);
         }
 
         void Register()
