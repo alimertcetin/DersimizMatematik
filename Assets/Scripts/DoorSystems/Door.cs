@@ -88,15 +88,17 @@ namespace LessonIsMath.DoorSystems
             {
                 CountKeycards(out int greenCount, out int yellowCount, out int redCount);
 
-                static string Format(int amount, string color) => $"{amount} {color} keycard ";
-
                 string str = "You need ";
 
-                if (greenCount > 0) str += Format(greenCount, "green".Green());
-                if (yellowCount > 0) str += Format(yellowCount, "yellow".Yellow());
-                if (redCount > 0) str += Format(redCount, "red".Red());
+                if (greenCount > 0) str += $"{greenCount} green".Green();
+                if (yellowCount > 0) str += $" {yellowCount} yellow".Yellow();
+                if (redCount > 0) str += $" {redCount} red".Red();
 
-                return greenCount > 0 || yellowCount > 0 || redCount > 0 ? str : "";
+                var total = greenCount + yellowCount + redCount;
+                if (total < 2) str += " keycard";
+                else str += " keycards";
+
+                return total > 0 ? str : "";
             }
             else if (isLocked == false)
             {
@@ -134,16 +136,18 @@ namespace LessonIsMath.DoorSystems
             redCount = 0;
             for (int i = 0; i < requiredKeycards.Length; i++)
             {
+                if (removedKeycards[i]) continue;
+
                 switch (requiredKeycards[i].item.KeycardType)
                 {
                     case KeycardType.Green:
-                        if (removedKeycards[i] == false) greenCount++;
+                        greenCount++;
                         break;
                     case KeycardType.Yellow:
-                        if (removedKeycards[i] == false) yellowCount++;
+                        yellowCount++;
                         break;
                     case KeycardType.Red:
-                        if (removedKeycards[i] == false) redCount++;
+                        redCount++;
                         break;
                     default: throw new NotImplementedException(requiredKeycards[i].item.KeycardType + " is not implemented.");
                 }
