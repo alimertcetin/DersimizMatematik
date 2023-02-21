@@ -194,7 +194,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: bbd89f0703cd87a44914d530a3e7201f, type: 2}
     m_Threshold: 0.5
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 1.5
     m_CycleOffset: 0
     m_DirectBlendParameter: Weight
     m_Mirror: 0
@@ -202,7 +202,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: 22e620df918a6b14a8f11c549a840219, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 1.25
     m_CycleOffset: 0
     m_DirectBlendParameter: Weight
     m_Mirror: 0
@@ -245,7 +245,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jump
+  m_Name: Jumping
   m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:

@@ -5,12 +5,11 @@ public static class AnimationConstants
 	public const string AJ_Neutral_Idle = "Neutral_Idle";
 	public const string AJ_Walking = "Walking";
 	public const string AJ_Running2 = "Running2";
-	public const string Keycard_Animation_Keycard = "Animation_Keycard";
-	public const string Number_Animation_Sayi = "Animation_Sayi";
 	public const string Door_LeftSide_Open = "LeftSide_Open";
 	public const string Door_LeftSide_Close = "LeftSide_Close";
 	public const string Door_RightSide_Open = "RightSide_Open";
 	public const string Door_RightSide_Close = "RightSide_Close";
+	public const string Keycard_KeycardSpin = "KeycardSpin";
 	// Animator parameters
 	public const string AJ_Jump_Trigger = "Jump";
 	public const string AJ_Speed_Float = "Speed";

@@ -13,7 +13,6 @@ namespace LessonIsMath.PlayerSystems
         Animator animator;
 
         float audioSourcePitch;
-        float speed;
 
         private void Awake()
         {
@@ -24,19 +23,17 @@ namespace LessonIsMath.PlayerSystems
 
         public void PlayJump()
         {
-            animator.Play("Jump");
+            animator.Play(AnimationConstants.AJ_Jumping);
         }
 
         public void PlayWalk(float speed)
         {
-            animator.SetFloat("Speed", speed, .2f, Time.deltaTime);
+            animator.SetFloat(AnimationConstants.AJ_Speed_Float, speed, 0.1f, Time.deltaTime);
         }
 
         //Walk and run animation is using this method
         private void PlayAudio()
         {
-            if (speed < 0.1f) return;
-
             audioSource.pitch = IsRunning ? 1.5f : audioSourcePitch;
             audioSource.PlayOneShot(GetClip());
         }
