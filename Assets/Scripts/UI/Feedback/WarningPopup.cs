@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using ElRaccoone.Tweens;
 using TMPro;
 using UnityEngine;
 
@@ -6,29 +7,37 @@ namespace LessonIsMath.UI
 {
     public class WarningPopup : MonoBehaviour
     {
-        private TMP_Text txt_Uyari;
-        Coroutine warnCoroutine;
+        TMP_Text txt_Warning;
+        Vector3 initialScale;
 
         private void Awake()
         {
-            txt_Uyari = GetComponentInChildren<TMP_Text>();
+            initialScale = transform.localScale;
+            txt_Warning = GetComponentInChildren<TMP_Text>();
         }
 
         public void ShowWarning(string text, bool show, float warningDuration)
         {
-            gameObject.SetActive(show);
-            txt_Uyari.text = text;
-            if (show == false) return;
+            if (show && gameObject.activeSelf) return;
 
-            if (warnCoroutine != null) StopCoroutine(warnCoroutine);
+            gameObject.TweenCancelAll();
 
-            warnCoroutine = StartCoroutine(Warn(warningDuration));
-        }
+            if (show)
+            {
+                gameObject.SetActive(true);
+                transform.localScale = Vector3.zero;
+                txt_Warning.text = text;
+                gameObject.TweenLocalScale(initialScale, warningDuration * 0.5f)
+                    .SetEase(ElRaccoone.Tweens.Core.EaseType.BounceOut)
+                    .SetOnComplete(() => ShowWarning("", false, warningDuration));
+                return;
+            }
 
-        private IEnumerator Warn(float time)
-        {
-            yield return new WaitForSeconds(time);
-            gameObject.SetActive(false);
+            transform.localScale = initialScale;
+            gameObject.TweenLocalScale(Vector3.zero, warningDuration * 0.25f)
+                .SetDelay(warningDuration * 0.25f)
+                .SetEase(ElRaccoone.Tweens.Core.EaseType.BackIn)
+                .SetOnComplete(() => gameObject.SetActive(false));
         }
     }
 }
