@@ -8,71 +8,54 @@ namespace XIV.EditorUtils
 {
     public static class AnimationConstantsGenerator
     {
-        const string SEPARATOR = "|";
         const string CLASS_NAME = "AnimationConstants";
 
         public static string GetClassString()
         {
             static string FormatStringFieldValue(string value) => $"\"{value}\"";
             
+            ClassGenerator generator = new ClassGenerator(CLASS_NAME, classModifier: "static");
             // Find all Animator controllers in the project
             string[] guids = AssetDatabase.FindAssets("t:AnimatorController");
-            List<AnimatorController> animators = new List<AnimatorController>();
             for (int i = 0; i < guids.Length; i++)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(path);
-                if (controller != null)
-                {
-                    animators.Add(controller);
-                }
-            }
-
-            ClassGenerator generator = new ClassGenerator(CLASS_NAME, classModifier: "static");
-            
-            List<string> animationNames = new List<string>();
-            Dictionary<AnimatorControllerParameter, string> parameters = new Dictionary<AnimatorControllerParameter, string>();
-            for (int i = 0; i < animators.Count; i++)
-            {
-                AnimatorController controller = animators[i];
+                if (controller == null) continue;
+                
                 string controllerName = controller.name.Replace("Animator_", "").Replace("Animator", "");
-                for (int j = 0; j < controller.parameters.Length; j++)
-                {
-                    AnimatorControllerParameter param = controller.parameters[j];
-                    if (!parameters.ContainsKey(param))
-                    {
-                        parameters.Add(param, controllerName + SEPARATOR + param.name);
-                    }
-                }
-
+                string animatorName = CleanFieldName(controllerName);
+                
+                ClassGenerator innerClass = new ClassGenerator(controllerName, classModifier: "static", isInnerClass: true);
+                // Animations
                 for (int j = 0; j < controller.animationClips.Length; j++)
                 {
                     AnimationClip animationClip = controller.animationClips[j];
-                    animationNames.Add(controllerName + SEPARATOR + animationClip.name);
-                }
-
-                ClassGenerator innerClass = new ClassGenerator(controllerName, classModifier: "static", isInnerClass: true);
-
-                foreach (var name in animationNames)
-                {
-                    var unpacked = name.Split(SEPARATOR);
-                    string animatorName = CleanFieldName(unpacked[0]);
-                    string animationName = CleanFieldName(unpacked[1]);
+                    string animationName = CleanFieldName(animationClip.name);
                     innerClass.AddField($"{animatorName}_{animationName}", FormatStringFieldValue(animationName), "string", "const");
                 }
-                animationNames.Clear();
-
-                foreach (KeyValuePair<AnimatorControllerParameter, string> pair in parameters)
+                
+                // Parameters
+                for (int j = 0; j < controller.parameters.Length; j++)
                 {
-                    var unpacked = pair.Value.Split(SEPARATOR);
-                    string animatorName = CleanFieldName(unpacked[0]);
-                    string paramName = CleanFieldName(unpacked[1]);
-                    string typeSuffix = GetParameterTypeSuffix(pair.Key.type);
+                    AnimatorControllerParameter param = controller.parameters[j];
+                    string paramName = CleanFieldName(param.name);
+                    string typeSuffix = GetParameterTypeSuffix(param.type);
                     innerClass.AddField($"{animatorName}_{paramName}_{typeSuffix}", FormatStringFieldValue(paramName), "string", "const");
                 }
-                parameters.Clear();
+                
+                // Layers
+                for (int j = 0; j < controller.layers.Length; j++)
+                {
+                    AnimatorControllerLayer layer = controller.layers[j];
+                    var layerName = CleanFieldName(layer.name);
+                    if (layerName.ToLower().Contains("layer") == false) layerName += "_Layer";
+                    innerClass.AddField($"{animatorName}_{layerName}", j.ToString(), "int", "const");
+                }
+                
                 generator.AddInnerClass(innerClass);
             }
+
 
             return generator.EndClass();
         }
