@@ -16,6 +16,8 @@ public static class AnimationConstants
 		public const string AJ_OpenDoor = "OpenDoor";
 		public const string AJ_Speed_Float = "Speed";
 		public const string AJ_Jump_Bool = "Jump";
+		public const int AJ_Base_Layer = 0;
+		public const int AJ_Right_Hand_Override_Layer = 1;
 	}// class AJ
 	public static class Door 
 	{
@@ -29,17 +31,20 @@ public static class AnimationConstants
 		public const string Door_RightSide_Open_Bool = "RightSide_Open";
 		public const string Door_RightSide_Close_Bool = "RightSide_Close";
 		public const string Door_AnimationSpeed_Float = "AnimationSpeed";
+		public const int Door_Base_Layer = 0;
 	}// class Door
 	public static class Keycard 
 	{
 		// Members
 		public const string Keycard_KeycardSpin = "KeycardSpin";
+		public const int Keycard_Base_Layer = 0;
 	}// class Keycard
 	public static class TestController 
 	{
 		// Members
 		public const string TestController_DoTransitionToState1_Trigger = "DoTransitionToState1";
 		public const string TestController_DoTransitionToState2_Trigger = "DoTransitionToState2";
+		public const int TestController_Base_Layer = 0;
 	}// class TestController
 }// class AnimationConstants
 
