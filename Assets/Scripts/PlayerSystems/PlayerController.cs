@@ -42,6 +42,7 @@ namespace LessonIsMath.PlayerSystems
         bool isGrounded => charController.isGrounded;
         bool jumpPressed { get; set; }
         bool runPressed { get; set; }
+        bool playJump;
 
         void Awake()
         {
@@ -121,7 +122,11 @@ namespace LessonIsMath.PlayerSystems
 
             if (movement.y < maxGravityForce) movement.y = maxGravityForce;
 
-            if (isGrounded && jumpPressed && playerAnimationController.IsJumpPlaying()) movement.y = jumpForce;
+            if (isGrounded && jumpPressed && playerAnimationController.IsJumpPlaying() == false)
+            {
+                movement.y = jumpForce;
+                playJump = true;
+            }
 
             charController.Move(movement * Time.deltaTime);
             storedVerticalAcceleration = movement.y;
@@ -130,9 +135,10 @@ namespace LessonIsMath.PlayerSystems
 
         void HandleAnimation()
         {
-            if (jumpPressed)
+            if (playJump)
             {
-                if (playerAnimationController.IsJumpPlaying() == false) playerAnimationController.PlayJump();
+                playerAnimationController.PlayJump();
+                playJump = false;
             }
             else
             {
