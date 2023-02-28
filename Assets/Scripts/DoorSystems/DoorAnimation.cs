@@ -39,32 +39,32 @@ namespace LessonIsMath
 
         void OpenLeftSide()
         {
-            StopAnimation(animator, AnimationConstants.Door_LeftSide_Close_Bool);
-            PlayAnimation(animator, AnimationConstants.Door_LeftSide_Open_Bool);
+            StopAnimation(animator, AnimationConstants.Door.Door_LeftSide_Close_Bool);
+            PlayAnimation(animator, AnimationConstants.Door.Door_LeftSide_Open_Bool);
         }
 
         void CloseLeftSide()
         {
-            StopAnimation(animator, AnimationConstants.Door_LeftSide_Open_Bool);
-            PlayAnimation(animator, AnimationConstants.Door_LeftSide_Close_Bool);
+            StopAnimation(animator, AnimationConstants.Door.Door_LeftSide_Open_Bool);
+            PlayAnimation(animator, AnimationConstants.Door.Door_LeftSide_Close_Bool);
         }
 
         void OpenRightSide()
         {
-            StopAnimation(animator, AnimationConstants.Door_RightSide_Close_Bool);
-            PlayAnimation(animator, AnimationConstants.Door_RightSide_Open_Bool);
+            StopAnimation(animator, AnimationConstants.Door.Door_RightSide_Close_Bool);
+            PlayAnimation(animator, AnimationConstants.Door.Door_RightSide_Open_Bool);
         }
 
         void CloseRightSide()
         {
-            StopAnimation(animator, AnimationConstants.Door_RightSide_Open_Bool);
-            PlayAnimation(animator, AnimationConstants.Door_RightSide_Close_Bool);
+            StopAnimation(animator, AnimationConstants.Door.Door_RightSide_Open_Bool);
+            PlayAnimation(animator, AnimationConstants.Door.Door_RightSide_Close_Bool);
         }
 
         void PlayAnimation(Animator animController, string animationName)
         {
             movementSpeed = Random.Range(0.5f, 1.5f);
-            animController.SetFloat(AnimationConstants.Door_AnimationSpeed_Float, movementSpeed);
+            animController.SetFloat(AnimationConstants.Door.Door_AnimationSpeed_Float, movementSpeed);
             animController.SetBool(animationName, true);
 
         }
