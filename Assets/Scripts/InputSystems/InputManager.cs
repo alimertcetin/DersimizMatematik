@@ -21,20 +21,20 @@ namespace LessonIsMath.Input
 
         public static class GameState
         {
-            public static Action GameManagerEnabled = delegate { };
-            public static Action GameManagerDisabled = delegate { };
+            public static Action OnEnable = delegate { };
+            public static Action OnDisable = delegate { };
 
             public static void Enable()
             {
                 CursorManager.UnlockCursor();
                 PlayerControls.GameState.Enable();
-                GameManagerEnabled.Invoke();
+                OnEnable.Invoke();
             }
 
             public static void Disable()
             {
                 PlayerControls.GameState.Disable();
-                GameManagerDisabled.Invoke();
+                OnDisable.Invoke();
             }
 
             public static void SetCallbacks(PlayerControls.IGameStateActions instance)
@@ -45,20 +45,20 @@ namespace LessonIsMath.Input
 
         public static class CharacterMovement
         {
-            public static Action enabled = delegate { };
-            public static Action disabled = delegate { };
+            public static Action OnEnable = delegate { };
+            public static Action OnDisable = delegate { };
 
             public static void Enable()
             {
                 CursorManager.LockCursor();
                 PlayerControls.CharacterMovement.Enable();
-                enabled.Invoke();
+                OnEnable.Invoke();
             }
 
             public static void Disable()
             {
                 PlayerControls.CharacterMovement.Disable();
-                disabled.Invoke();
+                OnDisable.Invoke();
             }
 
             public static void SetCallbacks(PlayerControls.ICharacterMovementActions instance)
@@ -69,19 +69,19 @@ namespace LessonIsMath.Input
 
         public static class Interaction
         {
-            public static Action enabled = delegate { };
-            public static Action disabled = delegate { };
+            public static Action OnEnable = delegate { };
+            public static Action OnDisable = delegate { };
 
             public static void Enable()
             {
                 PlayerControls.Interaction.Enable();
-                enabled.Invoke();
+                OnEnable.Invoke();
             }
 
             public static void Disable()
             {
                 PlayerControls.Interaction.Disable();
-                disabled.Invoke();
+                OnDisable.Invoke();
             }
 
             public static void SetCallbacks(PlayerControls.IInteractionActions instance)
@@ -92,19 +92,19 @@ namespace LessonIsMath.Input
 
         public static class GameUI
         {
-            public static Action enabled = delegate { };
-            public static Action disabled = delegate { };
+            public static Action OnEnable = delegate { };
+            public static Action OnDisable = delegate { };
 
             public static void Enable()
             {
                 PlayerControls.GameUI.Enable();
-                enabled.Invoke();
+                OnEnable.Invoke();
             }
 
             public static void Disable()
             {
                 PlayerControls.GameUI.Disable();
-                disabled.Invoke();
+                OnDisable.Invoke();
             }
 
             public static void SetCallbacks(PlayerControls.IGameUIActions instance)
@@ -115,19 +115,19 @@ namespace LessonIsMath.Input
 
         public static class PageUI
         {
-            public static Action enabled = delegate { };
-            public static Action disabled = delegate { };
+            public static Action OnEnable = delegate { };
+            public static Action OnDisable = delegate { };
 
             public static void Enable()
             {
                 PlayerControls.PageUI.Enable();
-                enabled.Invoke();
+                OnEnable.Invoke();
             }
 
             public static void Disable()
             {
                 PlayerControls.PageUI.Disable();
-                disabled.Invoke();
+                OnDisable.Invoke();
             }
 
             public static void SetCallbacks(PlayerControls.IPageUIActions instance)
@@ -138,8 +138,8 @@ namespace LessonIsMath.Input
 
         public static class MakeOperationUI
         {
-            public static Action MakeOperationUI_Enabled = delegate { };
-            public static Action MakeOperationUI_Disabled = delegate { };
+            public static Action OnEnable = delegate { };
+            public static Action OnDisable = delegate { };
 
             public static void Enable()
             {
@@ -147,7 +147,7 @@ namespace LessonIsMath.Input
                 Keypad.Enable();
                 PageUI.Enable();
                 PlayerControls.MakeOperationUI.Enable();
-                MakeOperationUI_Enabled.Invoke();
+                OnEnable.Invoke();
             }
 
             public static void Disable()
@@ -155,7 +155,7 @@ namespace LessonIsMath.Input
                 Keypad.Disable();
                 PageUI.Disable();
                 PlayerControls.MakeOperationUI.Disable();
-                MakeOperationUI_Disabled.Invoke();
+                OnDisable.Invoke();
             }
 
             public static void SetCallbacks(PlayerControls.IMakeOperationUIActions instance)
@@ -166,8 +166,8 @@ namespace LessonIsMath.Input
 
         public static class EarnNumberUI
         {
-            public static Action EarnNumberUI_Enabled = delegate { };
-            public static Action EarnNumberUI_Disabled = delegate { };
+            public static Action OnEnable = delegate { };
+            public static Action OnDisable = delegate { };
 
             public static void Enable()
             {
@@ -175,7 +175,7 @@ namespace LessonIsMath.Input
                 Keypad.Enable();
                 PageUI.Enable();
                 PlayerControls.EarnNumberUI.Enable();
-                EarnNumberUI_Enabled.Invoke();
+                OnEnable.Invoke();
             }
 
             public static void Disable()
@@ -183,7 +183,7 @@ namespace LessonIsMath.Input
                 Keypad.Disable();
                 PageUI.Disable();
                 PlayerControls.EarnNumberUI.Disable();
-                EarnNumberUI_Disabled.Invoke();
+                OnDisable.Invoke();
             }
 
             public static void SetCallbacks(PlayerControls.IEarnNumberUIActions instance)
@@ -194,19 +194,19 @@ namespace LessonIsMath.Input
 
         public static class Keypad
         {
-            public static Action enabled = delegate { };
-            public static Action disabled = delegate { };
+            public static Action OnEnable = delegate { };
+            public static Action OnDisable = delegate { };
 
             public static void Enable()
             {
                 PlayerControls.Keypad.Enable();
-                enabled.Invoke();
+                OnEnable.Invoke();
             }
 
             public static void Disable()
             {
                 PlayerControls.Keypad.Disable();
-                disabled.Invoke();
+                OnDisable.Invoke();
             }
 
             public static void SetCallbacks(PlayerControls.IKeypadActions instance)
