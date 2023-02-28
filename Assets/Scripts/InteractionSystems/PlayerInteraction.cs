@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LessonIsMath.Input;
+using LessonIsMath.PlayerSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,11 +19,15 @@ namespace LessonIsMath.InteractionSystems
         HashSet<IInteractable> interactables = new HashSet<IInteractable>(8);
         List<Collider> otherColliders = new List<Collider>();
         IInteractable currentInteractable;
+        PlayerController playerController;
+
+        const float INTERACTION_DISTANCE = 0.5f;
 
         void Awake()
         {
             triggerCollider.gameObject.AddComponent<InteractionHelper>().playerInteraction = this;
             InputManager.Interaction.SetCallbacks(this);
+            playerController = GetComponent<PlayerController>();
         }
 
         void OnEnable()
@@ -39,6 +44,25 @@ namespace LessonIsMath.InteractionSystems
         {
             if (context.performed == false || currentInteractable == null) return;
 
+            var interactableStayPosition = currentInteractable.GetInteractionStayPosition(this);
+            if (Vector3.Distance(transform.position, interactableStayPosition) > INTERACTION_DISTANCE)
+            {
+                playerController.SetTarget(new TargetData
+                {
+                    forward = -(currentInteractable as Component).transform.forward,
+                    targetPosition = interactableStayPosition,
+                    OnTargetReached = () =>
+                    {
+                        if (currentInteractable == null) return;
+                        
+                        InputManager.Interaction.Disable();
+                        notificationChannel.RaiseEvent("", false);
+                        currentInteractable.Interact(this);
+                    }
+                });
+                return;
+            }
+            
             InputManager.Interaction.Disable();
             notificationChannel.RaiseEvent("", false);
             currentInteractable.Interact(this);
@@ -67,7 +91,6 @@ namespace LessonIsMath.InteractionSystems
             if (other.TryGetComponent<IInteractable>(out var otherInteractable))
             {
                 interactables.Add(otherInteractable);
-                //if (IsAvailableForInteraction(other)) ChangeCurrentInteractable(otherInteractable);
             }
             ChangeCurrentInteractable(GetClosestInteractable());
         }

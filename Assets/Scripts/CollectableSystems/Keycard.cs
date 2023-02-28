@@ -15,6 +15,7 @@ namespace LessonIsMath.CollectableSystems
     [RequireComponent(typeof(SaveableEntity))]
     public class Keycard : MonoBehaviour, ISaveable, IInteractable
     {
+        [SerializeField] Transform interactionPos;
         [SerializeField] KeycardItemSO keycardItemSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] ParticleSystem CollectedParticle = null;
@@ -76,6 +77,9 @@ namespace LessonIsMath.CollectableSystems
         {
             return "Press " + InputManager.InteractionKeyName + " to collect " + keycardItemSO.GetItem().GetColoredCardString();
         }
+
+        Vector3 IInteractable.GetInteractionStayPosition(IInteractor interactor) => interactionPos.position;
+        Vector3 IInteractable.GetReachPosition(IInteractor interactor) => transform.position;
 
         void SpawnParicle()
         {

@@ -19,6 +19,8 @@ namespace LessonIsMath.DoorSystems
 {
     public class Door : MonoBehaviour, IUIEventListener, IInteractable, ISaveable
     {
+        [SerializeField] Transform interactionPos;
+        [SerializeField] Transform doorHandle;
         [SerializeField] DoorAnimation doorAnimation;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] DoorEventChannelSO lockedDoorUIChannel = default;
@@ -115,6 +117,9 @@ namespace LessonIsMath.DoorSystems
                 return "";
             }
         }
+
+        Vector3 IInteractable.GetInteractionStayPosition(IInteractor interactor) => interactionPos.position;
+        Vector3 IInteractable.GetReachPosition(IInteractor interactor) => doorHandle.position;
 
         public bool SolveQuestion(int answer)
         {

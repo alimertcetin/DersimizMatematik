@@ -34,6 +34,8 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
         }
 
         string IInteractable.GetInteractionString() => "Press " + InputManager.InteractionKeyName + " to interact with Blackboard";
+        Vector3 IInteractable.GetInteractionStayPosition(IInteractor interactor) => (interactor as Component).transform.position;
+        Vector3 IInteractable.GetReachPosition(IInteractor interactor) => transform.position;
 
         void IUIEventListener.OnShowUI(GameUI ui) => isUIActive = true;
         void IUIEventListener.OnHideUI(GameUI ui) => isUIActive = false;
