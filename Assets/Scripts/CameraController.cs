@@ -1,4 +1,5 @@
-﻿using Cinemachine;
+﻿using System;
+using Cinemachine;
 using LessonIsMath.Input;
 using UnityEngine;
 
@@ -9,33 +10,46 @@ public class CameraController : MonoBehaviour
     float CameraSpeed_X;
     float CameraSpeed_Y;
 
-    private void Awake()
+    void Awake()
     {
         cameraLook = GetComponent<CinemachineFreeLook>();
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         CameraSpeed_Y = cameraLook.m_YAxis.m_MaxSpeed;
         CameraSpeed_X = cameraLook.m_XAxis.m_MaxSpeed;
 
-        InputManager.CharacterMovement.enabled += onGamePlayEnabled;
-        InputManager.CharacterMovement.disabled += onGamePlayDisabled;
+        InputManager.CharacterMovement.OnEnable += OnGamePlayEnabled;
+        InputManager.CharacterMovement.OnDisable += OnGamePlayDisabled;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
-        InputManager.CharacterMovement.enabled -= onGamePlayEnabled;
-        InputManager.CharacterMovement.disabled -= onGamePlayDisabled;
+        InputManager.CharacterMovement.OnEnable -= OnGamePlayEnabled;
+        InputManager.CharacterMovement.OnDisable -= OnGamePlayDisabled;
     }
+    
+#if UNITY_EDITOR
+    bool toggle;
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (toggle) OnGamePlayEnabled();
+            else OnGamePlayDisabled();
+            toggle = !toggle;
+        }
+    }
+#endif
 
-    private void onGamePlayEnabled()
+    void OnGamePlayEnabled()
     {
         cameraLook.m_YAxis.m_MaxSpeed = CameraSpeed_Y;
         cameraLook.m_XAxis.m_MaxSpeed = CameraSpeed_X;
     }
 
-    private void onGamePlayDisabled()
+    void OnGamePlayDisabled()
     {
         cameraLook.m_YAxis.m_MaxSpeed = 0;
         cameraLook.m_XAxis.m_MaxSpeed = 0;
