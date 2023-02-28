@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using XIV.Utils;
 
 namespace XIV.EditorUtils
 {
     public static class AnimationConstantsGenerator
     {
-        const string SEPERATOR = "|";
+        const string SEPARATOR = "|";
+        const string CLASS_NAME = "AnimationConstants";
 
         public static string GetClassString()
         {
+            static string FormatStringFieldValue(string value) => $"\"{value}\"";
+            
             // Find all Animator controllers in the project
             string[] guids = AssetDatabase.FindAssets("t:AnimatorController");
             List<AnimatorController> animators = new List<AnimatorController>();
-            List<string> animationNames = new List<string>();
             for (int i = 0; i < guids.Length; i++)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[i]);
@@ -27,7 +28,9 @@ namespace XIV.EditorUtils
                 }
             }
 
-            // Find all Animator parameters used in the controllers
+            ClassGenerator generator = new ClassGenerator(CLASS_NAME, classModifier: "static");
+            
+            List<string> animationNames = new List<string>();
             Dictionary<AnimatorControllerParameter, string> parameters = new Dictionary<AnimatorControllerParameter, string>();
             for (int i = 0; i < animators.Count; i++)
             {
@@ -38,53 +41,49 @@ namespace XIV.EditorUtils
                     AnimatorControllerParameter param = controller.parameters[j];
                     if (!parameters.ContainsKey(param))
                     {
-                        parameters.Add(param, controllerName + SEPERATOR + param.name);
+                        parameters.Add(param, controllerName + SEPARATOR + param.name);
                     }
                 }
 
                 for (int j = 0; j < controller.animationClips.Length; j++)
                 {
                     AnimationClip animationClip = controller.animationClips[j];
-                    animationNames.Add(controllerName + SEPERATOR + animationClip.name);
+                    animationNames.Add(controllerName + SEPARATOR + animationClip.name);
                 }
+
+                ClassGenerator innerClass = new ClassGenerator(controllerName, classModifier: "static", isInnerClass: true);
+
+                foreach (var name in animationNames)
+                {
+                    var unpacked = name.Split(SEPARATOR);
+                    string animatorName = CleanFieldName(unpacked[0]);
+                    string animationName = CleanFieldName(unpacked[1]);
+                    innerClass.AddField($"{animatorName}_{animationName}", FormatStringFieldValue(animationName), "string", "const");
+                }
+                animationNames.Clear();
+
+                foreach (KeyValuePair<AnimatorControllerParameter, string> pair in parameters)
+                {
+                    var unpacked = pair.Value.Split(SEPARATOR);
+                    string animatorName = CleanFieldName(unpacked[0]);
+                    string paramName = CleanFieldName(unpacked[1]);
+                    string typeSuffix = GetParameterTypeSuffix(pair.Key.type);
+                    innerClass.AddField($"{animatorName}_{paramName}_{typeSuffix}", FormatStringFieldValue(paramName), "string", "const");
+                }
+                parameters.Clear();
+                generator.AddInnerClass(innerClass);
             }
 
-            // Generate the AnimationConstants class
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("public static class AnimationConstants");
-            sb.AppendLine("{");
-
-            sb.AppendLine("\t// Animation names");
-            // Loop through the animations and add them to the class as static fields
-            foreach (var name in animationNames)
-            {
-                var unpacked = name.Split(SEPERATOR);
-                string animatorName = CleanFieldName(unpacked[0]);
-                string animationName = CleanFieldName(unpacked[1]);
-                sb.AppendLine($"\tpublic const string {animatorName}_{animationName} = \"{animationName}\";");
-            }
-
-            sb.AppendLine("\t// Animator parameters");
-            foreach (KeyValuePair<AnimatorControllerParameter, string> pair in parameters)
-            {
-                var unpacked = pair.Value.Split(SEPERATOR);
-                string animatorName = CleanFieldName(unpacked[0]);
-                string paramName = CleanFieldName(unpacked[1]);
-                string typeSuffix = GetParameterTypeSuffix(pair.Key.type);
-                sb.AppendLine($"\tpublic const string {animatorName}_{paramName}_{typeSuffix} = \"{paramName}\";");
-            }
-
-            sb.AppendLine("}");
-            return sb.ToString();
+            return generator.EndClass();
         }
 
-        private static string CleanFieldName(string fieldName)
+        static string CleanFieldName(string fieldName)
         {
             // Replace spaces and other characters with underscores
             return fieldName.Replace(" ", "_").Replace("-", "_");
         }
 
-        private static string GetParameterTypeSuffix(AnimatorControllerParameterType type)
+        static string GetParameterTypeSuffix(AnimatorControllerParameterType type)
         {
             switch (type)
             {
