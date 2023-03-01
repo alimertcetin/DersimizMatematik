@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LessonIsMath.Input;
 using LessonIsMath.InteractionSystems;
 using UnityEngine;
@@ -58,16 +57,20 @@ namespace LessonIsMath.PlayerSystems
 
             // TODO : Implement path finding
             Vector3 transformPosition = transform.position;
-            Vector3 startPos = interactionData.targetData.startPos;
             Vector3 endPos = interactionData.targetData.targetPosition;
-            Vector3 middlePos = endPos + (interactionData.targetData.targetForwardDirection * 0.2f);
 #if UNITY_EDITOR
-            XIVDebug.DrawBezier(startPos, middlePos, middlePos, endPos, Color.green, 2f, 20);
+            Debug.DrawLine(transformPosition, endPos, Color.magenta, 0.2f);
 #endif
-            var t = BezierMath.GetTime(transformPosition, startPos, middlePos, middlePos, endPos);
-            t += 0.1f;
-            if (t < 1)
+            var distance = Vector3.Distance(transformPosition, endPos);
+            if (distance > 0.25f)
             {
+                Vector3 startPos = interactionData.targetData.startPos;
+                Vector3 middlePos = endPos + (interactionData.targetData.targetForwardDirection * 0.2f);
+#if UNITY_EDITOR
+                XIVDebug.DrawBezier(startPos, middlePos, middlePos, endPos, Color.green, 2f, 20);
+#endif
+                var t = BezierMath.GetTime(transformPosition, startPos, middlePos, middlePos, endPos);
+                t += 0.1f;
                 var targetPos = BezierMath.GetPoint(startPos, middlePos, middlePos, endPos, t);
                 input = GetRequiredInput((targetPos - transformPosition).normalized);
             }
