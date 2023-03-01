@@ -131,7 +131,13 @@ namespace LessonIsMath.DoorSystems
             };
         }
 
-        public Vector3 GetHandlePosition() => doorHandle.position;
+        public Vector3 GetHandlePosition() => doorHandle.GetChild(0).position;
+
+        public void RotateDoorHandle(float t)
+        {
+            var angle = Mathf.Lerp(0, -30f, t);
+            doorHandle.localRotation = Quaternion.Euler(0, 0, angle);
+        }
 
         public bool SolveQuestion(int answer)
         {
