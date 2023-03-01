@@ -19,7 +19,7 @@ namespace LessonIsMath.DoorSystems
 {
     public class Door : MonoBehaviour, IUIEventListener, IInteractable, ISaveable
     {
-        [SerializeField] Transform interactionPos;
+        [SerializeField] Transform[] interactionPositions;
         [SerializeField] Transform doorHandle;
         [SerializeField] DoorAnimation doorAnimation;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
@@ -118,8 +118,20 @@ namespace LessonIsMath.DoorSystems
             }
         }
 
-        Vector3 IInteractable.GetInteractionStayPosition(IInteractor interactor) => interactionPos.position;
-        Vector3 IInteractable.GetReachPosition(IInteractor interactor) => doorHandle.position;
+        InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
+        {
+            var interactorPos = (interactor as Component).transform.position;
+            Transform interactionPos = VectorUtils.GetClosest(interactorPos, out _, interactionPositions);
+            
+            return new InteractionTargetData
+            {
+                startPos = interactorPos,
+                targetPosition = interactionPos.position,
+                targetForwardDirection = interactionPos.forward,
+            };
+        }
+
+        public Vector3 GetHandlePosition() => doorHandle.position;
 
         public bool SolveQuestion(int answer)
         {

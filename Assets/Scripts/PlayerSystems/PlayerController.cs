@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using LessonIsMath.Input;
+using LessonIsMath.InteractionSystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV;
@@ -8,19 +10,8 @@ using XIV.XIVMath;
 
 namespace LessonIsMath.PlayerSystems
 {
-    public struct TargetData
-    {
-        public Vector3 startPos;
-        public Vector3 targetPosition;
-        public Vector3 forward;
-        public Action OnTargetReached;
-        public Action OnMovementCanceled;
-    }
-    
     public class PlayerController : MonoBehaviour, PlayerControls.ICharacterMovementActions, ISaveable
     {
-        CharacterController charController;
-        
         [SerializeField] float inputSensitivity = 2f;
         [SerializeField] float moveSpeed = 2.1f;
         [SerializeField] float runSpeed = 5;
@@ -28,6 +19,8 @@ namespace LessonIsMath.PlayerSystems
         [SerializeField] float gravityScale = .7f;
         [SerializeField] float maxGravityForce = -3;
         PlayerAnimationController playerAnimationController;
+        CharacterController charaacterController;
+        Camera mainCam;
 
         float turnVelocity;
         float storedVerticalAcceleration;
@@ -36,19 +29,19 @@ namespace LessonIsMath.PlayerSystems
         const float SPEED_THRESHOLD = 0.2f;
         
         bool movingTowardsTarget;
-        TargetData targetData;
+        InteractionData interactionData;
         Vector2 input;
 
-        bool isGrounded => charController.isGrounded;
         bool jumpPressed { get; set; }
         bool runPressed { get; set; }
         bool playJump;
 
         void Awake()
         {
-            charController = GetComponent<CharacterController>();
+            charaacterController = GetComponent<CharacterController>();
             playerAnimationController = GetComponentInChildren<PlayerAnimationController>();
             InputManager.CharacterMovement.SetCallbacks(this);
+            mainCam = Camera.main;
         }
 
         void OnEnable() => InputManager.CharacterMovement.Enable();
@@ -56,64 +49,89 @@ namespace LessonIsMath.PlayerSystems
 
         void FixedUpdate()
         {
+            if (movingTowardsTarget == false)
+            {
+                HandleMovement();
+                if (input.magnitude > Mathf.Epsilon) transform.rotation = GetRotation(input);
+                return;
+            }
+
+            // TODO : Implement path finding
+            Vector3 transformPosition = transform.position;
+            Vector3 startPos = interactionData.targetData.startPos;
+            Vector3 endPos = interactionData.targetData.targetPosition;
+            Vector3 middlePos = endPos + (interactionData.targetData.targetForwardDirection * 0.2f);
+#if UNITY_EDITOR
+            XIVDebug.DrawBezier(startPos, middlePos, middlePos, endPos, Color.green, 2f, 20);
+#endif
+            var t = BezierMath.GetTime(transformPosition, startPos, middlePos, middlePos, endPos);
+            t += 0.1f;
+            if (t < 1)
+            {
+                var targetPos = BezierMath.GetPoint(startPos, middlePos, middlePos, endPos, t);
+                input = GetRequiredInput((targetPos - transformPosition).normalized);
+            }
+            else
+            {
+                // Distance is valid but we have to make sure rotation is also valid
+                var forward = transform.forward;
+                var dot = Vector3.Dot(forward, -interactionData.targetData.targetForwardDirection);
+                if (dot < 0.6f)
+                {
+#if UNITY_EDITOR
+                    Debug.Log("Interactable is not in front of player");
+                    XIVDebug.DrawSphere(interactionData.targetData.targetPosition, 0.25f, 0.25f);
+#endif
+                    input = GetRequiredInput((interactionData.targetData.targetPosition - transformPosition).normalized);
+                    transform.rotation = GetRotation(input);
+                    return;
+                }
+
+                movingTowardsTarget = false;
+                interactionData.OnTargetReached?.Invoke();
+                input = Vector2.zero;
+            }
+            
             HandleMovement();
+            if (input.magnitude > Mathf.Epsilon) transform.rotation = GetRotation(input);
         }
-        
+
         void Update()
         {
             HandleAnimation();
+        }
+
+        Vector3 GetMovementVector(Vector2 input)
+        {
+            return Quaternion.Euler(0f, GetTargetAngle(input), 0f) * Vector3.forward * speed;
+        }
+
+        float GetTargetAngle(Vector2 input)
+        {
+            return Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + mainCam.transform.eulerAngles.y;
+        }
+
+        Quaternion GetRotation(Vector2 input)
+        {
+            var newAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, GetTargetAngle(input), ref turnVelocity, 0.15f);
+            return Quaternion.Euler(0f, newAngle, 0f);
         }
         
         void HandleMovement()
         {
             Vector3 movement = Vector3.zero;
-            Vector3 transformPosition = transform.position;
             
-            if (movingTowardsTarget)
-            {
-                Vector3 startPos = targetData.startPos;
-                Vector3 endPos = targetData.targetPosition;
-                Vector3 middlePos = endPos + targetData.forward;
-#if UNITY_EDITOR
-                XIVDebug.DrawBezier(startPos, middlePos, middlePos, endPos, Color.green, 2f, 20);
-#endif
-                var t = BezierMath.GetTime(transformPosition, startPos, middlePos, middlePos, endPos);
-                t += 0.01f;
-                if (t < 1)
-                {
-                    var targetPos = BezierMath.GetPoint(startPos, middlePos, middlePos, endPos, t);
-                    input = GetRequiredInput((targetPos - transformPosition).normalized);
-                }
-                else
-                {
-                    movingTowardsTarget = false;
-                    targetData.OnTargetReached?.Invoke();
-                    input = Vector2.zero;
-                }
-            }
-
-            void SetMovement()
-            {
-                var targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
-                var newAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnVelocity, 0.15f);
-                transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
-                movement = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward * speed;
-            }
-            Debug.Log("IsJumping : "  + playerAnimationController.IsJumpPlaying() + " Input : " + input);
             if (input.magnitude > Mathf.Epsilon && playerAnimationController.IsJumpPlaying() == false)
             {
                 speed = Mathf.MoveTowards(speed, runPressed ? runSpeed : moveSpeed, Time.deltaTime * inputSensitivity);
-                if (speed > SPEED_THRESHOLD) SetMovement();
+                if (speed > SPEED_THRESHOLD) movement = GetMovementVector(input);
             }
             else
             {
                 if (speed > 0)
                 {
                     speed = Mathf.MoveTowards(speed, 0, Time.deltaTime * (inputSensitivity * 2f));
-                    var temp = input;
-                    input = GetRequiredInput(transform.forward);
-                    SetMovement();
-                    input = temp;
+                    movement = GetMovementVector(GetRequiredInput(transform.forward));
                 }
             }
             
@@ -122,13 +140,13 @@ namespace LessonIsMath.PlayerSystems
 
             if (movement.y < maxGravityForce) movement.y = maxGravityForce;
 
-            if (isGrounded && jumpPressed && playerAnimationController.IsJumpPlaying() == false)
+            if (charaacterController.isGrounded && jumpPressed && playerAnimationController.IsJumpPlaying() == false)
             {
                 movement.y = jumpForce;
                 playJump = true;
             }
 
-            charController.Move(movement * Time.deltaTime);
+            charaacterController.Move(movement * Time.deltaTime);
             storedVerticalAcceleration = movement.y;
             jumpPressed = false;
         }
@@ -157,11 +175,10 @@ namespace LessonIsMath.PlayerSystems
             return Vector2.zero;
         }
 
-        public void SetTarget(TargetData targetData)
+        public void SetTarget(InteractionData interactionData)
         {
             CancelTarget();
-            this.targetData = targetData;
-            this.targetData.startPos = transform.position;
+            this.interactionData = interactionData;
             movingTowardsTarget = true;
         }
 
@@ -169,7 +186,7 @@ namespace LessonIsMath.PlayerSystems
         {
             if (movingTowardsTarget == false) return;
             
-            targetData.OnMovementCanceled?.Invoke();
+            interactionData.OnMovementCanceled?.Invoke();
             movingTowardsTarget = false;
             input = Vector2.zero;
         }
@@ -177,7 +194,7 @@ namespace LessonIsMath.PlayerSystems
         void PlayerControls.ICharacterMovementActions.OnMove(InputAction.CallbackContext context)
         {
             input = context.ReadValue<Vector2>();
-            if (movingTowardsTarget) targetData.OnMovementCanceled?.Invoke();
+            if (movingTowardsTarget) interactionData.OnMovementCanceled?.Invoke();
             movingTowardsTarget = false;
         }
 

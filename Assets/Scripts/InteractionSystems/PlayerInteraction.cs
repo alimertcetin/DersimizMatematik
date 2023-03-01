@@ -7,10 +7,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #if UNITY_EDITOR
 using UnityEditor;
+using XIV;
 #endif
 
 namespace LessonIsMath.InteractionSystems
 {
+    public struct InteractionData
+    {
+        public InteractionTargetData targetData;
+        public Action OnTargetReached;
+        public Action OnMovementCanceled;
+    }
+    
     public class PlayerInteraction : MonoBehaviour, PlayerControls.IInteractionActions, IInteractor
     {
         [Tooltip("To define the interaction area")]
@@ -20,6 +28,7 @@ namespace LessonIsMath.InteractionSystems
         List<Collider> otherColliders = new List<Collider>();
         IInteractable currentInteractable;
         PlayerController playerController;
+        PlayerAnimationController playerAnimationController;
 
         const float INTERACTION_DISTANCE = 0.5f;
 
@@ -28,6 +37,7 @@ namespace LessonIsMath.InteractionSystems
             triggerCollider.gameObject.AddComponent<InteractionHelper>().playerInteraction = this;
             InputManager.Interaction.SetCallbacks(this);
             playerController = GetComponent<PlayerController>();
+            playerAnimationController = GetComponentInChildren<PlayerAnimationController>();
         }
 
         void OnEnable()
@@ -42,30 +52,63 @@ namespace LessonIsMath.InteractionSystems
 
         void PlayerControls.IInteractionActions.OnInteract(InputAction.CallbackContext context)
         {
+            void HandleInteraction(IInteractable interactable)
+            {
+                InputManager.CharacterMovement.Disable();
+                InputManager.Interaction.Disable();
+                playerAnimationController.HandleInteractionAnimation(interactable, (IInteractable interactable) =>
+                {
+                    InputManager.CharacterMovement.Enable();
+                    notificationChannel.RaiseEvent("", false);
+                    if (interactable == null)
+                    {
+                        InputManager.Interaction.Enable();
+                        return;
+                    }
+                    interactable.Interact(this);
+                });
+            }
+
+            void OnTargetReached(IInteractable interactable)
+            {
+                if (interactable.IsAvailable() == false) return;
+
+                var targetData = interactable.GetInteractionTargetData(this);
+                // TODO : Consider making target data class and update it when necessary
+                // target data could be changed until we reach the target
+                var distance = Vector3.Distance(transform.position, targetData.targetPosition);
+
+                if (distance > INTERACTION_DISTANCE)
+                {
+                    playerController.SetTarget(new InteractionData
+                    {
+                        targetData = targetData,
+                        OnTargetReached = () => OnTargetReached(interactable),
+                    });
+                    return;
+                }
+
+                HandleInteraction(interactable);
+            }
+
             if (context.performed == false || currentInteractable == null) return;
 
-            var interactableStayPosition = currentInteractable.GetInteractionStayPosition(this);
-            if (Vector3.Distance(transform.position, interactableStayPosition) > INTERACTION_DISTANCE)
+            InteractionTargetData interactionTargetData = currentInteractable.GetInteractionTargetData(this);
+            var forward = transform.forward;
+            var dot = Vector3.Dot(forward, -interactionTargetData.targetForwardDirection);
+            var distance = Vector3.Distance(transform.position, interactionTargetData.targetPosition);
+            if (distance > INTERACTION_DISTANCE || dot < 0.6f)
             {
-                playerController.SetTarget(new TargetData
+                var interactable = currentInteractable;
+                playerController.SetTarget(new InteractionData
                 {
-                    forward = -(currentInteractable as Component).transform.forward,
-                    targetPosition = interactableStayPosition,
-                    OnTargetReached = () =>
-                    {
-                        if (currentInteractable == null) return;
-                        
-                        InputManager.Interaction.Disable();
-                        notificationChannel.RaiseEvent("", false);
-                        currentInteractable.Interact(this);
-                    }
+                    targetData = interactionTargetData,
+                    OnTargetReached = () => OnTargetReached(interactable),
                 });
                 return;
             }
             
-            InputManager.Interaction.Disable();
-            notificationChannel.RaiseEvent("", false);
-            currentInteractable.Interact(this);
+            HandleInteraction(currentInteractable);
         }
 
         void IInteractor.OnInteractionEnd(IInteractable interactable)

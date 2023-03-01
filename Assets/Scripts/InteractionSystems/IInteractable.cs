@@ -7,14 +7,13 @@ namespace LessonIsMath.InteractionSystems
         bool IsAvailable();
         void Interact(IInteractor interactor);
         string GetInteractionString();
-        Vector3 GetInteractionStayPosition(IInteractor interactor);
-        Vector3 GetReachPosition(IInteractor interactor);
+        InteractionTargetData GetInteractionTargetData(IInteractor interactor);
     }
 
-    public struct InteractionPositionData
+    public struct InteractionTargetData
     {
-        public Vector3 stayPosition;
-        public Vector3 forward;
-        
+        public Vector3 startPos; // Start position of interactor
+        public Vector3 targetPosition; // target position of interactable in order to be able to interact with the object
+        public Vector3 targetForwardDirection;
     }
 }

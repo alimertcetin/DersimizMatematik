@@ -78,8 +78,16 @@ namespace LessonIsMath.CollectableSystems
             return "Press " + InputManager.InteractionKeyName + " to collect " + keycardItemSO.GetItem().GetColoredCardString();
         }
 
-        Vector3 IInteractable.GetInteractionStayPosition(IInteractor interactor) => interactionPos.position;
-        Vector3 IInteractable.GetReachPosition(IInteractor interactor) => transform.position;
+        InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
+        {
+            var interactorPos = (interactor as Component).transform.position;
+            return new InteractionTargetData
+            {
+                startPos = interactorPos,
+                targetPosition = interactionPos.position,
+                targetForwardDirection = interactionPos.forward,
+            };
+        }
 
         void SpawnParicle()
         {

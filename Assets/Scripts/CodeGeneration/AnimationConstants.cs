@@ -13,9 +13,12 @@ public static class AnimationConstants
 		public const string AJ_Idle = "Idle";
 		public const string AJ_Walk = "Walk";
 		public const string AJ_Run = "Run";
-		public const string AJ_OpenDoor = "OpenDoor";
+		public const string AJ_RightHandHold = "RightHandHold";
+		public const string AJ_RightHandRelease = "RightHandRelease";
 		public const string AJ_Speed_Float = "Speed";
 		public const string AJ_Jump_Bool = "Jump";
+		public const string AJ_RightHandHold_Bool = "RightHandHold";
+		public const string AJ_RightHandRelease_Bool = "RightHandRelease";
 		public const int AJ_Base_Layer = 0;
 		public const int AJ_Right_Hand_Override_Layer = 1;
 	}// class AJ
