@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 
 namespace XIV.Utils
 {
