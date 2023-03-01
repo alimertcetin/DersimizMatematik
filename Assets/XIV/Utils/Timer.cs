@@ -14,6 +14,7 @@ namespace XIV.Utils
         
         public bool IsDone => timer >= duration;
         public float Duration => duration;
+        public float PassedTime => timer;
 
         public Timer(float duration)
         {
