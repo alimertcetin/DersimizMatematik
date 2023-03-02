@@ -7,6 +7,7 @@ using UnityEngine.Animations.Rigging;
 using XIV.Easing;
 using XIV.EventSystem;
 using XIV.Utils;
+using CameraType = LessonIsMath.CameraSystems.CameraType;
 using Random = UnityEngine.Random;
 
 namespace LessonIsMath.PlayerSystems
@@ -14,7 +15,7 @@ namespace LessonIsMath.PlayerSystems
     [RequireComponent(typeof(AudioSource))]
     public class PlayerAnimationController : MonoBehaviour
     {
-        [SerializeField] VoidEventChannelSO closeupTransitionChannel;
+        [SerializeField] CameraTransitionEventChannelSO cameraTransitionChannel;
         [SerializeField] TwoBoneIKConstraint rightHandIKConstraint;
         [SerializeField] MultiAimConstraint splineIKConstraint;
         [SerializeField] AudioClip[] stepSound = null;
@@ -63,7 +64,7 @@ namespace LessonIsMath.PlayerSystems
 
         public void HandleInteractionAnimation(IInteractable interactable, Action<IInteractable> onAnimationEnd = null)
         {
-            void SetHandIKPositionAndRotation(Vector3 handlePos)
+            void SetHandIKPositionAndRotation(Vector3 handlePos, Quaternion handleRot)
             {
                 var direction = handlePos - rightHandIKConstraint.data.tip.position;
                 var ikTargetPos = handlePos - direction.normalized * 0.2f;
@@ -71,7 +72,7 @@ namespace LessonIsMath.PlayerSystems
                 rightHandIKConstraint.data.target.position = ikTargetPos;
                 var lookRotation = Quaternion.LookRotation(direction.normalized);
                 // Hand forward = transform.left, -90 around y axis matches target forward and hand forward
-                rightHandIKConstraint.data.target.rotation = lookRotation * Quaternion.Euler(0, -90, 0);
+                rightHandIKConstraint.data.target.rotation = lookRotation * Quaternion.Euler(0, -90, 0) * handleRot;
             }
             
             void SetIKWeights(float normalizedTime)
@@ -79,17 +80,24 @@ namespace LessonIsMath.PlayerSystems
                 rightHandIKConstraint.weight = EasingFunction.SmoothStop3(normalizedTime);
                 splineIKConstraint.weight = EasingFunction.SmoothStop3(normalizedTime, 0, 0.5f);
             }
-            closeupTransitionChannel.RaiseEvent();
+            
             if (interactable is Door door)
             {
+                if (door.GetState().HasFlag(DoorState.Unlocked) == false)
+                {
+                    onAnimationEnd?.Invoke(interactable);
+                    return;
+                }
+                
+                cameraTransitionChannel.RaiseEvent(CameraType.SideViewLeft);
                 animator.SetBool(AnimationConstants.AJ.AJ_RightHandHold_Bool, true);
                 var increaseWeightEvent = new XIVInvokeUntilEvent(DOOR_REACH_DURATION, (Timer timer) =>
                 {
-                    animator.SetLayerWeight(AnimationConstants.AJ.AJ_Right_Hand_Override_Layer, timer.NormalizedTime);
                     var normalizedTime = timer.NormalizedTime;
+                    animator.SetLayerWeight(AnimationConstants.AJ.AJ_Right_Hand_Override_Layer, timer.NormalizedTime);
+                    door.RotateDoorHandle(normalizedTime, out var handleRot);
                     SetIKWeights(normalizedTime);
-                    SetHandIKPositionAndRotation(door.GetHandlePosition());
-                    door.RotateDoorHandle(normalizedTime);
+                    SetHandIKPositionAndRotation(door.GetHandlePosition(), handleRot);
                 }).OnCompleted(() =>
                 {
                     animator.SetBool(AnimationConstants.AJ.AJ_RightHandRelease_Bool, true);
@@ -98,11 +106,12 @@ namespace LessonIsMath.PlayerSystems
                     {
                         var normalizedTime = 1 - timer.NormalizedTime;
                         animator.SetLayerWeight(AnimationConstants.AJ.AJ_Right_Hand_Override_Layer, normalizedTime);
+                        door.RotateDoorHandle(normalizedTime, out var handleRot);
                         SetIKWeights(normalizedTime);
-                        SetHandIKPositionAndRotation(door.GetHandlePosition());
-                        door.RotateDoorHandle(normalizedTime);
+                        SetHandIKPositionAndRotation(door.GetHandlePosition(), handleRot);
                     }).OnCompleted(() => animator.SetBool(AnimationConstants.AJ.AJ_RightHandRelease_Bool, false));
                     
+                    cameraTransitionChannel.RaiseEvent(CameraType.Character);
                     onAnimationEnd?.Invoke(interactable);
                     XIVEventSystem.SendEvent(decreaseWeightEvent);
                 });
@@ -111,8 +120,9 @@ namespace LessonIsMath.PlayerSystems
             else
             {
 #if UNITY_EDITOR
-                Debug.LogError("Animation is not implemented : " + interactable);
+                Debug.LogWarning("Animation is not implemented : " + interactable);
 #endif
+                cameraTransitionChannel.RaiseEvent(CameraType.Character);
                 onAnimationEnd?.Invoke(interactable);
             }
         }

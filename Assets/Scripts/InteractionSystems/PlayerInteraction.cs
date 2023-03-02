@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #if UNITY_EDITOR
 using UnityEditor;
-using XIV;
 #endif
 
 namespace LessonIsMath.InteractionSystems

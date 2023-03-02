@@ -17,6 +17,15 @@ using UnityEditor;
 
 namespace LessonIsMath.DoorSystems
 {
+    [Flags]
+    public enum DoorState
+    {
+        None = 0,
+        Unlocked = 1,
+        RequiresKeycard = 2,
+        HasQuestion = 4,
+    }
+    
     public class Door : MonoBehaviour, IUIEventListener, IInteractable, ISaveable
     {
         [SerializeField] Transform[] interactionPositions;
@@ -35,23 +44,16 @@ namespace LessonIsMath.DoorSystems
         Inventory inventory;
         IInteractor interactor;
 
-        private void Awake()
+        void Awake()
         {
             removedKeycards = new bool[requiredKeycards.Length];
             isLocked = useArithmeticOperation;
         }
 
-        void OnEnable()
-        {
-            inventoryLoadedChannel.Register(OnInventoryLoaded);
-        }
+        void OnEnable() => inventoryLoadedChannel.Register(OnInventoryLoaded);
+        void OnDisable() => inventoryLoadedChannel.Unregister(OnInventoryLoaded);
 
-        void OnDisable()
-        {
-            inventoryLoadedChannel.Unregister(OnInventoryLoaded);
-        }
-
-        private void OnInventoryLoaded(Inventory obj) => this.inventory = obj;
+        void OnInventoryLoaded(Inventory inventory) => this.inventory = inventory;
         bool IInteractable.IsAvailable() => true;
 
         void IInteractable.Interact(IInteractor interactor)
@@ -102,20 +104,14 @@ namespace LessonIsMath.DoorSystems
 
                 return total > 0 ? str : "";
             }
-            else if (isLocked == false)
-            {
-                return isOpen
+
+            if (isLocked == false) return isOpen
                     ? "Press " + InputManager.InteractionKeyName + " to Close"
                     : "Press " + InputManager.InteractionKeyName + " to Open";
-            }
-            else if (isLocked)
-            {
-                return "Door is locked. Press " + InputManager.InteractionKeyName + " button to see the Question.";
-            }
-            else
-            {
-                return "";
-            }
+
+            if (isLocked) return "Door is locked. Press " + InputManager.InteractionKeyName + " button to see the Question.";
+
+            return "";
         }
 
         InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
@@ -133,10 +129,21 @@ namespace LessonIsMath.DoorSystems
 
         public Vector3 GetHandlePosition() => doorHandle.GetChild(0).position;
 
-        public void RotateDoorHandle(float t)
+        public void RotateDoorHandle(float t, out Quaternion currentRotation)
         {
             var angle = Mathf.Lerp(0, -30f, t);
-            doorHandle.localRotation = Quaternion.Euler(0, 0, angle);
+            currentRotation = Quaternion.Euler(0, 0, angle);
+            doorHandle.localRotation = currentRotation;
+        }
+
+        public DoorState GetState()
+        {
+            DoorState state = DoorState.None;
+            if (IsRemovedAllKeycards() == false) state |= DoorState.RequiresKeycard;
+            if (useArithmeticOperation && isLocked) state |= DoorState.HasQuestion;
+            if (isLocked == false) state |= DoorState.Unlocked;
+            
+            return state;
         }
 
         public bool SolveQuestion(int answer)
@@ -151,9 +158,6 @@ namespace LessonIsMath.DoorSystems
 
         void CountKeycards(out int greenCount, out int yellowCount, out int redCount)
         {
-            //greenCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Green);
-            //yellowCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Yellow);
-            //redCount = ArrayUtils.Count(requiredKeycards, (itemSO) => itemSO.item.KeycardType == KeycardType.Red);
             greenCount = 0;
             yellowCount = 0;
             redCount = 0;
@@ -187,10 +191,7 @@ namespace LessonIsMath.DoorSystems
             return true;
         }
 
-        public string GetQuestionString()
-        {
-            return arithmeticOperation.ToString();
-        }
+        public string GetQuestionString() => arithmeticOperation.ToString();
 
         void IUIEventListener.OnShowUI(GameUI ui) { }
         void IUIEventListener.OnHideUI(GameUI ui)
@@ -233,7 +234,7 @@ namespace LessonIsMath.DoorSystems
         #region -_- Save -_-
 
         [Serializable]
-        private struct SaveData
+        struct SaveData
         {
             public bool isLocked;
             public bool isOpen;

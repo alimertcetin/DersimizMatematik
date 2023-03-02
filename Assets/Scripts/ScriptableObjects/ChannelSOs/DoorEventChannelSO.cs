@@ -15,9 +15,7 @@ namespace LessonIsMath.ScriptableObjects.ChannelSOs
                 OnEventRaised.Invoke(door, value);
             else
             {
-                Debug.LogWarning("A ShowLockedDoorUI was requested, but nobody picked it up. " +
-                    "Check why there is no LockedDoor_UI_Manager already present, " +
-                    "and make sure it's listening on this Event channel.");
+                Debug.LogWarning("A ShowLockedDoorUI was requested, but nobody picked it up. " + "Check why there is no LockedDoor_UI_Manager already present, " + "and make sure it's listening on this Event channel.");
             }
         }
     }
