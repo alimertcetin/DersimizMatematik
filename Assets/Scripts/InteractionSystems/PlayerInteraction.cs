@@ -200,7 +200,6 @@ namespace LessonIsMath.InteractionSystems
 #if UNITY_EDITOR
                 Debug.Log($"{otherColliders[i]} is between {this.gameObject} and {other}");
                 Debug.DrawLine(currentPos, otherColliders[i].transform.position, Color.blue, lineDuration);
-                Selection.activeGameObject = otherColliders[i].gameObject;
 #endif
 
                 return false;
