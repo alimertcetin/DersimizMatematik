@@ -67,7 +67,7 @@ namespace LessonIsMath.PlayerSystems
                 Vector3 startPos = interactionData.targetData.startPos;
                 Vector3 middlePos = endPos + (interactionData.targetData.targetForwardDirection * 0.2f);
 #if UNITY_EDITOR
-                XIVDebug.DrawBezier(startPos, middlePos, middlePos, endPos, Color.green, 2f, 20);
+                XIVDebug.DrawBezier(startPos, middlePos, middlePos, endPos, Color.green, 0.2f);
 #endif
                 var t = BezierMath.GetTime(transformPosition, startPos, middlePos, middlePos, endPos);
                 t += 0.1f;
