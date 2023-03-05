@@ -4,32 +4,85 @@ using XIV.Utils;
 
 namespace XIV.EventSystem
 {
-    public class XIVInvokeUntilEvent : XIVEvent
+    public class XIVInvokeUntilEvent : IEvent<XIVInvokeUntilEvent>
     {
+        float waitDuration;
         Timer timer;
         Action<Timer> action;
+        Action onCompleted;
+        Action onCanceled;
+        Func<bool> cancelationCondition;
+        bool hasCancelCondition;
 
-        public XIVInvokeUntilEvent(float duration, Action<Timer> action)
+        public XIVInvokeUntilEvent(float duration)
         {
             timer = new Timer(duration);
-            this.action = action;
         }
 
-        public new XIVInvokeUntilEvent OnCompleted(Action action)
+        public XIVInvokeUntilEvent AddAction(Action<Timer> action)
         {
-            base.OnCompleted = action;
+            this.action = action;
+            return this;
+        }
+        
+        public XIVInvokeUntilEvent AddCancelCondition(Func<bool> condition)
+        {
+            this.cancelationCondition = condition;
+            hasCancelCondition = true;
+            return this;
+        }
+        
+        public XIVInvokeUntilEvent Wait(float seconds)
+        {
+            this.waitDuration = seconds;
             return this;
         }
 
-        public override void UpdateEvent()
+        public void Update()
         {
-            timer.Update(Time.deltaTime);
+            var deltaTime = Time.deltaTime;
+            waitDuration -= deltaTime;
+            if (waitDuration > 0) return;
+            
+            if (hasCancelCondition && cancelationCondition.Invoke())
+            {
+                XIVEventSystem.CancelEvent(this);
+                return;
+            }
+
+            timer.Update(deltaTime);
             action.Invoke(timer);
         }
 
-        public override bool IsDone()
+        public bool IsDone()
         {
             return timer.IsDone;
+        }
+
+        public void Complete()
+        {
+            onCompleted?.Invoke();
+        }
+
+        public void Cancel()
+        {
+            onCanceled?.Invoke();
+            action = null;
+            onCompleted = null;
+            onCanceled = null;
+            cancelationCondition = null;
+        }
+
+        public XIVInvokeUntilEvent OnCompleted(Action action)
+        {
+            onCompleted = action;
+            return this;
+        }
+
+        public XIVInvokeUntilEvent OnCanceled(Action action)
+        {
+            onCanceled = action;
+            return this;
         }
     }
 }

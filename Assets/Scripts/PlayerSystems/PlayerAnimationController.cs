@@ -51,12 +51,11 @@ namespace LessonIsMath.PlayerSystems
             
             animator.SetBool(AnimationConstants.AJ.AJ_Jump_Bool, true);
             isJumping = true;
-            var timedEvent = new XIVTimedEvent(duration);
-            timedEvent.OnCompleted = () =>
+            var timedEvent = new XIVTimedEvent(duration).OnCompleted(() =>
             {
                 animator.SetBool(AnimationConstants.AJ.AJ_Jump_Bool, false);
                 isJumping = false;
-            };
+            });
             XIVEventSystem.SendEvent(timedEvent);
         }
 
@@ -91,7 +90,7 @@ namespace LessonIsMath.PlayerSystems
                 
                 cameraTransitionChannel.RaiseEvent(CameraType.SideViewLeft);
                 animator.SetBool(AnimationConstants.AJ.AJ_RightHandHold_Bool, true);
-                var increaseWeightEvent = new XIVInvokeUntilEvent(DOOR_REACH_DURATION, (Timer timer) =>
+                var increaseWeightEvent = new XIVInvokeUntilEvent(DOOR_REACH_DURATION).AddAction((Timer timer) =>
                 {
                     var normalizedTime = timer.NormalizedTime;
                     animator.SetLayerWeight(AnimationConstants.AJ.AJ_Right_Hand_Override_Layer, timer.NormalizedTime);
@@ -102,7 +101,7 @@ namespace LessonIsMath.PlayerSystems
                 {
                     animator.SetBool(AnimationConstants.AJ.AJ_RightHandRelease_Bool, true);
                     animator.SetBool(AnimationConstants.AJ.AJ_RightHandHold_Bool, false);
-                    var decreaseWeightEvent = new XIVInvokeUntilEvent(DOOR_REACH_DURATION, (Timer timer) =>
+                    var decreaseWeightEvent = new XIVInvokeUntilEvent(DOOR_REACH_DURATION).AddAction((Timer timer) =>
                     {
                         var normalizedTime = 1 - timer.NormalizedTime;
                         animator.SetLayerWeight(AnimationConstants.AJ.AJ_Right_Hand_Override_Layer, normalizedTime);

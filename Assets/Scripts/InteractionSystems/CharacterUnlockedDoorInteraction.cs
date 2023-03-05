@@ -112,23 +112,23 @@ namespace LessonIsMath.InteractionSystems
         void SendPushDoorEvent()
         {
             var force = openDoorForce * 0.15f;
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent(2f, (Timer timer) =>
-            {
-                ApplyRotationToDoor(force * (1 - timer.NormalizedTime) * Time.deltaTime, lastRotationAxis);
-            }));
-            var invokeLaterEvent = new XIVTimedEvent(5f);
-            invokeLaterEvent.OnCompleted = () =>
-            {
-                if (canSendEvent) return;
-                var initialRotation = doorPivot.rotation;
-                XIVEventSystem.SendEvent(new XIVInvokeUntilEvent(2.5f, (Timer timer) =>
+            var continuesMovementAction = new XIVInvokeUntilEvent(2f).AddAction((Timer timer) =>
                 {
-                    if (canSendEvent) return; // TODO : Cancel event
+                    ApplyRotationToDoor(force * (1 - timer.NormalizedTime) * Time.deltaTime, lastRotationAxis);
+                })
+                .AddCancelCondition(() => canSendEvent);
+            
+            Quaternion initialRotation = doorPivot.rotation;
+            var closeDoorEvent = new XIVInvokeUntilEvent(2.5f).AddAction((Timer timer) =>
+                {
                     var normalizedTime = EasingFunction.SmoothStop3(timer.NormalizedTime);
                     doorPivot.rotation = Quaternion.Lerp(initialRotation, door.transform.rotation, normalizedTime);
-                }));
-            };
-            XIVEventSystem.SendEvent(invokeLaterEvent);
+                })
+                .AddCancelCondition(() => canSendEvent)
+                .Wait(5f);
+            
+            XIVEventSystem.SendEvent(continuesMovementAction);
+            XIVEventSystem.SendEvent(closeDoorEvent);
         }
 
         float GetWeight(TwoBoneIKConstraint handIK)
