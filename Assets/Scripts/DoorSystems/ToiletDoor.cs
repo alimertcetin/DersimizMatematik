@@ -7,7 +7,6 @@ namespace LessonIsMath.DoorSystems
 {
     public class ToiletDoor : MonoBehaviour, IInteractable
     {
-        [SerializeField] Transform[] interactionPositions;
         [SerializeField] Transform door;
         [SerializeField] float maxAngle;
         [SerializeField] float doorSpeed;
@@ -76,13 +75,13 @@ namespace LessonIsMath.DoorSystems
 
         InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
         {
-            Vector3 interactorPos = (interactor as Component).transform.position;
-            Transform interactionPos = interactionPositions.GetClosestOnXZPlane(interactorPos);
+            var interactorTransform = (interactor as Component).transform;
+            Vector3 interactorPos = interactorTransform.position;
             return new InteractionTargetData
             {
                 startPos = interactorPos,
-                targetPosition = interactionPos.position,
-                targetForwardDirection = interactionPos.forward,
+                targetPosition = interactorPos,
+                targetForwardDirection = -interactorTransform.forward,
             };
         }
     }
