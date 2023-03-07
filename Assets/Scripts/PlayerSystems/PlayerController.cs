@@ -9,6 +9,12 @@ using XIV.XIVMath;
 
 namespace LessonIsMath.PlayerSystems
 {
+    // TODO : Split PlayerController to 3 class
+    /*
+     - Actual controller that recieves input and moves the transform
+     - Player Input Provider
+     - Auto movement that replaces input provider
+     */
     public class PlayerController : MonoBehaviour, PlayerControls.ICharacterMovementActions, ISaveable
     {
         [SerializeField] float inputSensitivity = 2f;
@@ -129,13 +135,10 @@ namespace LessonIsMath.PlayerSystems
                 speed = Mathf.MoveTowards(speed, runPressed ? runSpeed : moveSpeed, Time.deltaTime * inputSensitivity);
                 if (speed > SPEED_THRESHOLD) movement = GetMovementVector(input);
             }
-            else
+            else if (speed > 0)
             {
-                if (speed > 0)
-                {
-                    speed = Mathf.MoveTowards(speed, 0, Time.deltaTime * (inputSensitivity * 2f));
-                    movement = GetMovementVector(GetRequiredInput(transform.forward));
-                }
+                speed = Mathf.MoveTowards(speed, 0, Time.deltaTime * (inputSensitivity * 2f));
+                movement = GetMovementVector(GetRequiredInput(transform.forward));
             }
             
             movement.y = storedVerticalAcceleration;
