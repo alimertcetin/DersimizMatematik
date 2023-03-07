@@ -9,19 +9,9 @@ namespace XIV.Extensions
             return new Vector3(vec3.x, 0f, vec3.z);
         }
 
-        public static float DistanceTo(this Vector3 vec3, Vector3 other)
-        {
-            return Vector3.Distance(vec3, other);
-        }
-
         public static bool IsSameDirection(this Vector3 vec3, Vector3 other, float threshold = 0f)
         {
             return Vector3.Dot(vec3, other) > threshold;
-        }
-
-        public static float Dot(this Vector3 vec3, Vector3 other)
-        {
-            return Vector3.Dot(vec3, other);
         }
         
         public static Vector3 RotateAroundAxis(this Vector3 point, Vector3 axis, float angle, Vector3 pivot)

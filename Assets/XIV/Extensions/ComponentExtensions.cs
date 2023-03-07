@@ -1,5 +1,4 @@
 using UnityEngine;
-using XIV.Utils;
 
 namespace XIV.Extensions
 {
@@ -44,7 +43,7 @@ namespace XIV.Extensions
             for (int i = 0; i < length; i++)
             {
                 var current = searchArray[i];
-                var dis = currentPosition.DistanceTo(current.transform.position.OnXZ());
+                var dis = Vector3.Distance(currentPosition, current.transform.position.OnXZ());
                 if (dis < distance)
                 {
                     distance = dis;
@@ -67,7 +66,7 @@ namespace XIV.Extensions
             {
                 var current = searchArray[i];
                 var dis = Vector3.Distance(currentPosition, current.transform.position);
-                if (dis < distance && ArrayUtils.Contains(current, exclude) == false)
+                if (dis < distance && exclude.Contains(current) == false)
                 {
                     distance = dis;
                     selected = current;
