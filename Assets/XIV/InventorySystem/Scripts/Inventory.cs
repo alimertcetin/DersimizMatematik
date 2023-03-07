@@ -15,7 +15,7 @@ namespace XIV.InventorySystem
         readonly List<IInventoryListener> listeners;
         public int Count { get; private set; }
         public ReadOnlyInventoryItem this[int index] => index < 0 || index >= SlotCount ? 
-            new ReadOnlyInventoryItem(new InventoryItem(-1, -1, null)) : new ReadOnlyInventoryItem(items[index]);
+            ReadOnlyInventoryItem.InvalidReadonlyInventoryItem : new ReadOnlyInventoryItem(items[index]);
 
         readonly DynamicArray<InventoryItemChange> itemChanges;
 

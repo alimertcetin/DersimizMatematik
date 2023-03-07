@@ -5,6 +5,7 @@ namespace XIV.InventorySystem
     [System.Serializable]
     public readonly struct ReadOnlyInventoryItem : IInventoryItem
     {
+        public static readonly ReadOnlyInventoryItem InvalidReadonlyInventoryItem = new ReadOnlyInventoryItem(InventoryItem.InvalidInventoryItem);
         [field: SerializeField] public int Index { get; }
         [field: SerializeField] public int Amount { get; }
         [field: SerializeField] public ItemBase Item { get; }
