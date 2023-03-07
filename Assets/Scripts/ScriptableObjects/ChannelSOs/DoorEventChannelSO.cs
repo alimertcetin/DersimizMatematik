@@ -7,9 +7,9 @@ namespace LessonIsMath.ScriptableObjects.ChannelSOs
     [CreateAssetMenu(menuName = "Events/Door Event Channel")]
     public class DoorEventChannelSO : EventChannelBaseSO
     {
-        public Action<Door, bool> OnEventRaised;
+        public Action<DoorManager, bool> OnEventRaised;
 
-        public void RaiseEvent(Door door, bool value)
+        public void RaiseEvent(DoorManager door, bool value)
         {
             if (OnEventRaised != null)
                 OnEventRaised.Invoke(door, value);

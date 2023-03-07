@@ -47,7 +47,7 @@ namespace LessonIsMath.CollectableSystems
             inventory = obj;
         }
 
-        public bool IsAvailable()
+        public bool IsAvailableForInteraction()
         {
             return !Collected;
         }

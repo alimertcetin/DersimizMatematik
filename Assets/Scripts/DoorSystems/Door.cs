@@ -1,269 +1,106 @@
 ﻿using System;
 using UnityEngine;
-using XIV.Extensions;
-using XIV.InventorySystem.Items;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.Utils;
-using LessonIsMath.ScriptableObjects.ChannelSOs;
-using LessonIsMath.InteractionSystems;
-using LessonIsMath.Input;
-using XIV.SaveSystems;
-using LessonIsMath.UI;
-using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
-using XIV.InventorySystem;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using XIV.Easing;
+using XIV.XIVMath;
 
 namespace LessonIsMath.DoorSystems
 {
-    [Flags]
-    public enum DoorState
+    public class Door : MonoBehaviour
     {
-        None = 0,
-        Unlocked = 1,
-        RequiresKeycard = 2,
-        HasQuestion = 4,
-    }
-    
-    public class Door : MonoBehaviour, IUIEventListener, IInteractable, ISaveable
-    {
-        [SerializeField] Transform[] interactionPositions;
+        [SerializeField] float maxAngle;
+        [SerializeField] float damping;
+        [SerializeField] Transform door;
         [SerializeField] Transform doorHandle;
-        [SerializeField] DoorAnimation doorAnimation;
-        [SerializeField] InventoryChannelSO inventoryLoadedChannel;
-        [SerializeField] DoorEventChannelSO lockedDoorUIChannel = default;
-        [SerializeField] KeycardItemSO[] requiredKeycards;
-        [SerializeField] bool useArithmeticOperation;
-        [SerializeField] int maxValueOfAnswer;
-        [SerializeField] ArithmeticOperation arithmeticOperation;
-        bool isLocked;
-        bool[] removedKeycards;
-        bool isOpen;
-
-        Inventory inventory;
-        IInteractor interactor;
+        [SerializeField] Timer closeDoorTimer;
+        [SerializeField] Timer closeDelayTimer;
+        bool rotate;
+        bool close;
+        Vector3 force;
+        Quaternion closeStartRotation;
+        Quaternion doorInitialRotation;
 
         void Awake()
         {
-            removedKeycards = new bool[requiredKeycards.Length];
-            isLocked = useArithmeticOperation;
+            doorInitialRotation = door.rotation;
         }
 
-        void OnEnable() => inventoryLoadedChannel.Register(OnInventoryLoaded);
-        void OnDisable() => inventoryLoadedChannel.Unregister(OnInventoryLoaded);
-
-        void OnInventoryLoaded(Inventory inventory) => this.inventory = inventory;
-        bool IInteractable.IsAvailable() => true;
-
-        void IInteractable.Interact(IInteractor interactor)
+        void Update()
         {
-            this.interactor = interactor;
-
-            if (IsRemovedAllKeycards() == false)
+            if (rotate)
             {
-                for (int i = 0; i < removedKeycards.Length; i++)
-                {
-                    if (removedKeycards[i] || inventory.Contains(requiredKeycards[i].GetItem(), out var index) == false) continue;
-
-                    removedKeycards[i] = true;
-                    int amount = 1;
-                    inventory.RemoveAt(index, ref amount);
-                    break;
-                }
-                interactor.OnInteractionEnd(this);
-                return;
+                RotateByForce();
             }
-            if (useArithmeticOperation && isLocked)
+            else if (close && closeDelayTimer.Update(Time.deltaTime))
             {
-                lockedDoorUIChannel.RaiseEvent(this, true);
-                UIEventSystem.Register<LockedDoor_UI>(this);
-                return;
+                CloseByTimer();
             }
-            isOpen = !isOpen;
-            if (isOpen) doorAnimation.OpenDoor();
-            else doorAnimation.CloseDoor();
-            interactor.OnInteractionEnd(this);
         }
 
-        string IInteractable.GetInteractionString()
+        public void RotateDoorHandle(float t)
         {
-            if (IsRemovedAllKeycards() == false)
-            {
-                CountKeycards(out int greenCount, out int yellowCount, out int redCount);
-
-                string str = "You need ";
-
-                if (greenCount > 0) str += $"{greenCount} green".Green();
-                if (yellowCount > 0) str += $" {yellowCount} yellow".Yellow();
-                if (redCount > 0) str += $" {redCount} red".Red();
-
-                var total = greenCount + yellowCount + redCount;
-                if (total < 2) str += " keycard";
-                else str += " keycards";
-
-                return total > 0 ? str : "";
-            }
-
-            if (isLocked == false) return isOpen
-                    ? "Press " + InputManager.InteractionKeyName + " to Close"
-                    : "Press " + InputManager.InteractionKeyName + " to Open";
-
-            if (isLocked) return "Door is locked. Press " + InputManager.InteractionKeyName + " button to see the Question.";
-
-            return "";
-        }
-
-        InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
-        {
-            var interactorPos = (interactor as Component).transform.position;
-            Transform interactionPos = VectorUtils.GetClosest(interactorPos, out _, interactionPositions);
+            if (this.enabled == false) return;
             
-            return new InteractionTargetData
-            {
-                startPos = interactorPos,
-                targetPosition = interactionPos.position,
-                targetForwardDirection = interactionPos.forward,
-            };
-        }
-
-        public Vector3 GetHandlePosition() => doorHandle.GetChild(0).position;
-
-        public void RotateDoorHandle(float t, out Quaternion currentRotation)
-        {
             var angle = Mathf.Lerp(0, -30f, t);
-            currentRotation = Quaternion.Euler(0, 0, angle);
-            doorHandle.localRotation = currentRotation;
+            var newRotation = Quaternion.Euler(0, 0, angle);
+            doorHandle.localRotation = newRotation;
         }
 
-        public DoorState GetState()
+        public void ApplyRotationToDoor(Vector3 force)
         {
-            DoorState state = DoorState.None;
-            if (IsRemovedAllKeycards() == false) state |= DoorState.RequiresKeycard;
-            if (useArithmeticOperation && isLocked) state |= DoorState.HasQuestion;
-            if (isLocked == false) state |= DoorState.Unlocked;
-            
-            return state;
+            if (this.enabled == false) return;
+
+            this.force = force;
+            rotate = true;
+            close = false;
+            closeDoorTimer.Restart();
+            closeDelayTimer.Restart();
         }
 
-        public bool SolveQuestion(int answer)
+        public void CloseDoor()
         {
-            if (arithmeticOperation.CalculateAnswer() == answer)
+            if (this.enabled == false) return;
+
+            this.closeStartRotation = door.rotation;
+            rotate = false;
+            close = true;
+        }
+        
+        public Vector3 GetHandlePosition() => doorHandle.position;
+
+        void RotateByForce()
+        {
+            force -= force * (damping * Time.deltaTime);
+            var currentRotation = door.rotation;
+            var newRotation = currentRotation * Quaternion.AngleAxis(force.magnitude * Time.deltaTime, GetAxis());
+            var angle = Quaternion.Angle(doorInitialRotation, newRotation);
+            if (angle > maxAngle)
             {
-                isLocked = false;
-                return true;
+                rotate = false;
+                force = Vector3.zero;
+                return;
             }
-            return false;
+            door.rotation = newRotation;
         }
 
-        void CountKeycards(out int greenCount, out int yellowCount, out int redCount)
+        void CloseByTimer()
         {
-            greenCount = 0;
-            yellowCount = 0;
-            redCount = 0;
-            for (int i = 0; i < requiredKeycards.Length; i++)
-            {
-                if (removedKeycards[i]) continue;
-
-                switch (requiredKeycards[i].item.KeycardType)
-                {
-                    case KeycardType.Green:
-                        greenCount++;
-                        break;
-                    case KeycardType.Yellow:
-                        yellowCount++;
-                        break;
-                    case KeycardType.Red:
-                        redCount++;
-                        break;
-                    default: throw new NotImplementedException(requiredKeycards[i].item.KeycardType + " is not implemented.");
-                }
-            }
+            closeDoorTimer.Update(Time.deltaTime);
+            var normalizedTime = EasingFunction.SmoothStop3(closeDoorTimer.NormalizedTime);
+            var handleRotationTime = 1 - XIVMathf.Remap(normalizedTime, 0.75f, 1f, 0f, 1f);
+            RotateDoorHandle(handleRotationTime);
+            door.rotation = Quaternion.Lerp(closeStartRotation, doorInitialRotation, normalizedTime);
+            if (!closeDoorTimer.IsDone) return;
+            close = false;
+            closeDoorTimer.Restart();
+            closeDelayTimer.Restart();
         }
 
-        bool IsRemovedAllKeycards()
+        Vector3 GetAxis()
         {
-            int length = removedKeycards.Length;
-            for (int i = 0; i < length; i++)
-            {
-                if (removedKeycards[i] == false) return false;
-            }
-            return true;
+            float dot = Vector3.Dot(force.normalized, door.forward);
+            var axis = dot < 0 ? Vector3.down : Vector3.up;
+            return axis;
         }
-
-        public string GetQuestionString() => arithmeticOperation.ToString();
-
-        void IUIEventListener.OnShowUI(GameUI ui) { }
-        void IUIEventListener.OnHideUI(GameUI ui)
-        {
-            interactor.OnInteractionEnd(this);
-            UIEventSystem.Unregister<LockedDoor_UI>(this);
-        }
-
-#if UNITY_EDITOR
-
-        [ContextMenu(nameof(CalculateAnswer))]
-        void CalculateAnswer()
-        {
-            if (useArithmeticOperation == false) return;
-            Undo.RecordObject(this, gameObject.name + nameof(CalculateAnswer));
-            arithmeticOperation.CalculateAnswer();
-            EditorUtility.SetDirty(this);
-        }
-
-        [ContextMenu(nameof(GenerateQuestionDependingOnAnswer))]
-        void GenerateQuestionDependingOnAnswer()
-        {
-            if (useArithmeticOperation == false) return;
-            Undo.RecordObject(this, gameObject.name + nameof(GenerateQuestionDependingOnAnswer));
-            arithmeticOperation.GenerateQuestion(arithmeticOperation.answer, maxValueOfAnswer);
-            EditorUtility.SetDirty(this);
-        }
-
-        [ContextMenu(nameof(GenerateRandomQuestion))]
-        void GenerateRandomQuestion()
-        {
-            if (useArithmeticOperation == false) return;
-            Undo.RecordObject(this, gameObject.name + nameof(GenerateRandomQuestion));
-            arithmeticOperation.GenerateQuestion(maxValueOfAnswer);
-            EditorUtility.SetDirty(this);
-        }
-
-#endif
-
-        #region -_- Save -_-
-
-        [Serializable]
-        struct SaveData
-        {
-            public bool isLocked;
-            public bool isOpen;
-            public bool[] removedKeycards;
-        }
-
-        object ISaveable.CaptureState()
-        {
-            return new SaveData
-            {
-                isLocked = isLocked,
-                isOpen = isOpen,
-                removedKeycards = removedKeycards,
-            };
-        }
-
-        void ISaveable.RestoreState(object state)
-        {
-            SaveData saveData = (SaveData)state;
-            removedKeycards = saveData.removedKeycards;
-            isOpen = saveData.isOpen;
-            isLocked = saveData.isLocked;
-
-            if (isOpen) doorAnimation.OpenDoor();
-            else doorAnimation.CloseDoor();
-        }
-
-        #endregion
-
-
     }
 }

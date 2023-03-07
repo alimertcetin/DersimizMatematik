@@ -9,19 +9,20 @@ namespace LessonIsMath.UI
 {
     public class GamePlayUIManager : MonoBehaviour
     {
-        [SerializeField] private float warningTime = 2f;
-        [SerializeField] private Notification notification = default;
-        [SerializeField] private WarningPopup warningPopup = default;
+        [SerializeField] float warningTime = 2f;
+        [SerializeField] Notification notification;
+        [SerializeField] WarningPopup warningPopup;
 
         [Header("Listening To")]
-        [SerializeField] private BoolEventChannelSO pauseMenuUIChannel = default;
-        [SerializeField] private BoolEventChannelSO blackBoardUIChannel = default;
-        [SerializeField] private DoorEventChannelSO lockedDoorUIChannel = default;
-        [SerializeField] private BoolEventChannelSO hudUIChannel = default;
-        [SerializeField] private StringEventChannelSO notificationChannel = default;
-        [SerializeField] private StringEventChannelSO warningChannel = default;
+        [SerializeField]
+        BoolEventChannelSO pauseMenuUIChannel;
+        [SerializeField] BoolEventChannelSO blackBoardUIChannel;
+        [SerializeField] DoorEventChannelSO lockedDoorUIChannel;
+        [SerializeField] BoolEventChannelSO hudUIChannel;
+        [SerializeField] StringEventChannelSO notificationChannel;
+        [SerializeField] StringEventChannelSO warningChannel;
 
-        private void OnEnable()
+        void OnEnable()
         {
             pauseMenuUIChannel.OnEventRaised += ShowPauseMenuUI;
             blackBoardUIChannel.OnEventRaised += ShowBlackBoardUI;
@@ -31,7 +32,7 @@ namespace LessonIsMath.UI
             warningChannel.OnEventRaised += ShowWarning;
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
             pauseMenuUIChannel.OnEventRaised -= ShowPauseMenuUI;
             blackBoardUIChannel.OnEventRaised -= ShowBlackBoardUI;
@@ -41,7 +42,7 @@ namespace LessonIsMath.UI
             warningChannel.OnEventRaised -= ShowWarning;
         }
 
-        private void ShowPauseMenuUI(bool value)
+        void ShowPauseMenuUI(bool value)
         {
             if (value)
             {
@@ -55,20 +56,20 @@ namespace LessonIsMath.UI
             }
         }
 
-        private void ShowBlackBoardUI(bool value)
+        void ShowBlackBoardUI(bool value)
         {
             if (value) UISystem.Show<BlackboardUI>();
             else UISystem.Hide<BlackboardUI>();
         }
 
-        private void ShowLockedDoorUI(Door door, bool value)
+        void ShowLockedDoorUI(DoorManager doorManager, bool value)
         {
-            UISystem.GetUI<LockedDoor_UI>()?.SetDoor(door);
+            UISystem.GetUI<LockedDoor_UI>()?.SetDoor(doorManager);
             if (value) UISystem.Show<LockedDoor_UI>();
             else UISystem.Hide<LockedDoor_UI>();
         }
 
-        private void ShowHud(bool value)
+        void ShowHud(bool value)
         {
             if (value) UISystem.Show<HUD_UI>();
             else UISystem.Hide<HUD_UI>();
@@ -79,7 +80,7 @@ namespace LessonIsMath.UI
             warningPopup.ShowWarning(text, show, warningTime);
         }
 
-        private void ShowNotification(string str, bool value)
+        void ShowNotification(string str, bool value)
         {
             notification.SetText(str);
             notification.gameObject.SetActive(value);

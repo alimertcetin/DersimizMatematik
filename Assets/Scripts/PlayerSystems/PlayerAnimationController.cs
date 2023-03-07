@@ -16,8 +16,6 @@ namespace LessonIsMath.PlayerSystems
     public class PlayerAnimationController : MonoBehaviour
     {
         [SerializeField] CameraTransitionEventChannelSO cameraTransitionChannel;
-        [SerializeField] TwoBoneIKConstraint rightHandIKConstraint;
-        [SerializeField] MultiAimConstraint splineIKConstraint;
         [SerializeField] AudioClip[] stepSound = null;
         AudioSource audioSource;
 
@@ -25,7 +23,6 @@ namespace LessonIsMath.PlayerSystems
         float defaultPitch;
         bool isJumping;
         Animator animator;
-        const float DOOR_REACH_DURATION = 1f;
 
         void Awake()
         {
@@ -61,60 +58,34 @@ namespace LessonIsMath.PlayerSystems
 
         public bool IsJumpPlaying() => isJumping;
 
+        public void BendRightHandFingers(float t)
+        {
+            if (t > 0.5f)
+            {
+                animator.SetBool(AnimationConstants.AJ.AJ_RightHandRelease_Bool, false);
+                animator.SetBool(AnimationConstants.AJ.AJ_RightHandHold_Bool, true);
+            }
+            else
+            {
+                animator.SetBool(AnimationConstants.AJ.AJ_RightHandRelease_Bool, true);
+                animator.SetBool(AnimationConstants.AJ.AJ_RightHandHold_Bool, false);
+            }
+            animator.SetLayerWeight(AnimationConstants.AJ.AJ_Right_Hand_Override_Layer, t);
+        }
+
+        public void BendLeftHandFingers(float t)
+        {
+        }
+
         public void HandleInteractionAnimation(IInteractable interactable, Action<IInteractable> onAnimationEnd = null)
         {
-            void SetHandIKPositionAndRotation(Vector3 handlePos, Quaternion handleRot)
+            if (interactable is DoorManager doorManager)
             {
-                var direction = handlePos - rightHandIKConstraint.data.tip.position;
-                var ikTargetPos = handlePos - direction.normalized * 0.2f;
-                ikTargetPos += new Vector3(0, 0.001f, 0);
-                rightHandIKConstraint.data.target.position = ikTargetPos;
-                var lookRotation = Quaternion.LookRotation(direction.normalized);
-                // Hand forward = transform.left, -90 around y axis matches target forward and hand forward
-                rightHandIKConstraint.data.target.rotation = lookRotation * Quaternion.Euler(0, -90, 0) * handleRot;
-            }
-            
-            void SetIKWeights(float normalizedTime)
-            {
-                rightHandIKConstraint.weight = EasingFunction.SmoothStop3(normalizedTime);
-                splineIKConstraint.weight = EasingFunction.SmoothStop3(normalizedTime, 0, 0.5f);
-            }
-            
-            if (interactable is Door door)
-            {
-                if (door.GetState().HasFlag(DoorState.Unlocked) == false)
+                if (doorManager.GetState().HasFlag(DoorState.Unlocked) == false)
                 {
                     onAnimationEnd?.Invoke(interactable);
                     return;
                 }
-                
-                cameraTransitionChannel.RaiseEvent(CameraType.SideViewLeft);
-                animator.SetBool(AnimationConstants.AJ.AJ_RightHandHold_Bool, true);
-                var increaseWeightEvent = new XIVInvokeUntilEvent(DOOR_REACH_DURATION).AddAction((Timer timer) =>
-                {
-                    var normalizedTime = timer.NormalizedTime;
-                    animator.SetLayerWeight(AnimationConstants.AJ.AJ_Right_Hand_Override_Layer, timer.NormalizedTime);
-                    door.RotateDoorHandle(normalizedTime, out var handleRot);
-                    SetIKWeights(normalizedTime);
-                    SetHandIKPositionAndRotation(door.GetHandlePosition(), handleRot);
-                }).OnCompleted(() =>
-                {
-                    animator.SetBool(AnimationConstants.AJ.AJ_RightHandRelease_Bool, true);
-                    animator.SetBool(AnimationConstants.AJ.AJ_RightHandHold_Bool, false);
-                    var decreaseWeightEvent = new XIVInvokeUntilEvent(DOOR_REACH_DURATION).AddAction((Timer timer) =>
-                    {
-                        var normalizedTime = 1 - timer.NormalizedTime;
-                        animator.SetLayerWeight(AnimationConstants.AJ.AJ_Right_Hand_Override_Layer, normalizedTime);
-                        door.RotateDoorHandle(normalizedTime, out var handleRot);
-                        SetIKWeights(normalizedTime);
-                        SetHandIKPositionAndRotation(door.GetHandlePosition(), handleRot);
-                    }).OnCompleted(() => animator.SetBool(AnimationConstants.AJ.AJ_RightHandRelease_Bool, false));
-                    
-                    cameraTransitionChannel.RaiseEvent(CameraType.Character);
-                    onAnimationEnd?.Invoke(interactable);
-                    XIVEventSystem.SendEvent(decreaseWeightEvent);
-                });
-                XIVEventSystem.SendEvent(increaseWeightEvent);
             }
             else
             {

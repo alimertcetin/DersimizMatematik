@@ -17,7 +17,7 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
 
         void OnDisable() => UIEventSystem.Unregister<BlackboardUI>(this);
 
-        bool IInteractable.IsAvailable() => !isUIActive;
+        bool IInteractable.IsAvailableForInteraction() => !isUIActive;
 
         void IInteractable.Interact(IInteractor interactor)
         {

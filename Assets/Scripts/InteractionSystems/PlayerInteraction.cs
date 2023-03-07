@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
 using LessonIsMath.PlayerSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
@@ -18,16 +19,19 @@ namespace LessonIsMath.InteractionSystems
         public Action OnMovementCanceled;
     }
     
+    // TODO : Split interactions
     public class PlayerInteraction : MonoBehaviour, PlayerControls.IInteractionActions, IInteractor
     {
         [Tooltip("To define the interaction area")]
         [SerializeField] Collider triggerCollider;
         [SerializeField] StringEventChannelSO notificationChannel = default;
+        [SerializeField] float openDoorForce;
         HashSet<IInteractable> interactables = new HashSet<IInteractable>(8);
-        List<Collider> otherColliders = new List<Collider>();
+        List<Collider> otherColliders = new List<Collider>(8);
         IInteractable currentInteractable;
         PlayerController playerController;
         PlayerAnimationController playerAnimationController;
+        PlayerUnlockedDoorInteraction unlockedDoorInteraction;
 
         const float INTERACTION_DISTANCE = 0.5f;
 
@@ -36,6 +40,7 @@ namespace LessonIsMath.InteractionSystems
             triggerCollider.gameObject.AddComponent<InteractionHelper>().playerInteraction = this;
             InputManager.Interaction.SetCallbacks(this);
             playerController = GetComponent<PlayerController>();
+            unlockedDoorInteraction = GetComponent<PlayerUnlockedDoorInteraction>();
             playerAnimationController = GetComponentInChildren<PlayerAnimationController>();
         }
 
@@ -70,7 +75,7 @@ namespace LessonIsMath.InteractionSystems
 
             void OnTargetReached(IInteractable interactable)
             {
-                if (interactable.IsAvailable() == false) return;
+                if (interactable.IsAvailableForInteraction() == false) return;
 
                 var targetData = interactable.GetInteractionTargetData(this);
                 // TODO : Consider making target data class and update it when necessary
@@ -113,13 +118,17 @@ namespace LessonIsMath.InteractionSystems
         void IInteractor.OnInteractionEnd(IInteractable interactable)
         {
             InputManager.Interaction.Enable();
-            if (interactable.IsAvailable())
+            if (interactable.IsAvailableForInteraction())
             {
                 ChangeCurrentInteractable(interactable);
                 return;
             }
 
             interactables.Remove(interactable);
+            if (interactable is DoorManager doorManager && doorManager.GetState().HasFlag(DoorState.Unlocked))
+            {
+                unlockedDoorInteraction.SetTarget(openDoorForce, doorManager.managedDoors);
+            }
             ChangeCurrentInteractable(GetClosestInteractable());
         }
 
@@ -132,6 +141,12 @@ namespace LessonIsMath.InteractionSystems
 
             if (other.TryGetComponent<IInteractable>(out var otherInteractable))
             {
+                if (otherInteractable is DoorManager doorManager && doorManager.GetState().HasFlag(DoorState.Unlocked))
+                {
+                    unlockedDoorInteraction.SetTarget(openDoorForce, doorManager.managedDoors);
+                    return;
+                }
+                
                 interactables.Add(otherInteractable);
             }
             ChangeCurrentInteractable(GetClosestInteractable());
@@ -146,6 +161,17 @@ namespace LessonIsMath.InteractionSystems
 
             if (other.TryGetComponent<IInteractable>(out var otherInteractable))
             {
+                if (otherInteractable is DoorManager doorManager)
+                {
+                    for (int i = 0; i < unlockedDoorInteraction.targets.Length; i++)
+                    {
+                        if (Array.Exists(doorManager.managedDoors, door => door == unlockedDoorInteraction.targets[i]))
+                        {
+                            unlockedDoorInteraction.ClearTarget();
+                            return;
+                        }
+                    }
+                }
                 interactables.Remove(otherInteractable);
             }
             ChangeCurrentInteractable(GetClosestInteractable());
