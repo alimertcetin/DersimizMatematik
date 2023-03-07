@@ -43,7 +43,8 @@ namespace LessonIsMath.DoorSystems
         void Awake()
         {
             removedKeycards = new bool[requiredKeycards.Length];
-            isLocked = useArithmeticOperation || IsRemovedAllKeycards() == false;
+            // No need to check removedKeycards will have its initial value in the beginning which is false
+            isLocked = useArithmeticOperation /*|| IsRemovedAllKeycards() == false*/;
             HandleDoorActivation();
         }
 
