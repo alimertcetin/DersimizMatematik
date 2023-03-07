@@ -198,7 +198,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.67697066, y: 1}
+    m_SensorSize: {x: 0.74375, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -573,12 +573,12 @@ PrefabInstance:
     - target: {fileID: 3768652455058126169, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4685
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3768652455058126169, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.95164746
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3768652455058126169, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
@@ -593,7 +593,12 @@ PrefabInstance:
     - target: {fileID: 3768652455058126169, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.878
+      value: 0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 4295273584288326291, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 4295273584288326291, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
@@ -602,8 +607,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4295273584288326291, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
+      propertyPath: m_Size.z
+      value: 0.75235844
+      objectReference: {fileID: 0}
+    - target: {fileID: 4295273584288326291, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4295273584288326291, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
+        type: 3}
       propertyPath: m_Center.y
-      value: -0.15
+      value: -0.14999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 4295273584288326291, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0.12382078
       objectReference: {fileID: 0}
     - target: {fileID: 4295273584288326291, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
@@ -660,17 +680,17 @@ PrefabInstance:
     - target: {fileID: 6946481082253392826, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -76.26
+      value: 4.5820007
       objectReference: {fileID: 0}
     - target: {fileID: 6946481082253392826, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.383526
+      value: 2.493
       objectReference: {fileID: 0}
     - target: {fileID: 6946481082253392826, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -33.11
+      value: -3.7740002
       objectReference: {fileID: 0}
     - target: {fileID: 6946481082253392826, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
@@ -680,17 +700,17 @@ PrefabInstance:
     - target: {fileID: 6946481082253392826, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6946481082253392826, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6946481082253392826, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6946481082253392826, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
         type: 3}
@@ -780,6 +800,7 @@ MonoBehaviour:
   hintOffsetAmount: 0.25
   weightIncreaseSpeed: 5
   maxDoorDistance: 1
+  targets: []
 --- !u!4 &8827928442153106127 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3479254247532213518, guid: aaa274b6082a5504aa7dfd76e2f6b7f1,
