@@ -207,10 +207,8 @@ namespace LessonIsMath.InteractionSystems
         bool IsAvailableForInteraction(Component other)
         {
             var currentPos = transform.position;
-            var targetPos = other.transform.position;
             // A little cheat to workaround of overlapping object problems
-            var dir = (targetPos - currentPos).normalized;
-            targetPos -= dir;
+            var targetPos = Vector3.MoveTowards(other.transform.position, currentPos, 0.1f);
 
 #if UNITY_EDITOR
             const float lineDuration = 8;
