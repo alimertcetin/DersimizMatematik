@@ -1,12 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace XIV.Extensions
 {
-    public static class ComponentExtensions
+    public static class ComponentIListExtensions
     {
-        public static T GetClosest<T>(this T[] searchArray, Vector3 currentPosition, out float distance) where T : Component
+        public static T GetClosest<T>(this IList<T> searchArray, Vector3 currentPosition, out float distance) where T : Component
         {
-            var length = searchArray.Length;
+            var length = searchArray.Count;
             distance = float.MaxValue;
             if (length == 0) return default;
 
@@ -26,14 +27,14 @@ namespace XIV.Extensions
             return selected;
         }
         
-        public static T GetClosest<T>(this T[] searchArray, Vector3 currentPosition) where T : Component
+        public static T GetClosest<T>(this IList<T> searchArray, Vector3 currentPosition) where T : Component
         {
             return GetClosest(searchArray, currentPosition, out _);
         }
         
-        public static T GetClosestOnXZPlane<T>(this T[] searchArray, Vector3 currentPosition) where T : Component
+        public static T GetClosestOnXZPlane<T>(this IList<T> searchArray, Vector3 currentPosition) where T : Component
         {
-            var length = searchArray.Length;
+            var length = searchArray.Count;
             var distance = float.MaxValue;
             if (length == 0) return default;
 
@@ -54,9 +55,9 @@ namespace XIV.Extensions
             return selected;
         }
 
-        public static T GetClosest<T>(this T[] searchArray, Vector3 currentPosition, out float distance, params T[] exclude) where T : Component
+        public static T GetClosest<T>(this IList<T> searchArray, Vector3 currentPosition, out float distance, params T[] exclude) where T : Component
         {
-            var length = searchArray.Length;
+            var length = searchArray.Count;
             distance = float.MaxValue;
             if (length == 0) return default;
 
@@ -76,7 +77,7 @@ namespace XIV.Extensions
             return selected;
         }
 
-        public static T GetClosest<T>(this T[] searchArray, Vector3 currentPosition, params T[] exclude) where T : Component
+        public static T GetClosest<T>(this IList<T> searchArray, Vector3 currentPosition, params T[] exclude) where T : Component
         {
             return GetClosest(searchArray, currentPosition, out _, exclude);
         }

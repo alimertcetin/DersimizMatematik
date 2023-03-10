@@ -4,15 +4,25 @@ namespace XIV.Extensions
 {
     public static class ArrayExtensions
     {
-        public static bool Contains<T>(this T[] array, T item)
+        public static bool Contains<T>(this T[] array, T item, out int index)
         {
+            index = -1;
             var lenght = array.Length;
             for (int i = 0; i < lenght; i++)
             {
-                if (item.Equals(array[i])) return true;
+                if (item.Equals(array[i]))
+                {
+                    index = i;
+                    return true;
+                }
             }
 
             return false;
+        }
+
+        public static bool Contains<T>(this T[] array, T item)
+        {
+            return Contains(array, item, out _);
         }
 
         public static T[] Split<T>(this T[] array, Func<T, bool> condition)

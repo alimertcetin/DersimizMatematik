@@ -18,6 +18,22 @@ namespace XIV
 
         static readonly Color DefaultSphereColor = new Color(1f, 0f, 0f, 1f); // Same as Color.red
         const int DEFAULT_SPHERE_DETAIL = 20;
+        
+        // Line
+        public static void DrawLine(Vector3 from, Vector3 to, float duration = 0f)
+        {
+            Debug.DrawLine(from, to, Color.white, duration);
+        }
+        
+        public static void DrawLine(Vector3 from, Vector3 to, Color color, float duration = 0f)
+        {
+            Debug.DrawLine(from, to, color, duration);
+        }
+        
+        public static void DrawLine(Vector3 from, Vector3 to, Color color, bool depthTest, float duration = 0f)
+        {
+            Debug.DrawLine(from, to, color, duration, depthTest);
+        }
 
         // Bezier
         public static void DrawBezier(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Color color, int detail, float duration = 0f)
@@ -40,6 +56,13 @@ namespace XIV
         public static void DrawBezier(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float duration = 0f)
         {
             DrawBezier(p0, p1, p2, p3, DefaultBezierColor, DEFAULT_BEZIER_DETAIL, duration);
+        }
+        
+        public static void DrawBezier(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t, float duration = 0f)
+        {
+            DrawBezier(p0, p1, p2, p3, DefaultBezierColor, DEFAULT_BEZIER_DETAIL, duration);
+            var current = BezierMath.GetPoint(p0, p1, p2, p3, t);
+            DrawSphere(current, 0.2f, Color.red, duration);
         }
         
         // Spline
@@ -115,6 +138,38 @@ namespace XIV
             DrawCircle(position, radius, axis, color, DEFAULT_CIRCLE_DETAIL, duration);
         }
         
+        // Bounds
+        public static void DrawBounds(Bounds bounds, float duration = 0f)
+        {
+            // bottom
+            var p1 = new Vector3(bounds.min.x, bounds.min.y, bounds.min.z);
+            var p2 = new Vector3(bounds.max.x, bounds.min.y, bounds.min.z);
+            var p3 = new Vector3(bounds.max.x, bounds.min.y, bounds.max.z);
+            var p4 = new Vector3(bounds.min.x, bounds.min.y, bounds.max.z);
+
+            Debug.DrawLine(p1, p2, Color.blue, duration);
+            Debug.DrawLine(p2, p3, Color.red, duration);
+            Debug.DrawLine(p3, p4, Color.yellow, duration);
+            Debug.DrawLine(p4, p1, Color.magenta, duration);
+
+            // top
+            var p5 = new Vector3(bounds.min.x, bounds.max.y, bounds.min.z);
+            var p6 = new Vector3(bounds.max.x, bounds.max.y, bounds.min.z);
+            var p7 = new Vector3(bounds.max.x, bounds.max.y, bounds.max.z);
+            var p8 = new Vector3(bounds.min.x, bounds.max.y, bounds.max.z);
+
+            Debug.DrawLine(p5, p6, Color.blue, duration);
+            Debug.DrawLine(p6, p7, Color.red, duration);
+            Debug.DrawLine(p7, p8, Color.yellow, duration);
+            Debug.DrawLine(p8, p5, Color.magenta, duration);
+
+            // sides
+            Debug.DrawLine(p1, p5, Color.white, duration);
+            Debug.DrawLine(p2, p6, Color.gray, duration);
+            Debug.DrawLine(p3, p7, Color.green, duration);
+            Debug.DrawLine(p4, p8, Color.cyan, duration);
+        }
+
     }
     
 #endif

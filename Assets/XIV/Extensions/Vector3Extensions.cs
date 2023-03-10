@@ -38,5 +38,18 @@ namespace XIV.Extensions
         {
             return RotateAroundAxis(point, Vector3.forward, angle, pivot);
         }
+
+        public static Vector3 Abs(this Vector3 vec3)
+        {
+            return new Vector3(Mathf.Abs(vec3.x), Mathf.Abs(vec3.y), Mathf.Abs(vec3.z));
+        }
+
+        public static Vector3 ClampMagnitude(this Vector3 vec3, float min, float max)
+        {
+            var magnitude = vec3.magnitude;
+            if (magnitude < min) magnitude = min;
+            if (magnitude > max) magnitude = max;
+            return vec3.normalized * magnitude;
+        }
     }
 }
