@@ -6,8 +6,11 @@ using LessonIsMath.PlayerSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.Extensions;
+using XIV.XIVMath;
 #if UNITY_EDITOR
 using UnityEditor;
+using XIV;
 #endif
 
 namespace LessonIsMath.InteractionSystems
@@ -29,19 +32,22 @@ namespace LessonIsMath.InteractionSystems
         HashSet<IInteractable> interactables = new HashSet<IInteractable>(8);
         List<Collider> otherColliders = new List<Collider>(8);
         IInteractable currentInteractable;
-        PlayerController playerController;
+        AutoMovementInput autoMovementInput;
         PlayerAnimationController playerAnimationController;
-        PlayerUnlockedDoorInteraction unlockedDoorInteraction;
+        PlayerDoorInteraction playerDoorInteraction;
 
-        const float INTERACTION_DISTANCE = 0.5f;
+        const float INTERACTION_THRESHOLD = 0.5f;
+        BoxCollider interactionBoundingBox;
 
         void Awake()
         {
             triggerCollider.gameObject.AddComponent<InteractionHelper>().playerInteraction = this;
             InputManager.Interaction.SetCallbacks(this);
-            playerController = GetComponent<PlayerController>();
-            unlockedDoorInteraction = GetComponent<PlayerUnlockedDoorInteraction>();
+            autoMovementInput = GetComponent<AutoMovementInput>();
+            playerDoorInteraction = GetComponent<PlayerDoorInteraction>();
             playerAnimationController = GetComponentInChildren<PlayerAnimationController>();
+            interactionBoundingBox = new GameObject("InteractionBoundingBox", typeof(BoxCollider)).GetComponent<BoxCollider>();
+            interactionBoundingBox.isTrigger = true;
         }
 
         void OnEnable()
@@ -56,6 +62,28 @@ namespace LessonIsMath.InteractionSystems
 
         void PlayerControls.IInteractionActions.OnInteract(InputAction.CallbackContext context)
         {
+            void OnTargetReached(IInteractable interactable)
+            {
+                if (interactable.IsAvailableForInteraction() == false) return;
+
+                var targetData = interactable.GetInteractionTargetData(this);
+                // TODO : Consider making target data class and update it when necessary
+                // target data could be changed until we reach the target
+                var distance = Vector3.Distance(transform.position, targetData.targetPosition);
+
+                if (distance > INTERACTION_THRESHOLD)
+                {
+                    autoMovementInput.SetTarget(new InteractionData
+                    {
+                        targetData = targetData,
+                        OnTargetReached = () => OnTargetReached(interactable),
+                    });
+                    return;
+                }
+
+                HandleInteraction(interactable);
+            }
+            
             void HandleInteraction(IInteractable interactable)
             {
                 InputManager.CharacterMovement.Disable();
@@ -73,38 +101,15 @@ namespace LessonIsMath.InteractionSystems
                 });
             }
 
-            void OnTargetReached(IInteractable interactable)
-            {
-                if (interactable.IsAvailableForInteraction() == false) return;
-
-                var targetData = interactable.GetInteractionTargetData(this);
-                // TODO : Consider making target data class and update it when necessary
-                // target data could be changed until we reach the target
-                var distance = Vector3.Distance(transform.position, targetData.targetPosition);
-
-                if (distance > INTERACTION_DISTANCE)
-                {
-                    playerController.SetTarget(new InteractionData
-                    {
-                        targetData = targetData,
-                        OnTargetReached = () => OnTargetReached(interactable),
-                    });
-                    return;
-                }
-
-                HandleInteraction(interactable);
-            }
-
             if (context.performed == false || currentInteractable == null) return;
 
             InteractionTargetData interactionTargetData = currentInteractable.GetInteractionTargetData(this);
-            var forward = transform.forward;
-            var dot = Vector3.Dot(forward, -interactionTargetData.targetForwardDirection);
+            var dot = Vector3.Dot(transform.forward, -interactionTargetData.targetForwardDirection);
             var distance = Vector3.Distance(transform.position, interactionTargetData.targetPosition);
-            if (distance > INTERACTION_DISTANCE || dot < 0.6f)
+            if (distance > INTERACTION_THRESHOLD || dot < 0.6f)
             {
                 var interactable = currentInteractable;
-                playerController.SetTarget(new InteractionData
+                autoMovementInput.SetTarget(new InteractionData
                 {
                     targetData = interactionTargetData,
                     OnTargetReached = () => OnTargetReached(interactable),
@@ -118,7 +123,7 @@ namespace LessonIsMath.InteractionSystems
         void IInteractor.OnInteractionEnd(IInteractable interactable)
         {
             InputManager.Interaction.Enable();
-            if (interactable.IsAvailableForInteraction())
+            if (interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable as Component) == false && interactables.Contains(interactable))
             {
                 ChangeCurrentInteractable(interactable);
                 return;
@@ -127,9 +132,10 @@ namespace LessonIsMath.InteractionSystems
             interactables.Remove(interactable);
             if (interactable is DoorManager doorManager && doorManager.GetState().HasFlag(DoorState.Unlocked))
             {
-                unlockedDoorInteraction.SetTarget(openDoorForce, doorManager.managedDoors);
+                playerDoorInteraction.SetTarget(openDoorForce, doorManager.managedDoors);
             }
-            ChangeCurrentInteractable(GetClosestInteractable());
+
+            RefreshCurrentInteractable();
         }
 
         public void TriggerEnter(Collider other)
@@ -143,13 +149,14 @@ namespace LessonIsMath.InteractionSystems
             {
                 if (otherInteractable is DoorManager doorManager && doorManager.GetState().HasFlag(DoorState.Unlocked))
                 {
-                    unlockedDoorInteraction.SetTarget(openDoorForce, doorManager.managedDoors);
+                    playerDoorInteraction.SetTarget(openDoorForce, doorManager.managedDoors);
                     return;
                 }
                 
                 interactables.Add(otherInteractable);
             }
-            ChangeCurrentInteractable(GetClosestInteractable());
+
+            RefreshCurrentInteractable();
         }
 
         public void TriggerExit(Collider other)
@@ -163,26 +170,19 @@ namespace LessonIsMath.InteractionSystems
             {
                 if (otherInteractable is DoorManager doorManager)
                 {
-                    for (int i = 0; i < unlockedDoorInteraction.targets.Length; i++)
+                    for (int i = 0; i < doorManager.managedDoors.Length; i++)
                     {
-                        if (Array.Exists(doorManager.managedDoors, door => door == unlockedDoorInteraction.targets[i]))
+                        if (playerDoorInteraction.HasTarget(doorManager.managedDoors[i]))
                         {
-                            unlockedDoorInteraction.ClearTarget();
+                            playerDoorInteraction.ClearTarget();
                             return;
                         }
                     }
                 }
                 interactables.Remove(otherInteractable);
             }
-            ChangeCurrentInteractable(GetClosestInteractable());
-        }
 
-        bool IsPointBetween(Vector3 current, Vector3 target, Vector3 point)
-        {
-            Vector3 line = target - current;
-            Vector3 lineToPoint = point - current;
-            float dot = Vector3.Dot(lineToPoint, line);
-            return dot >= 0f && dot <= line.sqrMagnitude;
+            RefreshCurrentInteractable();
         }
 
         IInteractable GetClosestInteractable()
@@ -195,7 +195,7 @@ namespace LessonIsMath.InteractionSystems
                 Component interactableComponent = interactable as Component;
                 var interactablePos = interactableComponent.transform.position;
                 var dist = Vector3.Distance(currentPos, interactablePos);
-                if (dist < distance && IsAvailableForInteraction(interactableComponent))
+                if (dist < distance && IsBlockedByAnything(interactableComponent) == false)
                 {
                     distance = dist;
                     closestInteractable = interactable;
@@ -204,32 +204,37 @@ namespace LessonIsMath.InteractionSystems
             return closestInteractable;
         }
 
-        bool IsAvailableForInteraction(Component other)
+        bool IsBlockedByAnything(Component target)
         {
             var currentPos = transform.position;
             // A little cheat to workaround of overlapping object problems
-            var targetPos = Vector3.MoveTowards(other.transform.position, currentPos, 0.1f);
+            var targetPos = Vector3.MoveTowards(target.transform.position, currentPos, 0.25f);
+            var center = currentPos + (targetPos - currentPos) * 0.5f;
+            interactionBoundingBox.transform.position = center;
+            var size = (targetPos - currentPos).Abs();
+            interactionBoundingBox.size = size;
 
-#if UNITY_EDITOR
-            const float lineDuration = 8;
-            Debug.DrawLine(targetPos, targetPos + Vector3.up * 5f, Color.cyan, lineDuration);
-            Debug.DrawLine(currentPos, targetPos, Color.red, lineDuration);
-#endif
-
+            var targetCollider = target.GetComponent<Collider>();
             for (int i = 0; i < otherColliders.Count; i++)
             {
-                var possibleBlockPos = otherColliders[i].transform.position;
-                if (otherColliders[i] == other || IsPointBetween(currentPos, targetPos, possibleBlockPos) == false) continue;
-
-#if UNITY_EDITOR
-                Debug.Log($"{otherColliders[i]} is between {this.gameObject} and {other}");
-                Debug.DrawLine(currentPos, otherColliders[i].transform.position, Color.blue, lineDuration);
-#endif
-
-                return false;
+                var otherCollider = otherColliders[i];
+                if (otherCollider == targetCollider) continue;
+                
+                if (Physics.ComputePenetration(interactionBoundingBox, center, interactionBoundingBox.transform.rotation,
+                        otherCollider, otherCollider.transform.position, otherCollider.transform.rotation, out var dir, out var distance))
+                {
+                    XIVDebug.DrawLine(center, center + (dir * distance), 8f);
+                    Debug.Log($"{target} is blocked by {otherColliders[i]}");
+                    return true;
+                }
             }
+            
+            return false;
+        }
 
-            return true;
+        void RefreshCurrentInteractable()
+        {
+            ChangeCurrentInteractable(GetClosestInteractable());
         }
 
         void ChangeCurrentInteractable(IInteractable otherInteractable)

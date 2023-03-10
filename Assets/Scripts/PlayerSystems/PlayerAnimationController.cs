@@ -40,20 +40,23 @@ namespace LessonIsMath.PlayerSystems
         public void PlayJump()
         {
             var duration = 0f;
-            foreach (AnimationClip animationClip in animator.runtimeAnimatorController.animationClips)
+            for (var i = 0; i < animator.runtimeAnimatorController.animationClips.Length; i++)
             {
+                AnimationClip animationClip = animator.runtimeAnimatorController.animationClips[i];
                 if (animationClip.name != AnimationConstants.AJ.AJ_Jump) continue;
                 duration = animationClip.length;
             }
-            
-            animator.SetBool(AnimationConstants.AJ.AJ_Jump_Bool, true);
+
             isJumping = true;
-            var timedEvent = new XIVTimedEvent(duration).OnCompleted(() =>
+            animator.SetBool(AnimationConstants.AJ.AJ_Jump_Bool, true);
+            XIVEventSystem.SendEvent(new XIVTimedEvent(duration).OnCompleted(() =>
             {
                 animator.SetBool(AnimationConstants.AJ.AJ_Jump_Bool, false);
+            }));
+            XIVEventSystem.SendEvent(new XIVTimedEvent(duration + 0.5f).OnCompleted(() =>
+            {
                 isJumping = false;
-            });
-            XIVEventSystem.SendEvent(timedEvent);
+            }));
         }
 
         public bool IsJumpPlaying() => isJumping;

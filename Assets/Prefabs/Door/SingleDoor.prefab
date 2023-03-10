@@ -58,7 +58,6 @@ MonoBehaviour:
     duration: 2
   closeDelayTimer:
     duration: 5
-  gos: []
 --- !u!65 &3693364760265300914
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -125,7 +124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4077791821470989271}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.4614355, y: -1.155, z: 0.22938395}
+  m_LocalPosition: {x: -0.4614355, y: -1.052, z: 0.22938395}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -284,7 +283,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7904066760147680685}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000058114523}
-  m_LocalPosition: {x: -0.4614355, y: -1.155, z: -0.27061605}
+  m_LocalPosition: {x: -0.4614355, y: -1.052, z: -0.27061605}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
