@@ -71,7 +71,6 @@ namespace LessonIsMath.CollectableSystems
         {
             var interactorPos = (interactor as Component).transform.position;
             var transformPos = transform.position.SetY(interactorPos.y);
-            XIVDebug.DrawLine(transformPos, transformPos + (interactorPos - transformPos).normalized * 10f, Color.magenta, 8f);
             return new InteractionTargetData
             {
                 startPos = interactorPos,
