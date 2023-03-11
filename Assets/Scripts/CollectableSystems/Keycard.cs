@@ -4,6 +4,8 @@ using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV;
+using XIV.Extensions;
 using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
@@ -18,41 +20,28 @@ namespace LessonIsMath.CollectableSystems
         [SerializeField] Transform interactionPos;
         [SerializeField] KeycardItemSO keycardItemSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
-        [SerializeField] ParticleSystem CollectedParticle = null;
-        [SerializeField] StringEventChannelSO warningChannel = default;
+        [SerializeField] ParticleSystem CollectedParticle;
+        [SerializeField] StringEventChannelSO warningChannel;
 
         Inventory inventory;
-        bool Collected;
-        Collider col = default;
-        new MeshRenderer renderer = default;
+        bool collected;
+        Collider col;
+        new MeshRenderer renderer;
+        bool IInteractable.IsInInteraction => false;
 
-        private void Awake()
+        void Awake()
         {
             col = GetComponent<Collider>();
             renderer = GetComponentInChildren<MeshRenderer>();
         }
 
-        private void OnEnable()
-        {
-            inventoryLoadedChannel.Register(OnInventoryLoaded);
-        }
+        void OnEnable() => inventoryLoadedChannel.Register(OnInventoryLoaded);
+        void OnDisable() => inventoryLoadedChannel.Unregister(OnInventoryLoaded);
+        void OnInventoryLoaded(Inventory obj) => inventory = obj;
 
-        private void OnDisable()
-        {
-            inventoryLoadedChannel.Unregister(OnInventoryLoaded);
-        }
-
-        private void OnInventoryLoaded(Inventory obj)
-        {
-            inventory = obj;
-        }
-
-        public bool IsAvailableForInteraction()
-        {
-            return !Collected;
-        }
-
-        public void Interact(IInteractor interactor)
+        bool IInteractable.IsAvailableForInteraction() => !collected;
+        
+        void IInteractable.Interact(IInteractor interactor)
         {
             var item = keycardItemSO.GetItem();
             int amount = 1;
@@ -67,13 +56,13 @@ namespace LessonIsMath.CollectableSystems
             inventory.TryAdd(keycardItemSO.GetItem(), ref amount);
 
             SpawnParicle();
-            Collected = true;
+            collected = true;
             col.enabled = false;
             renderer.enabled = false;
             interactor.OnInteractionEnd(this);
         }
 
-        public string GetInteractionString()
+        string IInteractable.GetInteractionString()
         {
             return "Press " + InputManager.InteractionKeyName + " to collect " + keycardItemSO.GetItem().GetColoredCardString();
         }
@@ -81,11 +70,13 @@ namespace LessonIsMath.CollectableSystems
         InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
         {
             var interactorPos = (interactor as Component).transform.position;
+            var transformPos = transform.position.SetY(interactorPos.y);
+            XIVDebug.DrawLine(transformPos, transformPos + (interactorPos - transformPos).normalized * 10f, Color.magenta, 8f);
             return new InteractionTargetData
             {
                 startPos = interactorPos,
-                targetPosition = interactionPos.position,
-                targetForwardDirection = interactionPos.forward,
+                targetPosition = Vector3.MoveTowards(transformPos, interactorPos, 0.25f),
+                targetForwardDirection = (interactorPos - transformPos).normalized,
             };
         }
 
@@ -96,21 +87,21 @@ namespace LessonIsMath.CollectableSystems
             Destroy(go, 5.0f);
         }
 
-        #region -_- SAVE -_-
+        #region --- SAVE ---
 
         public object CaptureState()
         {
             return new SaveData
             {
-                isCollected = Collected
+                isCollected = collected
             };
         }
 
         public void RestoreState(object state)
         {
             var saveData = (SaveData)state;
-            Collected = saveData.isCollected;
-            if (!Collected)
+            collected = saveData.isCollected;
+            if (!collected)
             {
                 col.enabled = true;
                 renderer.enabled = true;

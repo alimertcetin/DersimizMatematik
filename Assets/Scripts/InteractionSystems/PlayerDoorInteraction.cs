@@ -173,11 +173,13 @@ namespace LessonIsMath.InteractionSystems
             this.targets.Clear();
             
             Vector3 transformRight = transform.right;
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent(1f).AddAction((Timer timer) =>
+            var rightHandWeight = rightHandIKConstraint.weight;
+            var leftHandWeight = leftHandIKConstraint.weight;
+            XIVEventSystem.SendEvent(new XIVInvokeForSecondsEvent(1f).AddAction((Timer timer) =>
             {
                 float normalizedTime = timer.NormalizedTime;
-                rightHandIKConstraint.weight = Mathf.Lerp(rightHandIKConstraint.weight, 0f, normalizedTime);
-                leftHandIKConstraint.weight = Mathf.Lerp(leftHandIKConstraint.weight, 0f, normalizedTime);
+                rightHandIKConstraint.weight = Mathf.Lerp(rightHandWeight, 0f, normalizedTime);
+                leftHandIKConstraint.weight = Mathf.Lerp(leftHandWeight, 0f, normalizedTime);
                 SetHintPosition(rightHandIKConstraint, transformRight * hintOffsetAmount);
                 SetHintPosition(leftHandIKConstraint, -(transformRight * hintOffsetAmount));
                 animationWeight = Mathf.Lerp(animationWeight, 0f, normalizedTime);

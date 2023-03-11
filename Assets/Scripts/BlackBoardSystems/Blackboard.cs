@@ -8,29 +8,35 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
 {
     public class Blackboard : MonoBehaviour, IInteractable, IUIEventListener
     {
-        [SerializeField] private BoolEventChannelSO blackBoardUIChannel = default;
+        [SerializeField] BoolEventChannelSO blackBoardUIChannel;
 
         IInteractor interactor;
-        bool isUIActive;
+        public bool IsInInteraction { get; private set; }
 
         void OnEnable() => UIEventSystem.Register<BlackboardUI>(this);
 
         void OnDisable() => UIEventSystem.Unregister<BlackboardUI>(this);
 
-        bool IInteractable.IsAvailableForInteraction() => !isUIActive;
+        void OnBlackBoardInteract(bool value)
+        {
+#if UNITY_EDITOR
+            if (value)
+            {
+                Debug.LogError("Blackboard registered UI event after UI opened. But something requested UI to open even it already is");
+                return;
+            }
+#endif
+            blackBoardUIChannel.OnEventRaised -= OnBlackBoardInteract;
+            interactor.OnInteractionEnd(this);
+        }
+
+        bool IInteractable.IsAvailableForInteraction() => !IsInInteraction;
 
         void IInteractable.Interact(IInteractor interactor)
         {
             this.interactor = interactor;
-
             blackBoardUIChannel.RaiseEvent(true);
             blackBoardUIChannel.OnEventRaised += OnBlackBoardInteract;
-        }
-
-        private void OnBlackBoardInteract(bool value)
-        {
-            blackBoardUIChannel.OnEventRaised -= OnBlackBoardInteract;
-            interactor.OnInteractionEnd(this);
         }
 
         string IInteractable.GetInteractionString() => "Press " + InputManager.InteractionKeyName + " to interact with Blackboard";
@@ -45,7 +51,7 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
             };
         }
 
-        void IUIEventListener.OnShowUI(GameUI ui) => isUIActive = true;
-        void IUIEventListener.OnHideUI(GameUI ui) => isUIActive = false;
+        void IUIEventListener.OnShowUI(GameUI ui) => IsInInteraction = true;
+        void IUIEventListener.OnHideUI(GameUI ui) => IsInInteraction = false;
     }
 }

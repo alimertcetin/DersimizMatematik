@@ -36,6 +36,7 @@ namespace LessonIsMath.DoorSystems
         [SerializeField] ArithmeticOperation arithmeticOperation;
         bool isLocked;
         bool[] removedKeycards;
+        public bool IsInInteraction { get; private set; }
 
         Inventory inventory;
         IInteractor interactor;
@@ -60,7 +61,8 @@ namespace LessonIsMath.DoorSystems
         }
 
         void OnInventoryLoaded(Inventory inventory) => this.inventory = inventory;
-        bool IInteractable.IsAvailableForInteraction() => isLocked;
+
+        bool IInteractable.IsAvailableForInteraction() => isLocked && IsInInteraction == false;
 
         void IInteractable.Interact(IInteractor interactor)
         {
@@ -83,6 +85,7 @@ namespace LessonIsMath.DoorSystems
             }
             if (useArithmeticOperation && isLocked)
             {
+                IsInInteraction = true;
                 lockedDoorUIChannel.RaiseEvent(this, true);
                 UIEventSystem.Register<LockedDoor_UI>(this);
                 return;
@@ -188,6 +191,7 @@ namespace LessonIsMath.DoorSystems
         void IUIEventListener.OnShowUI(GameUI ui) { }
         void IUIEventListener.OnHideUI(GameUI ui)
         {
+            IsInInteraction = false;
             interactor.OnInteractionEnd(this);
             UIEventSystem.Unregister<LockedDoor_UI>(this);
         }

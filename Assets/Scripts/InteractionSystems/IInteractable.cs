@@ -4,6 +4,7 @@ namespace LessonIsMath.InteractionSystems
 {
     public interface IInteractable
     {
+        bool IsInInteraction { get; }
         bool IsAvailableForInteraction();
         void Interact(IInteractor interactor);
         string GetInteractionString();

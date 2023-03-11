@@ -14,6 +14,7 @@ namespace LessonIsMath.DoorSystems
         bool open;
         bool close;
         Quaternion doorInitialRotation;
+        public bool IsInInteraction => open || close;
 
         void Awake()
         {
