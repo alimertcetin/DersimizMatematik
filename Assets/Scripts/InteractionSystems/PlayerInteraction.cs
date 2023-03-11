@@ -6,6 +6,7 @@ using LessonIsMath.PlayerSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.EventSystem;
 using XIV.Extensions;
 using XIV.XIVMath;
 #if UNITY_EDITOR
@@ -123,7 +124,7 @@ namespace LessonIsMath.InteractionSystems
         void IInteractor.OnInteractionEnd(IInteractable interactable)
         {
             InputManager.Interaction.Enable();
-            if (interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable as Component) == false && interactables.Contains(interactable))
+            if (interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable) == false)
             {
                 ChangeCurrentInteractable(interactable);
                 return;
@@ -192,10 +193,9 @@ namespace LessonIsMath.InteractionSystems
             var currentPos = this.transform.position;
             foreach (IInteractable interactable in interactables)
             {
-                Component interactableComponent = interactable as Component;
-                var interactablePos = interactableComponent.transform.position;
-                var dist = Vector3.Distance(currentPos, interactablePos);
-                if (dist < distance && IsBlockedByAnything(interactableComponent) == false)
+                var interactionTargetData = interactable.GetInteractionTargetData(this);
+                var dist = Vector3.Distance(currentPos, interactionTargetData.targetPosition);
+                if (dist < distance && IsBlockedByAnything(interactable) == false)
                 {
                     distance = dist;
                     closestInteractable = interactable;
@@ -204,17 +204,16 @@ namespace LessonIsMath.InteractionSystems
             return closestInteractable;
         }
 
-        bool IsBlockedByAnything(Component target)
+        bool IsBlockedByAnything(IInteractable target)
         {
-            var currentPos = transform.position;
-            // A little cheat to workaround of overlapping object problems
-            var targetPos = Vector3.MoveTowards(target.transform.position, currentPos, 0.25f);
-            var center = currentPos + (targetPos - currentPos) * 0.5f;
+            Vector3 currentPos = transform.position;
+            Vector3 targetPos = target.GetInteractionTargetData(this).targetPosition;
+            Vector3 center = currentPos + (targetPos - currentPos) * 0.5f;
             interactionBoundingBox.transform.position = center;
-            var size = (targetPos - currentPos).Abs();
+            Vector3 size = (targetPos - currentPos).Abs();
             interactionBoundingBox.size = size;
 
-            var targetCollider = target.GetComponent<Collider>();
+            var targetCollider = ((Component)target).GetComponent<Collider>();
             for (int i = 0; i < otherColliders.Count; i++)
             {
                 var otherCollider = otherColliders[i];
@@ -223,8 +222,17 @@ namespace LessonIsMath.InteractionSystems
                 if (Physics.ComputePenetration(interactionBoundingBox, center, interactionBoundingBox.transform.rotation,
                         otherCollider, otherCollider.transform.position, otherCollider.transform.rotation, out var dir, out var distance))
                 {
+#if UNITY_EDITOR
+                    XIVEventSystem.CancelEvent(XIVEventSystem.GetEvent<XIVTimedEvent>());
+                    var mat = otherColliders[i].GetComponentInChildren<Renderer>().material;
+                    var color = mat.color;
+                    mat.color = Color.red;
+                    XIVEventSystem.SendEvent(new XIVTimedEvent(5f)
+                        .OnCompleted(() => mat.color = color)
+                        .OnCanceled(() => mat.color = color));
                     XIVDebug.DrawLine(center, center + (dir * distance), 8f);
                     Debug.Log($"{target} is blocked by {otherColliders[i]}");
+#endif
                     return true;
                 }
             }
