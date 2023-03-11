@@ -25,7 +25,7 @@ namespace XIV.EventSystem
                 for (int i = events.Count - 1; i >= 0; i--)
                 {
                     var @event = events[i];
-                    @event.Update();
+                    @event.Update(Time.deltaTime);
                     if (@event.IsDone())
                     {
                         @event.Complete();
@@ -47,11 +47,23 @@ namespace XIV.EventSystem
 
         public static void CancelEvent(IEvent @event)
         {
-            var index = Helper.events.IndexOf(@event);
+            List<IEvent> events = Helper.events;
+            int index = events.IndexOf(@event);
             if (index < 0) return;
-            Helper.events[index].Cancel();
-            Helper.events[index] = null;
-            Helper.events.RemoveAt(index);
+            events[index].Cancel();
+            events.RemoveAt(index);
+        }
+        
+        public static T GetEvent<T>() where T : IEvent
+        {
+            List<IEvent> events = Helper.events;
+            int count = events.Count;
+            for (int i = 0; i < count; i++)
+            {
+                if (events[i] is T @event) return @event;
+            }
+
+            return default;
         }
     }
 }

@@ -4,7 +4,7 @@ namespace XIV.EventSystem
 {
     public interface IEvent
     {
-        void Update();
+        void Update(float deltaTime);
         bool IsDone();
         void Complete();
         void Cancel();

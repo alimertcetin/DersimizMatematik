@@ -1,76 +1,53 @@
-﻿using System;
-using UnityEngine;
-using XIV.Utils;
+using System;
 
 namespace XIV.EventSystem
 {
     public class XIVInvokeUntilEvent : IEvent<XIVInvokeUntilEvent>
     {
-        float waitDuration;
-        Timer timer;
-        Action<Timer> action;
+        Action action;
+        Func<bool> condition;
         Action onCompleted;
         Action onCanceled;
-        Func<bool> cancelationCondition;
-        bool hasCancelCondition;
 
-        public XIVInvokeUntilEvent(float duration)
+        bool hasAction;
+
+        public XIVInvokeUntilEvent AddCondition(Func<bool> condition)
         {
-            timer = new Timer(duration);
+            this.condition = condition;
+            return this;
         }
 
-        public XIVInvokeUntilEvent AddAction(Action<Timer> action)
+        public XIVInvokeUntilEvent AddAction(Action action)
         {
+            hasAction = true;
             this.action = action;
             return this;
         }
         
-        public XIVInvokeUntilEvent AddCancelCondition(Func<bool> condition)
+        void IEvent.Update(float deltaTime)
         {
-            this.cancelationCondition = condition;
-            hasCancelCondition = true;
-            return this;
-        }
-        
-        public XIVInvokeUntilEvent Wait(float seconds)
-        {
-            this.waitDuration = seconds;
-            return this;
+            if (hasAction) action.Invoke();
         }
 
-        public void Update()
+        bool IEvent.IsDone()
         {
-            var deltaTime = Time.deltaTime;
-            waitDuration -= deltaTime;
-            if (waitDuration > 0) return;
-            
-            if (hasCancelCondition && cancelationCondition.Invoke())
-            {
-                XIVEventSystem.CancelEvent(this);
-                return;
-            }
-
-            timer.Update(deltaTime);
-            action.Invoke(timer);
+            return condition.Invoke();
         }
 
-        public bool IsDone()
-        {
-            return timer.IsDone;
-        }
-
-        public void Complete()
+        void IEvent.Complete()
         {
             onCompleted?.Invoke();
+            condition = null;
+            onCanceled = null;
+            onCompleted = null;
         }
 
-        public void Cancel()
+        void IEvent.Cancel()
         {
             onCanceled?.Invoke();
-            action = null;
-            onCompleted = null;
+            condition = null;
             onCanceled = null;
-            cancelationCondition = null;
+            onCompleted = null;
         }
 
         public XIVInvokeUntilEvent OnCompleted(Action action)

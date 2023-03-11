@@ -15,9 +15,9 @@ namespace XIV.EventSystem
             timer = new Timer(duration);
         }
 
-        public void Update()
+        public void Update(float deltaTime)
         {
-            timer.Update(Time.deltaTime);
+            timer.Update(deltaTime);
         }
 
         public bool IsDone()
@@ -28,13 +28,15 @@ namespace XIV.EventSystem
         public void Complete()
         {
             onCompleted?.Invoke();
+            onCompleted = null;
+            onCanceled = null;
         }
 
         public void Cancel()
         {
             onCanceled?.Invoke();
-            onCanceled = null;
             onCompleted = null;
+            onCanceled = null;
         }
 
         public XIVTimedEvent OnCompleted(Action action)
