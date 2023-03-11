@@ -198,7 +198,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.9778481, y: 1}
+    m_SensorSize: {x: 1.0047468, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -760,23 +760,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd03895d9dc547a08f18fa85ca67d049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightHandIKConstraint: {fileID: 2096642667}
-  leftHandIKConstraint: {fileID: 2067348238}
-  hintOffsetAmount: 0.25
-  weightIncreaseSpeed: 5
-  maxDoorDistance: 1
---- !u!114 &6188689611621906887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8570205190955081398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f7081d913040ad8cd1ae9e527c4b8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  unlockedDoorInteraction:
+    rightHandIKConstraint: {fileID: 2096642667}
+    leftHandIKConstraint: {fileID: 2067348238}
+    hintOffsetAmount: 0.25
+    weightIncreaseSpeed: 2
+    maxDoorDistance: 2
+    openDoorForce: 50
 --- !u!114 &562843818866276052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,6 +777,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17a2c9c1450542b4bfc9f46744b4cd2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6188689611621906887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8570205190955081398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f7081d913040ad8cd1ae9e527c4b8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &8827928442153106127 stripped
