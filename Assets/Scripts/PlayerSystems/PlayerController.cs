@@ -44,7 +44,6 @@ namespace LessonIsMath.PlayerSystems
         void FixedUpdate()
         {
             HandleMovement();
-            transform.rotation = playerInputProvider.GetRotation();
         }
 
         void Update()
@@ -56,26 +55,30 @@ namespace LessonIsMath.PlayerSystems
         {
             Vector3 movement = playerInputProvider.GetMovementVector();
             Vector3 currentPos = transform.position;
-            float movementMagnitude = movement.magnitude;
             float veloictyMagnitude = velocity.magnitude;
 
             speed = isMovingByInput ? 
                 Mathf.MoveTowards(speed, playerInputProvider.RunPressed ? runSpeed : moveSpeed, Time.deltaTime * speedUpSpeed) :
                 Mathf.MoveTowards(speed, 0f, Time.deltaTime * slowDownSpeed);
 
-            if (movementMagnitude > Mathf.Epsilon && playerAnimationController.IsJumpPlaying() == false)
+            if (movement.sqrMagnitude > Mathf.Epsilon && playerAnimationController.IsJumpPlaying() == false)
             {
                 isMovingByInput = true;
                 velocity = (currentPos - previousPos) / Time.deltaTime;
                 if (speed > SPEED_THRESHOLD) movement *= speed;
                 else movement = Vector3.zero;
             }
-            else if (veloictyMagnitude > 0)
+            else if (veloictyMagnitude > 0 || speed > 0)
             {
                 isMovingByInput = false;
                 velocity = Vector3.MoveTowards(velocity, Vector3.zero, Time.deltaTime * slowDownSpeed);
                 if (speed > SPEED_THRESHOLD) movement = playerInputProvider.GetMovementVector(transform.forward) * veloictyMagnitude;
                 else movement = Vector3.zero;
+            }
+
+            if (movement.sqrMagnitude > 0)
+            {
+                transform.rotation = playerInputProvider.GetRotation();
             }
             
             movement.y = storedVerticalAcceleration;
