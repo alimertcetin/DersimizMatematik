@@ -29,15 +29,14 @@ namespace LessonIsMath.InteractionSystems
         [Tooltip("To define the interaction area")]
         [SerializeField] Collider triggerCollider;
         [SerializeField] StringEventChannelSO notificationChannel = default;
-        [SerializeField] float openDoorForce;
         HashSet<IInteractable> interactables = new HashSet<IInteractable>(8);
         List<Collider> otherColliders = new List<Collider>(8);
         IInteractable currentInteractable;
         AutoMovementInput autoMovementInput;
         PlayerAnimationController playerAnimationController;
-        PlayerDoorInteraction playerDoorInteraction;
+        InteractionHandlerBase[] interactionHandlers;
 
-        const float INTERACTION_THRESHOLD = 0.5f;
+        const float INTERACTION_DISTANCE_THRESHOLD = 0.5f;
         BoxCollider interactionBoundingBox;
 
         void Awake()
@@ -45,10 +44,15 @@ namespace LessonIsMath.InteractionSystems
             triggerCollider.gameObject.AddComponent<InteractionHelper>().playerInteraction = this;
             InputManager.Interaction.SetCallbacks(this);
             autoMovementInput = GetComponent<AutoMovementInput>();
-            playerDoorInteraction = GetComponent<PlayerDoorInteraction>();
+            interactionHandlers = GetComponentsInChildren<InteractionHandlerBase>();
             playerAnimationController = GetComponentInChildren<PlayerAnimationController>();
             interactionBoundingBox = new GameObject("InteractionBoundingBox", typeof(BoxCollider)).GetComponent<BoxCollider>();
             interactionBoundingBox.isTrigger = true;
+            
+            for (int i = 0; i < interactionHandlers.Length; i++)
+            {
+                interactionHandlers[i].Init(this);
+            }
         }
 
         void OnEnable()
@@ -65,14 +69,12 @@ namespace LessonIsMath.InteractionSystems
         {
             void OnTargetReached(IInteractable interactable)
             {
-                if (interactable.IsAvailableForInteraction() == false) return;
-
                 var targetData = interactable.GetInteractionTargetData(this);
                 // TODO : Consider making target data class and update it when necessary
                 // target data could be changed until we reach the target
                 var distance = Vector3.Distance(transform.position, targetData.targetPosition);
 
-                if (distance > INTERACTION_THRESHOLD)
+                if (distance > INTERACTION_DISTANCE_THRESHOLD)
                 {
                     autoMovementInput.SetTarget(new InteractionData
                     {
@@ -98,16 +100,21 @@ namespace LessonIsMath.InteractionSystems
                         InputManager.Interaction.Enable();
                         return;
                     }
+                    for (int i = 0; i < interactionHandlers.Length; i++)
+                    {
+                        interactionHandlers[i].OnInteractionStart(currentInteractable);
+                    }
                     interactable.Interact(this);
                 });
             }
 
             if (context.performed == false || currentInteractable == null) return;
-
+            if (currentInteractable.IsAvailableForInteraction() == false) return;
+            
             InteractionTargetData interactionTargetData = currentInteractable.GetInteractionTargetData(this);
             var dot = Vector3.Dot(transform.forward, -interactionTargetData.targetForwardDirection);
             var distance = Vector3.Distance(transform.position, interactionTargetData.targetPosition);
-            if (distance > INTERACTION_THRESHOLD || dot < 0.6f)
+            if (distance > INTERACTION_DISTANCE_THRESHOLD || dot < 0.6f)
             {
                 var interactable = currentInteractable;
                 autoMovementInput.SetTarget(new InteractionData
@@ -123,6 +130,10 @@ namespace LessonIsMath.InteractionSystems
 
         void IInteractor.OnInteractionEnd(IInteractable interactable)
         {
+            for (int i = 0; i < interactionHandlers.Length; i++)
+            {
+                interactionHandlers[i].OnInteractionEnd(interactable);
+            }
             InputManager.Interaction.Enable();
             if (interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable) == false)
             {
@@ -131,11 +142,6 @@ namespace LessonIsMath.InteractionSystems
             }
 
             interactables.Remove(interactable);
-            if (interactable is DoorManager doorManager && doorManager.GetState().HasFlag(DoorState.Unlocked))
-            {
-                playerDoorInteraction.SetTarget(openDoorForce, doorManager.managedDoors);
-            }
-
             RefreshCurrentInteractable();
         }
 
@@ -148,10 +154,9 @@ namespace LessonIsMath.InteractionSystems
 
             if (other.TryGetComponent<IInteractable>(out var otherInteractable))
             {
-                if (otherInteractable is DoorManager doorManager && doorManager.GetState().HasFlag(DoorState.Unlocked))
+                for (int i = 0; i < interactionHandlers.Length; i++)
                 {
-                    playerDoorInteraction.SetTarget(openDoorForce, doorManager.managedDoors);
-                    return;
+                    interactionHandlers[i].TriggerEnter(other);
                 }
                 
                 interactables.Add(otherInteractable);
@@ -169,17 +174,11 @@ namespace LessonIsMath.InteractionSystems
 
             if (other.TryGetComponent<IInteractable>(out var otherInteractable))
             {
-                if (otherInteractable is DoorManager doorManager)
+                for (int i = 0; i < interactionHandlers.Length; i++)
                 {
-                    for (int i = 0; i < doorManager.managedDoors.Length; i++)
-                    {
-                        if (playerDoorInteraction.HasTarget(doorManager.managedDoors[i]))
-                        {
-                            playerDoorInteraction.ClearTarget();
-                            return;
-                        }
-                    }
+                    interactionHandlers[i].TriggerExit(other);
                 }
+                
                 interactables.Remove(otherInteractable);
             }
 
@@ -267,5 +266,4 @@ namespace LessonIsMath.InteractionSystems
             }
         }
     }
-
 }

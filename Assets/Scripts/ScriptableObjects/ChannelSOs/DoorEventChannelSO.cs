@@ -7,12 +7,12 @@ namespace LessonIsMath.ScriptableObjects.ChannelSOs
     [CreateAssetMenu(menuName = "Events/Door Event Channel")]
     public class DoorEventChannelSO : EventChannelBaseSO
     {
-        public Action<DoorManager, bool> OnEventRaised;
+        public Action<ArithmeticOperationDoor, bool> OnEventRaised;
 
-        public void RaiseEvent(DoorManager door, bool value)
+        public void RaiseEvent(ArithmeticOperationDoor arithmeticOperationDoor, bool value)
         {
             if (OnEventRaised != null)
-                OnEventRaised.Invoke(door, value);
+                OnEventRaised.Invoke(arithmeticOperationDoor, value);
             else
             {
                 Debug.LogWarning("A ShowLockedDoorUI was requested, but nobody picked it up. " + "Check why there is no LockedDoor_UI_Manager already present, " + "and make sure it's listening on this Event channel.");

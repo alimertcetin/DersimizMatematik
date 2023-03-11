@@ -62,9 +62,9 @@ namespace LessonIsMath.UI
             else UISystem.Hide<BlackboardUI>();
         }
 
-        void ShowLockedDoorUI(DoorManager doorManager, bool value)
+        void ShowLockedDoorUI(ArithmeticOperationDoor arithmeticOperationDoor, bool value)
         {
-            UISystem.GetUI<LockedDoor_UI>()?.SetDoor(doorManager);
+            UISystem.GetUI<LockedDoor_UI>()?.SetDoor(arithmeticOperationDoor);
             if (value) UISystem.Show<LockedDoor_UI>();
             else UISystem.Hide<LockedDoor_UI>();
         }

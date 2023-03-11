@@ -34,7 +34,7 @@ namespace LessonIsMath.UI
         [SerializeField] int textMaxLenght = 14;
 
         List<NumberItem> inputNumberItems = new List<NumberItem>();
-        DoorManager currentDoorManager;
+        ArithmeticOperationDoor arithmeticOperationDoor;
 
         protected override void Awake()
         {
@@ -69,16 +69,16 @@ namespace LessonIsMath.UI
             this.inventory = obj;
         }
 
-        public void SetDoor(DoorManager doorManager)
+        public void SetDoor(ArithmeticOperationDoor arithmeticOperationDoor)
         {
-            this.currentDoorManager = doorManager;
+            this.arithmeticOperationDoor = arithmeticOperationDoor;
         }
 
         public override void Show()
         {
             base.Show();
             keypad.Enable();
-            txt_Soru.text = currentDoorManager.GetQuestionString();
+            txt_Soru.text = arithmeticOperationDoor.GetQuestionString();
             InputManager.GameUI.Enable();
             InputManager.GameUI.SetCallbacks(this);
             InputManager.Keypad.Enable();
@@ -154,7 +154,7 @@ namespace LessonIsMath.UI
 
         void Answer()
         {
-            if (currentDoorManager.SolveQuestion(int.Parse(txt_InputField.text)) == false)
+            if (arithmeticOperationDoor.SolveQuestion(int.Parse(txt_InputField.text)) == false)
             {
                 warningUIChannel.RaiseEvent("Wrong answer", true);
                 return;
