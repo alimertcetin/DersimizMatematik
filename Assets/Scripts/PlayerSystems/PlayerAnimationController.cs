@@ -53,7 +53,7 @@ namespace LessonIsMath.PlayerSystems
             {
                 animator.SetBool(AnimationConstants.AJ.AJ_Jump_Bool, false);
             }));
-            XIVEventSystem.SendEvent(new XIVTimedEvent(duration + 0.5f).OnCompleted(() =>
+            XIVEventSystem.SendEvent(new XIVTimedEvent(duration + 0.05f).OnCompleted(() =>
             {
                 isJumping = false;
             }));
