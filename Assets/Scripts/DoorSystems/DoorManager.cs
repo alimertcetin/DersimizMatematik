@@ -57,6 +57,15 @@ namespace LessonIsMath.DoorSystems
             interactor.OnInteractionEnd(this);
         }
 
+        InteractionSettings IInteractable.GetInteractionSettings()
+        {
+            return new InteractionSettings
+            {
+                disableInteractionKey = GetState().HasFlag(DoorState.RequiresKeycard) == false,
+                suspendMovement = true,
+            };
+        }
+
         bool IInteractable.IsAvailableForInteraction()
         {
             if (arithmeticOperationLock)
@@ -99,12 +108,12 @@ namespace LessonIsMath.DoorSystems
             return "";
         }
 
-        InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
+        InteractionPositionData IInteractable.GetInteractionPositionData(IInteractor interactor)
         {
             var interactorPos = (interactor as Component).transform.position;
             Transform interactionPos = interactionPositions.GetClosest(interactorPos);
             
-            return new InteractionTargetData
+            return new InteractionPositionData
             {
                 startPos = interactorPos,
                 targetPosition = interactionPos.position,

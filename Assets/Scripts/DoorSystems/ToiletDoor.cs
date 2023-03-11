@@ -50,6 +50,8 @@ namespace LessonIsMath.DoorSystems
             }
         }
 
+        InteractionSettings IInteractable.GetInteractionSettings() => new InteractionSettings();
+
         bool IInteractable.IsAvailableForInteraction() => true;
 
         void IInteractable.Interact(IInteractor interactor)
@@ -74,11 +76,11 @@ namespace LessonIsMath.DoorSystems
             return $"Press {InputManager.InteractionKeyName} to {str}";
         }
 
-        InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
+        InteractionPositionData IInteractable.GetInteractionPositionData(IInteractor interactor)
         {
             var interactorTransform = (interactor as Component).transform;
             Vector3 interactorPos = interactorTransform.position;
-            return new InteractionTargetData
+            return new InteractionPositionData
             {
                 startPos = interactorPos,
                 targetPosition = interactorPos,

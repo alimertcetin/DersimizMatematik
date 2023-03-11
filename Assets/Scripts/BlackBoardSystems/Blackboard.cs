@@ -30,6 +30,14 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
             interactor.OnInteractionEnd(this);
         }
 
+        InteractionSettings IInteractable.GetInteractionSettings()
+        {
+            return new InteractionSettings
+            {
+                suspendMovement = true
+            };
+        }
+
         bool IInteractable.IsAvailableForInteraction() => !IsInInteraction;
 
         void IInteractable.Interact(IInteractor interactor)
@@ -40,10 +48,10 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
         }
 
         string IInteractable.GetInteractionString() => "Press " + InputManager.InteractionKeyName + " to interact with Blackboard";
-        InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
+        InteractionPositionData IInteractable.GetInteractionPositionData(IInteractor interactor)
         {
             var interactorPos = (interactor as Component).transform.position;
-            return new InteractionTargetData
+            return new InteractionPositionData
             {
                 startPos = interactorPos,
                 targetPosition = interactorPos,

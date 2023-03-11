@@ -18,7 +18,7 @@ namespace LessonIsMath.InteractionSystems
 {
     public struct InteractionData
     {
-        public InteractionTargetData targetData;
+        public InteractionPositionData PositionData;
         public Action OnTargetReached;
         public Action OnMovementCanceled;
     }
@@ -69,7 +69,7 @@ namespace LessonIsMath.InteractionSystems
         {
             void OnTargetReached(IInteractable interactable)
             {
-                var targetData = interactable.GetInteractionTargetData(this);
+                var targetData = interactable.GetInteractionPositionData(this);
                 // TODO : Consider making target data class and update it when necessary
                 // target data could be changed until we reach the target
                 var distance = Vector3.Distance(transform.position, targetData.targetPosition);
@@ -78,7 +78,7 @@ namespace LessonIsMath.InteractionSystems
                 {
                     autoMovementInput.SetTarget(new InteractionData
                     {
-                        targetData = targetData,
+                        PositionData = targetData,
                         OnTargetReached = () => OnTargetReached(interactable),
                     });
                     return;
@@ -89,15 +89,16 @@ namespace LessonIsMath.InteractionSystems
             
             void HandleInteraction(IInteractable interactable)
             {
-                InputManager.CharacterMovement.Disable();
-                InputManager.Interaction.Disable();
+                var interactionSettings = interactable.GetInteractionSettings();
+                if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Disable();
+                if (interactionSettings.disableInteractionKey) InputManager.Interaction.Disable();
                 playerAnimationController.HandleInteractionAnimation(interactable, (IInteractable interactable) =>
                 {
-                    InputManager.CharacterMovement.Enable();
+                    if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
                     notificationChannel.RaiseEvent("", false);
                     if (interactable == null)
                     {
-                        InputManager.Interaction.Enable();
+                        if (interactionSettings.disableInteractionKey) InputManager.Interaction.Enable();
                         return;
                     }
                     for (int i = 0; i < interactionHandlers.Length; i++)
@@ -111,15 +112,15 @@ namespace LessonIsMath.InteractionSystems
             if (context.performed == false || currentInteractable == null) return;
             if (currentInteractable.IsAvailableForInteraction() == false) return;
             
-            InteractionTargetData interactionTargetData = currentInteractable.GetInteractionTargetData(this);
-            var dot = Vector3.Dot(transform.forward, -interactionTargetData.targetForwardDirection);
-            var distance = Vector3.Distance(transform.position, interactionTargetData.targetPosition);
+            InteractionPositionData interactionPositionData = currentInteractable.GetInteractionPositionData(this);
+            var dot = Vector3.Dot(transform.forward, -interactionPositionData.targetForwardDirection);
+            var distance = Vector3.Distance(transform.position, interactionPositionData.targetPosition);
             if (distance > INTERACTION_DISTANCE_THRESHOLD || dot < 0.6f)
             {
                 var interactable = currentInteractable;
                 autoMovementInput.SetTarget(new InteractionData
                 {
-                    targetData = interactionTargetData,
+                    PositionData = interactionPositionData,
                     OnTargetReached = () => OnTargetReached(interactable),
                 });
                 return;
@@ -134,7 +135,8 @@ namespace LessonIsMath.InteractionSystems
             {
                 interactionHandlers[i].OnInteractionEnd(interactable);
             }
-            InputManager.Interaction.Enable();
+
+            if (interactable.GetInteractionSettings().disableInteractionKey) InputManager.Interaction.Enable();
             if (interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable) == false)
             {
                 ChangeCurrentInteractable(interactable);
@@ -192,7 +194,7 @@ namespace LessonIsMath.InteractionSystems
             var currentPos = this.transform.position;
             foreach (IInteractable interactable in interactables)
             {
-                var interactionTargetData = interactable.GetInteractionTargetData(this);
+                var interactionTargetData = interactable.GetInteractionPositionData(this);
                 var dist = Vector3.Distance(currentPos, interactionTargetData.targetPosition);
                 if (dist < distance && IsBlockedByAnything(interactable) == false)
                 {
@@ -206,7 +208,7 @@ namespace LessonIsMath.InteractionSystems
         bool IsBlockedByAnything(IInteractable target)
         {
             Vector3 currentPos = transform.position;
-            Vector3 targetPos = target.GetInteractionTargetData(this).targetPosition;
+            Vector3 targetPos = target.GetInteractionPositionData(this).targetPosition;
             Vector3 center = currentPos + (targetPos - currentPos) * 0.5f;
             interactionBoundingBox.transform.position = center;
             Vector3 size = (targetPos - currentPos).Abs();

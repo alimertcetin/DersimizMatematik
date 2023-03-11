@@ -46,7 +46,7 @@ namespace LessonIsMath.PlayerSystems
         public Vector3 GetMovementVector(Vector3 currentPosition)
         {
             // TODO : Implement path finding
-            float distance = Vector3.Distance(currentPosition, interactionData.targetData.targetPosition);
+            float distance = Vector3.Distance(currentPosition, interactionData.PositionData.targetPosition);
             if (distance < 0.25f)
             {
                 if (needsRotation) return Vector3.zero;
@@ -68,7 +68,7 @@ namespace LessonIsMath.PlayerSystems
 
         public Vector3 GetRotationDirection(Vector3 currentPosition, Vector3 forward)
         {
-            float dot = Vector3.Dot(forward, -interactionData.targetData.targetForwardDirection);
+            float dot = Vector3.Dot(forward, -interactionData.PositionData.targetForwardDirection);
             if (dot > 0.9f)
             {
                 needsRotation = false;
@@ -80,7 +80,7 @@ namespace LessonIsMath.PlayerSystems
             Vector3 targetPos = bezierCurve.GetPoint(t);
 #if UNITY_EDITOR
             Debug.Log("Interactable is not in front of player, Dot : " + dot);
-            XIVDebug.DrawSphere(interactionData.targetData.targetPosition, 0.25f, 0.25f);
+            XIVDebug.DrawSphere(interactionData.PositionData.targetPosition, 0.25f, 0.25f);
 #endif
             return (targetPos - currentPosition).normalized;
         }
@@ -92,10 +92,10 @@ namespace LessonIsMath.PlayerSystems
             needsMovement = true;
             needsRotation = true;
             
-            Vector3 endPos = interactionData.targetData.targetPosition;
-            Vector3 startPos = interactionData.targetData.startPos;
-            Vector3 mid1 = endPos + interactionData.targetData.targetForwardDirection * 0.4f;
-            Vector3 mid2 = endPos + interactionData.targetData.targetForwardDirection * 0.2f;
+            Vector3 endPos = interactionData.PositionData.targetPosition;
+            Vector3 startPos = interactionData.PositionData.startPos;
+            Vector3 mid1 = endPos + interactionData.PositionData.targetForwardDirection * 0.4f;
+            Vector3 mid2 = endPos + interactionData.PositionData.targetForwardDirection * 0.2f;
             bezierCurve = new BezierCurve
             {
                 start = startPos,

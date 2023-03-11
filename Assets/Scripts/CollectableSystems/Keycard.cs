@@ -39,6 +39,14 @@ namespace LessonIsMath.CollectableSystems
         void OnDisable() => inventoryLoadedChannel.Unregister(OnInventoryLoaded);
         void OnInventoryLoaded(Inventory obj) => inventory = obj;
 
+        InteractionSettings IInteractable.GetInteractionSettings()
+        {
+            return new InteractionSettings
+            {
+                suspendMovement = false
+            };
+        }
+
         bool IInteractable.IsAvailableForInteraction() => !collected;
         
         void IInteractable.Interact(IInteractor interactor)
@@ -67,11 +75,11 @@ namespace LessonIsMath.CollectableSystems
             return "Press " + InputManager.InteractionKeyName + " to collect " + keycardItemSO.GetItem().GetColoredCardString();
         }
 
-        InteractionTargetData IInteractable.GetInteractionTargetData(IInteractor interactor)
+        InteractionPositionData IInteractable.GetInteractionPositionData(IInteractor interactor)
         {
             var interactorPos = (interactor as Component).transform.position;
             var transformPos = transform.position.SetY(interactorPos.y);
-            return new InteractionTargetData
+            return new InteractionPositionData
             {
                 startPos = interactorPos,
                 targetPosition = Vector3.MoveTowards(transformPos, interactorPos, 0.25f),
