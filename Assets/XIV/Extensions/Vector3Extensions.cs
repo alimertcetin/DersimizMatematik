@@ -8,6 +8,21 @@ namespace XIV.Extensions
         {
             return new Vector3(vec3.x, 0f, vec3.z);
         }
+        
+        public static Vector3 SetX(this Vector3 vec3, float value)
+        {
+            return new Vector3(value, vec3.y, vec3.z);
+        }
+        
+        public static Vector3 SetY(this Vector3 vec3, float value)
+        {
+            return new Vector3(vec3.x, value, vec3.z);
+        }
+        
+        public static Vector3 SetZ(this Vector3 vec3, float value)
+        {
+            return new Vector3(vec3.x, vec3.y, value);
+        }
 
         public static bool IsSameDirection(this Vector3 vec3, Vector3 other, float threshold = 0f)
         {
