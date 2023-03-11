@@ -84,11 +84,22 @@ namespace LessonIsMath.PlayerSystems
         {
             if (interactable is DoorManager doorManager)
             {
-                if (doorManager.GetState().HasFlag(DoorState.Unlocked) == false)
+                if (doorManager.GetState().HasFlag(DoorState.RequiresKeycard))
                 {
+                    // TODO : Move to PlayerInteraction
+                    cameraTransitionChannel.RaiseEvent(CameraType.SideViewLeft);
+                    var invokeUntilEvent = XIVEventSystem.GetEvent<XIVInvokeUntilEvent>() as IEvent;
+                    XIVEventSystem.CancelEvent(invokeUntilEvent);
+                    Timer transitionDuration = new Timer(2.5f);
+                    XIVEventSystem.SendEvent(new XIVInvokeUntilEvent()
+                        .AddAction(() => transitionDuration.Update(Time.deltaTime))
+                        .OnCompleted(() => cameraTransitionChannel.RaiseEvent(CameraType.Character))
+                        .AddCondition(() => interactable.IsInInteraction == false && transitionDuration.IsDone));
                     onAnimationEnd?.Invoke(interactable);
                     return;
                 }
+                onAnimationEnd?.Invoke(interactable);
+                return;
             }
             else
             {
