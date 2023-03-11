@@ -1,3 +1,13 @@
 fileFormatVersion: 2
 guid: 7d71b6164bdd4ee2ac15974d7771977a
-timeCreated: 1678565069
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - arithmeticDoorUIChannel: {fileID: 11400000, guid: 33d654f55ff99c441a9735f773bda76b,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

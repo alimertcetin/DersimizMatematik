@@ -14,7 +14,7 @@ namespace LessonIsMath.DoorSystems
     [RequireComponent(typeof(DoorManager))]
     public class ArithmeticOperationDoor : MonoBehaviour, ISaveable, IUIEventListener
     {
-        [SerializeField] DoorEventChannelSO lockedDoorUIChannel;
+        [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel;
         [SerializeField] ArithmeticOperation arithmeticOperation;
         [SerializeField] int maxValueOfAnswer;
         bool questionSolved;
@@ -48,7 +48,7 @@ namespace LessonIsMath.DoorSystems
 
         public void OnInteract()
         {
-            lockedDoorUIChannel.RaiseEvent(this, true);
+            arithmeticDoorUIChannel.RaiseEvent(this, true);
             UIEventSystem.Register<LockedDoor_UI>(this);
         }
 

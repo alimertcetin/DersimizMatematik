@@ -17,7 +17,7 @@ namespace LessonIsMath.UI
         [SerializeField]
         BoolEventChannelSO pauseMenuUIChannel;
         [SerializeField] BoolEventChannelSO blackBoardUIChannel;
-        [SerializeField] DoorEventChannelSO lockedDoorUIChannel;
+        [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel;
         [SerializeField] BoolEventChannelSO hudUIChannel;
         [SerializeField] StringEventChannelSO notificationChannel;
         [SerializeField] StringEventChannelSO warningChannel;
@@ -26,7 +26,7 @@ namespace LessonIsMath.UI
         {
             pauseMenuUIChannel.OnEventRaised += ShowPauseMenuUI;
             blackBoardUIChannel.OnEventRaised += ShowBlackBoardUI;
-            lockedDoorUIChannel.OnEventRaised += ShowLockedDoorUI;
+            arithmeticDoorUIChannel.OnEventRaised += ShowLockedDoorUI;
             hudUIChannel.OnEventRaised += ShowHud;
             notificationChannel.OnEventRaised += ShowNotification;
             warningChannel.OnEventRaised += ShowWarning;
@@ -36,7 +36,7 @@ namespace LessonIsMath.UI
         {
             pauseMenuUIChannel.OnEventRaised -= ShowPauseMenuUI;
             blackBoardUIChannel.OnEventRaised -= ShowBlackBoardUI;
-            lockedDoorUIChannel.OnEventRaised -= ShowLockedDoorUI;
+            arithmeticDoorUIChannel.OnEventRaised -= ShowLockedDoorUI;
             hudUIChannel.OnEventRaised -= ShowHud;
             notificationChannel.OnEventRaised -= ShowNotification;
             warningChannel.OnEventRaised -= ShowWarning;

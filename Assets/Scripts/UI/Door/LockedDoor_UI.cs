@@ -23,7 +23,7 @@ namespace LessonIsMath.UI
         Timer deleteTimer;
 
         // TODO : Remove event channel dependency
-        [SerializeField] DoorEventChannelSO lockedDoorUIChannel = default;
+        [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel = default;
         [SerializeField] StringEventChannelSO warningUIChannel = default;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         Inventory inventory;
@@ -54,7 +54,7 @@ namespace LessonIsMath.UI
 
         void OnEnable()
         {
-            btn_Back.RegisterOnClick(() => lockedDoorUIChannel.RaiseEvent(null, false));
+            btn_Back.RegisterOnClick(() => arithmeticDoorUIChannel.RaiseEvent(null, false));
             inventoryLoadedChannel.Register(OnInventoryLoaded);
         }
 
@@ -162,12 +162,12 @@ namespace LessonIsMath.UI
 
             txt_InputField.text = "";
             inputNumberItems.Clear();
-            lockedDoorUIChannel.RaiseEvent(null, false);
+            arithmeticDoorUIChannel.RaiseEvent(null, false);
         }
 
         void PlayerControls.IGameUIActions.OnExit(InputAction.CallbackContext context)
         {
-            if (context.performed) lockedDoorUIChannel.RaiseEvent(null, false);
+            if (context.performed) arithmeticDoorUIChannel.RaiseEvent(null, false);
         }
 
         void IKeypadListener.OnEnter() => Answer();

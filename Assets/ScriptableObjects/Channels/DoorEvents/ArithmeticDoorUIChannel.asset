@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8336d9e1659309d4d842a9f29a9c0051, type: 3}
-  m_Name: LockedDoorUIChannel
+  m_Name: ArithmeticDoorUIChannel
   m_EditorClassIdentifier: 
   description: 

@@ -4,8 +4,8 @@ using LessonIsMath.DoorSystems;
 
 namespace LessonIsMath.ScriptableObjects.ChannelSOs
 {
-    [CreateAssetMenu(menuName = "Events/Door Event Channel")]
-    public class DoorEventChannelSO : EventChannelBaseSO
+    [CreateAssetMenu(menuName = "Events/Arithmetic Door Event Channel")]
+    public class ArithmeticDoorEventChannelSO : EventChannelBaseSO
     {
         public Action<ArithmeticOperationDoor, bool> OnEventRaised;
 

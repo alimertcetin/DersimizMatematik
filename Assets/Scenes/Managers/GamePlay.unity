@@ -1973,7 +1973,7 @@ MonoBehaviour:
   btn_Back: {fileID: 1768111479}
   waitDeleteDuration: 0.5
   deleteDuration: 0.25
-  lockedDoorUIChannel: {fileID: 11400000, guid: 33d654f55ff99c441a9735f773bda76b,
+  arithmeticDoorUIChannel: {fileID: 11400000, guid: 33d654f55ff99c441a9735f773bda76b,
     type: 2}
   warningUIChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
   inventoryLoadedChannel: {fileID: 11400000, guid: ab052fda52bf9e449a07470cb18d369b,
@@ -5078,7 +5078,7 @@ MonoBehaviour:
   pauseMenuUIChannel: {fileID: 11400000, guid: 77ca716e0c3c99048bd165e42a32553b, type: 2}
   blackBoardUIChannel: {fileID: 11400000, guid: 0bae65bfeaddbf148a28958dbd7c060d,
     type: 2}
-  lockedDoorUIChannel: {fileID: 11400000, guid: 33d654f55ff99c441a9735f773bda76b,
+  arithmeticDoorUIChannel: {fileID: 11400000, guid: 33d654f55ff99c441a9735f773bda76b,
     type: 2}
   hudUIChannel: {fileID: 11400000, guid: 684d1557861f6ae419d2be1036eb4421, type: 2}
   notificationChannel: {fileID: 11400000, guid: de2802bc8e1564e44bb84f930d58a887,
