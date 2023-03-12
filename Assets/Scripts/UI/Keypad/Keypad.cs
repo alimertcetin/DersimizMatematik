@@ -1,9 +1,11 @@
 ﻿using ElRaccoone.Tweens;
+using ElRaccoone.Tweens.Core;
 using LessonIsMath.Input;
 using LessonIsMath.Tween;
 using LessonIsMath.UI.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.EventSystem;
 
 namespace LessonIsMath.UI
 {
@@ -14,6 +16,7 @@ namespace LessonIsMath.UI
         [SerializeField] CustomButton[] btn_Numbers;
         IKeypadListener listener;
         bool isActive;
+        bool hasOpeningTween;
 
         public void SetListener(IKeypadListener listener)
         {
@@ -23,6 +26,12 @@ namespace LessonIsMath.UI
         public void Enable()
         {
             isActive = true;
+            hasOpeningTween = true;
+            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddCondition(() =>
+            {
+                hasOpeningTween = TryGetComponent<ITween>(out _);
+                return hasOpeningTween == false;
+            }));
             Register();
             InputManager.Keypad.SetCallbacks(this);
         }
@@ -43,6 +52,7 @@ namespace LessonIsMath.UI
         {
             if (isActive == false) return;
             listener?.OnEnter();
+            if (hasOpeningTween) return;
             btn_Enter.ClickTween(0.1f);
         }
 
@@ -50,6 +60,7 @@ namespace LessonIsMath.UI
         {
             if (isActive == false) return;
             listener?.OnDeleteStarted();
+            if (hasOpeningTween) return;
             btn_Delete.ClickTween(0.1f);
         }
 
@@ -63,6 +74,7 @@ namespace LessonIsMath.UI
         {
             if (isActive == false) return;
             listener?.OnNumberPressed(val);
+            if (hasOpeningTween) return;
             btn_Numbers[val].ClickTween(0.1f);
         }
 
