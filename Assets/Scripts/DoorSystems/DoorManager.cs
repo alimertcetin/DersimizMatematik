@@ -72,6 +72,11 @@ namespace LessonIsMath.DoorSystems
             {
                 return arithmeticOperationDoor.IsQuestionSolved() == false && IsInInteraction == false;
             }
+
+            if (keycardLock)
+            {
+                return keycardRequiredDoor.IsKeycardRequired() && IsInInteraction == false;
+            }
             return false;
         }
 
