@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7211662553991198926}
   - component: {fileID: 7211662553991198927}
   m_Layer: 0
-  m_Name: CollectedParticle
+  m_Name: KeycardCollectedParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
