@@ -31,7 +31,6 @@ namespace LessonIsMath.UI
             base.Awake();
             earnNumberPage.SetBlackboard(this);
             makeOperationPage.SetBlackboard(this);
-            InputManager.GameUI.SetCallbacks(this);
         }
 
         void OnEnable()
@@ -54,6 +53,7 @@ namespace LessonIsMath.UI
 
             btn_EarnNumber.onClick.AddListener(ShowEarnNumberUI);
             btn_MakeOperation.onClick.AddListener(ShowMakeOperationUI);
+            InputManager.GameUI.SetCallbacks(this);
             InputManager.GameUI.Enable();
             InputManager.GameState.Disable();
             InputManager.CharacterMovement.Disable();
