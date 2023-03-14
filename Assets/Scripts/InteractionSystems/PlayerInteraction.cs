@@ -94,10 +94,10 @@ namespace LessonIsMath.InteractionSystems
                 if (interactionSettings.disableInteractionKey) InputManager.Interaction.Disable();
                 playerAnimationController.HandleInteractionAnimation(interactable, (IInteractable interactable) =>
                 {
-                    if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
                     notificationChannel.RaiseEvent("", false);
                     if (interactable == null)
                     {
+                        if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
                         if (interactionSettings.disableInteractionKey) InputManager.Interaction.Enable();
                         return;
                     }
@@ -136,7 +136,9 @@ namespace LessonIsMath.InteractionSystems
                 interactionHandlers[i].OnInteractionEnd(interactable);
             }
 
-            if (interactable.GetInteractionSettings().disableInteractionKey) InputManager.Interaction.Enable();
+            var interactionSettings = interactable.GetInteractionSettings();
+            if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
+            if (interactionSettings.disableInteractionKey) InputManager.Interaction.Enable();
             if (interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable) == false)
             {
                 ChangeCurrentInteractable(interactable);
@@ -149,6 +151,7 @@ namespace LessonIsMath.InteractionSystems
 
         public void TriggerEnter(Collider other)
         {
+            if (other == interactionBoundingBox) return;
             if (other.isTrigger == false)
             {
                 otherColliders.Add(other);
@@ -169,6 +172,7 @@ namespace LessonIsMath.InteractionSystems
 
         public void TriggerExit(Collider other)
         {
+            if (other == interactionBoundingBox) return;
             if (other.isTrigger == false)
             {
                 otherColliders.Remove(other);
