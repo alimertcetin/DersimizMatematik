@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8351444850243912966}
   - component: {fileID: 2707381637459881026}
   - component: {fileID: 416414609379997354}
+  - component: {fileID: 441482405830932412}
   m_Layer: 0
   m_Name: KeycardPrefab_Red
   m_TagString: Untagged
@@ -67,6 +68,19 @@ MonoBehaviour:
   CollectedParticle: {fileID: 7211662553991198926, guid: 555d197ef60ddc74981961e6d3ef6fda,
     type: 3}
   warningChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
+--- !u!65 &441482405830932412
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3210128950982867009}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25, y: 0.125, z: 0.01}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3938920701629080873
 GameObject:
   m_ObjectHideFlags: 0

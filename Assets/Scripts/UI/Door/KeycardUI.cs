@@ -210,7 +210,6 @@ namespace LessonIsMath.UI
 
             var camTransform = Camera.main.transform;
             currentCardGo.transform.position = camTransform.position - camTransform.up * 2f;
-            currentCardGo.transform.localScale = Vector3.one * 0.25f;
             currentCardGo.transform.rotation = Quaternion.LookRotation(-camTransform.forward) * Quaternion.AngleAxis(90f, currentCardGo.transform.forward);
         }
     }
