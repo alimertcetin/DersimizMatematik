@@ -1,9 +1,9 @@
 ﻿using System;
 using XIV.Utils;
 
-namespace XIV.EventSystem
+namespace XIV.EventSystem.Events
 {
-    public class XIVInvokeForSecondsEvent : IEvent<XIVInvokeForSecondsEvent>
+    public class InvokeForSecondsEvent : IEvent<InvokeForSecondsEvent>
     {
         float waitDuration;
         Timer timer;
@@ -13,25 +13,25 @@ namespace XIV.EventSystem
         Func<bool> cancelationCondition;
         bool hasCancelCondition;
 
-        public XIVInvokeForSecondsEvent(float duration)
+        public InvokeForSecondsEvent(float duration)
         {
             timer = new Timer(duration);
         }
 
-        public XIVInvokeForSecondsEvent AddAction(Action<Timer> action)
+        public InvokeForSecondsEvent AddAction(Action<Timer> action)
         {
             this.action = action;
             return this;
         }
         
-        public XIVInvokeForSecondsEvent AddCancelCondition(Func<bool> condition)
+        public InvokeForSecondsEvent AddCancelCondition(Func<bool> condition)
         {
             this.cancelationCondition = condition;
             hasCancelCondition = true;
             return this;
         }
         
-        public XIVInvokeForSecondsEvent Wait(float seconds)
+        public InvokeForSecondsEvent Wait(float seconds)
         {
             this.waitDuration = seconds;
             return this;
@@ -75,13 +75,13 @@ namespace XIV.EventSystem
             cancelationCondition = null;
         }
 
-        public XIVInvokeForSecondsEvent OnCompleted(Action action)
+        public InvokeForSecondsEvent OnCompleted(Action action)
         {
             onCompleted = action;
             return this;
         }
 
-        public XIVInvokeForSecondsEvent OnCanceled(Action action)
+        public InvokeForSecondsEvent OnCanceled(Action action)
         {
             onCanceled = action;
             return this;

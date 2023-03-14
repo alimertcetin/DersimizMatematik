@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using XIV.Easing;
 using XIV.EventSystem;
+using XIV.EventSystem.Events;
 using XIV.Utils;
 using CameraType = LessonIsMath.CameraSystems.CameraType;
 using Random = UnityEngine.Random;
@@ -49,11 +50,11 @@ namespace LessonIsMath.PlayerSystems
 
             isJumping = true;
             animator.SetBool(AnimationConstants.AJ.AJ_Jump_Bool, true);
-            XIVEventSystem.SendEvent(new XIVTimedEvent(duration).OnCompleted(() =>
+            XIVEventSystem.SendEvent(new InvokeAfterEvent(duration).OnCompleted(() =>
             {
                 animator.SetBool(AnimationConstants.AJ.AJ_Jump_Bool, false);
             }));
-            XIVEventSystem.SendEvent(new XIVTimedEvent(duration + 0.05f).OnCompleted(() =>
+            XIVEventSystem.SendEvent(new InvokeAfterEvent(duration + 0.05f).OnCompleted(() =>
             {
                 isJumping = false;
             }));
@@ -88,13 +89,13 @@ namespace LessonIsMath.PlayerSystems
                 {
                     // TODO : Move to PlayerInteraction
                     cameraTransitionChannel.RaiseEvent(CameraType.SideViewLeft);
-                    var invokeUntilEvent = XIVEventSystem.GetEvent<XIVInvokeUntilEvent>() as IEvent;
+                    var invokeUntilEvent = XIVEventSystem.GetEvent<InvokeUntilEvent>() as IEvent;
                     XIVEventSystem.CancelEvent(invokeUntilEvent);
                     Timer transitionDuration = new Timer(2.5f);
-                    XIVEventSystem.SendEvent(new XIVInvokeUntilEvent()
+                    XIVEventSystem.SendEvent(new InvokeUntilEvent()
                         .AddAction(() => transitionDuration.Update(Time.deltaTime))
                         .OnCompleted(() => cameraTransitionChannel.RaiseEvent(CameraType.Character))
-                        .AddCondition(() => interactable.IsInInteraction == false && transitionDuration.IsDone));
+                        .AddCancelCondition(() => interactable.IsInInteraction == false && transitionDuration.IsDone));
                     onAnimationEnd?.Invoke(interactable);
                     return;
                 }

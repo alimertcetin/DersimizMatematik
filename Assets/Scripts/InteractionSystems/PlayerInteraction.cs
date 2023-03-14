@@ -7,6 +7,7 @@ using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV.EventSystem;
+using XIV.EventSystem.Events;
 using XIV.Extensions;
 using XIV.XIVMath;
 #if UNITY_EDITOR
@@ -228,11 +229,11 @@ namespace LessonIsMath.InteractionSystems
                         otherCollider, otherCollider.transform.position, otherCollider.transform.rotation, out var dir, out var distance))
                 {
 #if UNITY_EDITOR
-                    XIVEventSystem.CancelEvent(XIVEventSystem.GetEvent<XIVTimedEvent>());
+                    XIVEventSystem.CancelEvent(XIVEventSystem.GetEvent<InvokeAfterEvent>());
                     var mat = otherColliders[i].GetComponentInChildren<Renderer>().material;
                     var color = mat.color;
                     mat.color = Color.red;
-                    XIVEventSystem.SendEvent(new XIVTimedEvent(5f)
+                    XIVEventSystem.SendEvent(new InvokeAfterEvent(5f)
                         .OnCompleted(() => mat.color = color)
                         .OnCanceled(() => mat.color = color));
                     XIVDebug.DrawLine(center, center + (dir * distance), 8f);

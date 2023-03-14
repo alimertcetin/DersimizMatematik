@@ -1,8 +1,8 @@
 using System;
 
-namespace XIV.EventSystem
+namespace XIV.EventSystem.Events
 {
-    public class XIVInvokeUntilEvent : IEvent<XIVInvokeUntilEvent>
+    public class InvokeUntilEvent : IEvent<InvokeUntilEvent>
     {
         Action action;
         Func<bool> condition;
@@ -11,16 +11,16 @@ namespace XIV.EventSystem
 
         bool hasAction;
 
-        public XIVInvokeUntilEvent AddCondition(Func<bool> condition)
-        {
-            this.condition = condition;
-            return this;
-        }
-
-        public XIVInvokeUntilEvent AddAction(Action action)
+        public InvokeUntilEvent AddAction(Action action)
         {
             hasAction = true;
             this.action = action;
+            return this;
+        }
+
+        public InvokeUntilEvent AddCancelCondition(Func<bool> condition)
+        {
+            this.condition = condition;
             return this;
         }
         
@@ -50,13 +50,13 @@ namespace XIV.EventSystem
             onCompleted = null;
         }
 
-        public XIVInvokeUntilEvent OnCompleted(Action action)
+        public InvokeUntilEvent OnCompleted(Action action)
         {
             onCompleted = action;
             return this;
         }
 
-        public XIVInvokeUntilEvent OnCanceled(Action action)
+        public InvokeUntilEvent OnCanceled(Action action)
         {
             onCanceled = action;
             return this;

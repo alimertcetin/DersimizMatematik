@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using XIV.EventSystem;
+using XIV.EventSystem.Events;
 
 namespace LessonIsMath.DoorSystems
 {
@@ -31,12 +32,12 @@ namespace LessonIsMath.DoorSystems
             if (Mathf.Abs(1 - targetProgress) < Mathf.Epsilon) currentProgress = 1f;
             if (hasEvent) return;
             hasEvent = true;
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddAction(() =>
+            XIVEventSystem.SendEvent(new InvokeUntilEvent().AddAction(() =>
             {
                 currentProgress = Mathf.MoveTowards(currentProgress, targetProgress, Time.deltaTime * 0.5f);
                 rendererMaterials[0].Lerp(lockedMaterial, unlockedMaterial, currentProgress);
                 screenRenderer.materials = rendererMaterials;
-            }).AddCondition(() =>
+            }).AddCancelCondition(() =>
             {
                 bool isDone = Mathf.Abs(currentProgress - targetProgress) < Mathf.Epsilon;
                 if (isDone)

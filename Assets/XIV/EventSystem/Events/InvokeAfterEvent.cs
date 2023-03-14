@@ -1,51 +1,50 @@
 ﻿using System;
-using UnityEngine;
 using XIV.Utils;
 
-namespace XIV.EventSystem
+namespace XIV.EventSystem.Events
 {
-    public class XIVTimedEvent : IEvent<XIVTimedEvent>
+    public class InvokeAfterEvent : IEvent<InvokeAfterEvent>
     {
         Timer timer;
         Action onCompleted;
         Action onCanceled;
         
-        public XIVTimedEvent(float duration)
+        public InvokeAfterEvent(float duration)
         {
             timer = new Timer(duration);
         }
 
-        public void Update(float deltaTime)
+        void IEvent.Update(float deltaTime)
         {
             timer.Update(deltaTime);
         }
 
-        public bool IsDone()
+        bool IEvent.IsDone()
         {
             return timer.IsDone;
         }
 
-        public void Complete()
+        void IEvent.Complete()
         {
             onCompleted?.Invoke();
             onCompleted = null;
             onCanceled = null;
         }
 
-        public void Cancel()
+        void IEvent.Cancel()
         {
             onCanceled?.Invoke();
             onCompleted = null;
             onCanceled = null;
         }
 
-        public XIVTimedEvent OnCompleted(Action action)
+        public InvokeAfterEvent OnCompleted(Action action)
         {
             onCompleted += action;
             return this;
         }
 
-        public XIVTimedEvent OnCanceled(Action action)
+        public InvokeAfterEvent OnCanceled(Action action)
         {
             onCanceled += action;
             return this;

@@ -6,6 +6,7 @@ using LessonIsMath.UI.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV.EventSystem;
+using XIV.EventSystem.Events;
 
 namespace LessonIsMath.UI
 {
@@ -27,7 +28,7 @@ namespace LessonIsMath.UI
         {
             isActive = true;
             hasOpeningTween = true;
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddCondition(() =>
+            XIVEventSystem.SendEvent(new InvokeUntilEvent().AddCancelCondition(() =>
             {
                 hasOpeningTween = TryGetComponent<ITween>(out _);
                 return hasOpeningTween == false;

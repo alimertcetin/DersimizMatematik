@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using XIV;
 using XIV.EventSystem;
+using XIV.EventSystem.Events;
 using XIV.Extensions;
 using XIV.Utils;
 using XIV.XIVMath;
@@ -176,7 +177,7 @@ namespace LessonIsMath.InteractionSystems
             Vector3 transformRight = transform.right;
             var rightHandWeight = rightHandIKConstraint.weight;
             var leftHandWeight = leftHandIKConstraint.weight;
-            XIVEventSystem.SendEvent(new XIVInvokeForSecondsEvent(1f).AddAction((Timer timer) =>
+            XIVEventSystem.SendEvent(new InvokeForSecondsEvent(1f).AddAction((Timer timer) =>
             {
                 float normalizedTime = timer.NormalizedTime;
                 rightHandIKConstraint.weight = Mathf.Lerp(rightHandWeight, 0f, normalizedTime);

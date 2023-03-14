@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using XIV.EventSystem;
+using XIV.EventSystem.Events;
 
 namespace LessonIsMath.Tween
 {
@@ -12,13 +13,13 @@ namespace LessonIsMath.Tween
     {
         public static void MoveTowardsTween(this Component component, Transform target, Vector3 offset, float moveSpeed, Action onCompleted)
         {
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddAction(() =>
+            XIVEventSystem.SendEvent(new InvokeUntilEvent().AddAction(() =>
             {
                 Vector3 currentPosition = component.transform.position;
                 Vector3 targetPosition = target.position + offset;
                 Vector3 newPosition = Vector3.MoveTowards(currentPosition, targetPosition, moveSpeed * Time.deltaTime);
                 component.transform.position = newPosition;
-            }).AddCondition(() =>
+            }).AddCancelCondition(() =>
             {
                 Vector3 currentPosition = component.transform.position;
                 Vector3 targetPosition = target.position + offset;
@@ -34,13 +35,13 @@ namespace LessonIsMath.Tween
         
         public static void MoveTowardsTween(this Component component, Transform target, Func<Vector3> offsetFunc, float moveSpeed, Action onCompleted)
         {
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddAction(() =>
+            XIVEventSystem.SendEvent(new InvokeUntilEvent().AddAction(() =>
             {
                 Vector3 currentPosition = component.transform.position;
                 Vector3 targetPosition = target.position + offsetFunc.Invoke();
                 Vector3 newPosition = Vector3.MoveTowards(currentPosition, targetPosition, moveSpeed * Time.deltaTime);
                 component.transform.position = newPosition;
-            }).AddCondition(() =>
+            }).AddCancelCondition(() =>
             {
                 Vector3 currentPosition = component.transform.position;
                 Vector3 targetPosition = target.position + offsetFunc.Invoke();
@@ -56,12 +57,12 @@ namespace LessonIsMath.Tween
         
         public static void MoveTowardsTween(this Component component, Vector3 targetPosition, float moveSpeed, Action onCompleted)
         {
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddAction(() =>
+            XIVEventSystem.SendEvent(new InvokeUntilEvent().AddAction(() =>
             {
                 Vector3 currentPosition = component.transform.position;
                 Vector3 newPosition = Vector3.MoveTowards(currentPosition, targetPosition, moveSpeed * Time.deltaTime);
                 component.transform.position = newPosition;
-            }).AddCondition(() =>
+            }).AddCancelCondition(() =>
             {
                 Vector3 currentPosition = component.transform.position;
                 var distance = Vector3.Distance(currentPosition, targetPosition);
@@ -77,7 +78,7 @@ namespace LessonIsMath.Tween
         public static void MoveTowards(this Component component, Vector3 targetPos, float duration)
         {
             var startPos = component.transform.position;
-            XIVEventSystem.SendEvent(new XIVInvokeForSecondsEvent(duration).AddAction((timer) =>
+            XIVEventSystem.SendEvent(new InvokeForSecondsEvent(duration).AddAction((timer) =>
             {
                 var newPos = Vector3.Lerp(startPos, targetPos, timer.NormalizedTime);
                 component.transform.position = newPos;
@@ -86,30 +87,30 @@ namespace LessonIsMath.Tween
         
         public static void RotateTowardsTween(this Component component, Quaternion targetRotation, float rotationSpeed)
         {
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddAction(() =>
+            XIVEventSystem.SendEvent(new InvokeUntilEvent().AddAction(() =>
             {
                 component.transform.rotation = Quaternion.RotateTowards(component.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }).AddCondition(() => Quaternion.Angle(component.transform.rotation, targetRotation) < 0.01f));
+            }).AddCancelCondition(() => Quaternion.Angle(component.transform.rotation, targetRotation) < 0.01f));
         }
         
         public static void LookTween(this Component component, Transform target, float rotationSpeed, Func<bool> stopCondition)
         {
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddAction(() =>
+            XIVEventSystem.SendEvent(new InvokeUntilEvent().AddAction(() =>
             {
                 var transform = component.transform;
                 var targetLook = Quaternion.LookRotation(-target.forward);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetLook, rotationSpeed * Time.deltaTime);
-            }).AddCondition(stopCondition.Invoke));
+            }).AddCancelCondition(stopCondition.Invoke));
         }
         
         public static void LookTween(this Component component, Transform target, float rotationSpeed)
         {
-            XIVEventSystem.SendEvent(new XIVInvokeUntilEvent().AddAction(() =>
+            XIVEventSystem.SendEvent(new InvokeUntilEvent().AddAction(() =>
             {
                 var transform = component.transform;
                 var targetRotation = Quaternion.LookRotation(-target.forward);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }).AddCondition(() =>
+            }).AddCancelCondition(() =>
             {
                 var targetRotation = Quaternion.LookRotation(-target.forward);
                 return Quaternion.Angle(component.transform.rotation, targetRotation) < 0.01f;
@@ -119,7 +120,7 @@ namespace LessonIsMath.Tween
         public static void ScaleTween(this Component component, Vector3 targetScale, float duration)
         {
             var startScale = component.transform.localScale;
-            XIVEventSystem.SendEvent(new XIVInvokeForSecondsEvent(duration).AddAction((timer) =>
+            XIVEventSystem.SendEvent(new InvokeForSecondsEvent(duration).AddAction((timer) =>
             {
                 if (component == null) return;
                 var newScale = Vector3.Lerp(startScale, targetScale, timer.NormalizedTime);
