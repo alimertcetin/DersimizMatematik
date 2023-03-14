@@ -6,6 +6,7 @@ namespace XIV.InventorySystem
 {
     public delegate bool FindItemCondition<in T>(T item) where T : ItemBase;
     
+    // TODO : Needs cleanup
     public class Inventory
     {
         public readonly int SlotCount;
@@ -69,6 +70,22 @@ namespace XIV.InventorySystem
                     condition.Invoke(item) == false) continue;
                 
                 items.Add() = inventoryItem;
+            }
+
+            return items;
+        }
+
+        public IList<ReadOnlyInventoryItem> GetItemsOfType<T>(FindItemCondition<T> condition) where T : ItemBase
+        {
+            var items = new DynamicArray<ReadOnlyInventoryItem>(SlotCount);
+            for (var i = 0; i < SlotCount; i++)
+            {
+                ref InventoryItem inventoryItem = ref this.items[i];
+                if (emptySlots[i] ||
+                    inventoryItem.Item is not T item ||
+                    condition.Invoke(item) == false) continue;
+                
+                items.Add() = new ReadOnlyInventoryItem(inventoryItem);
             }
 
             return items;
