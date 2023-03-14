@@ -54,6 +54,7 @@ namespace LessonIsMath.PlayerSystems
 
         public Quaternion GetRotation()
         {
+            var input = this.input;
             if (autoMovementInput.hasTarget)
             {
                 input = GetRequiredInput(autoMovementInput.GetRotationDirection(transform.position, transform.forward));
