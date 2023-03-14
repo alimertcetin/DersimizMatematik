@@ -1,21 +1,25 @@
 using System;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
+using LessonIsMath.Tween;
+using LessonIsMath.UI;
 using UnityEngine;
 using XIV.Extensions;
-using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
-using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.SaveSystems;
 
 namespace LessonIsMath.DoorSystems
 {
     [RequireComponent(typeof(DoorManager))]
-    public class KeycardRequiredDoor : MonoBehaviour, ISaveable
+    public class KeycardRequiredDoor : MonoBehaviour, IUIEventListener, ISaveable
     {
-        [SerializeField] InventoryChannelSO inventoryLoadedChannel;
+        [SerializeField] BoolEventChannelSO keycardUIChannel;
         [SerializeField] KeycardItemSO[] requiredKeycards;
+        [SerializeField] CardReader cardReader;
+        Transform cardReaderParent;
+        Vector3 cardReaderInitialPosition;
+        Quaternion cardReaderInitialRotation;
         bool[] removedKeycards;
-        Inventory inventory;
         DoorManager doorManager;
 
         void Awake()
@@ -24,9 +28,40 @@ namespace LessonIsMath.DoorSystems
             doorManager = GetComponent<DoorManager>();
         }
 
-        void OnEnable() => inventoryLoadedChannel.Register(OnInventoryLoaded);
-        void OnDisable() => inventoryLoadedChannel.Unregister(OnInventoryLoaded);
-        void OnInventoryLoaded(Inventory inventory) => this.inventory = inventory;
+        void Start()
+        {
+            UpdateCardReader();
+        }
+
+        public CardReader GetCardReader() => cardReader;
+
+        /// <summary>
+        /// If <paramref name="item"/> is not removed returns index of item, -1 otherwise
+        /// </summary>
+        public int GetIndexOfRequiredItem(KeycardItem item)
+        {
+            for (var i = 0; i < requiredKeycards.Length; i++)
+            {
+                KeycardItemSO requiredKeycard = requiredKeycards[i];
+                if (removedKeycards[i] || item.Equals(requiredKeycard.GetItem()) == false) continue;
+                return i;
+            }
+            return -1;
+        }
+
+        public void RemoveAt(int index)
+        {
+            removedKeycards[index] = true;
+            UpdateCardReader();
+        }
+
+        public void UpdateCardReader()
+        {
+            int length = requiredKeycards.Length;
+            CountKeycards(out var greenCount, out var yellowCount, out var redCount);
+            var current = greenCount + yellowCount + redCount;
+            cardReader.UpdateVisual(1 - (current / (float)length));
+        }
 
         public void OnInteract()
         {
@@ -36,16 +71,28 @@ namespace LessonIsMath.DoorSystems
                 return;
             }
 
-            for (int i = 0; i < removedKeycards.Length; i++)
+            var cardReaderTransform = cardReader.transform;
+            cardReaderInitialPosition = cardReaderTransform.position;
+            cardReaderInitialRotation = cardReaderTransform.rotation;
+            cardReaderParent = cardReaderTransform.parent;
+            var camTransform = Camera.main.transform;
+            cardReader.MoveTowardsTween(camTransform, () => camTransform.forward, 5f, () =>
             {
-                if (removedKeycards[i] || inventory.Contains(requiredKeycards[i].GetItem(), out var index) == false) continue;
-
-                removedKeycards[i] = true;
-                int amount = 1;
-                inventory.RemoveAt(index, ref amount);
-                break;
-            }
-            doorManager.OnInteractionEnd();
+                UISystem.GetUI<KeycardUI>().SetKeycardRequiredDoor(this);
+                cardReaderTransform.SetParent(camTransform);
+                keycardUIChannel.RaiseEvent(true);
+                UIEventSystem.Register<KeycardUI>(this);
+            });
+            cardReader.LookTween(camTransform, 80f, () =>
+            {
+                bool isDone = cardReaderTransform.parent == camTransform;
+                var angle = Quaternion.Angle(Quaternion.LookRotation(-camTransform.forward), cardReaderTransform.rotation);
+                if (angle > 0)
+                {
+                    cardReader.LookTween(camTransform, 80f);
+                }
+                return isDone;
+            });
         }
 
         public bool IsKeycardRequired()
@@ -99,6 +146,19 @@ namespace LessonIsMath.DoorSystems
 
             return total > 0 ? str : "";
         }
+
+        void IUIEventListener.OnShowUI(GameUI ui) { }
+
+        void IUIEventListener.OnHideUI(GameUI ui)
+        {
+            cardReader.transform.SetParent(cardReaderParent);
+            cardReader.RotateTowardsTween(cardReaderInitialRotation, 80f);
+            cardReader.MoveTowardsTween(cardReaderInitialPosition, 5f, () =>
+            {
+                doorManager.OnInteractionEnd();
+                UIEventSystem.Unregister<KeycardUI>(this);
+            });
+        }
         
         #region --- Save ---
 
@@ -120,7 +180,7 @@ namespace LessonIsMath.DoorSystems
         {
             SaveData saveData = (SaveData)state;
             removedKeycards = saveData.removedKeycards;
-            GetComponent<DoorManager>().RefreshDoorState();
+            UpdateCardReader();
         }
 
         #endregion

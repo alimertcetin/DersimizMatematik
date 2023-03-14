@@ -14,10 +14,10 @@ namespace LessonIsMath.UI
         [SerializeField] WarningPopup warningPopup;
 
         [Header("Listening To")]
-        [SerializeField]
-        BoolEventChannelSO pauseMenuUIChannel;
+        [SerializeField] BoolEventChannelSO pauseMenuUIChannel;
         [SerializeField] BoolEventChannelSO blackBoardUIChannel;
         [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel;
+        [SerializeField] BoolEventChannelSO keycardUIChannel;
         [SerializeField] BoolEventChannelSO hudUIChannel;
         [SerializeField] StringEventChannelSO notificationChannel;
         [SerializeField] StringEventChannelSO warningChannel;
@@ -27,6 +27,7 @@ namespace LessonIsMath.UI
             pauseMenuUIChannel.OnEventRaised += ShowPauseMenuUI;
             blackBoardUIChannel.OnEventRaised += ShowBlackBoardUI;
             arithmeticDoorUIChannel.OnEventRaised += ShowLockedDoorUI;
+            keycardUIChannel.OnEventRaised += ShowKeycardUI;
             hudUIChannel.OnEventRaised += ShowHud;
             notificationChannel.OnEventRaised += ShowNotification;
             warningChannel.OnEventRaised += ShowWarning;
@@ -37,6 +38,7 @@ namespace LessonIsMath.UI
             pauseMenuUIChannel.OnEventRaised -= ShowPauseMenuUI;
             blackBoardUIChannel.OnEventRaised -= ShowBlackBoardUI;
             arithmeticDoorUIChannel.OnEventRaised -= ShowLockedDoorUI;
+            keycardUIChannel.OnEventRaised -= ShowKeycardUI;
             hudUIChannel.OnEventRaised -= ShowHud;
             notificationChannel.OnEventRaised -= ShowNotification;
             warningChannel.OnEventRaised -= ShowWarning;
@@ -67,6 +69,13 @@ namespace LessonIsMath.UI
             UISystem.GetUI<LockedDoor_UI>()?.SetDoor(arithmeticOperationDoor);
             if (value) UISystem.Show<LockedDoor_UI>();
             else UISystem.Hide<LockedDoor_UI>();
+        }
+
+        void ShowKeycardUI(bool value)
+        {
+            if (value) UISystem.Show<KeycardUI>();
+            else UISystem.Hide<KeycardUI>();
+            hudUIChannel.RaiseEvent(!value);
         }
 
         void ShowHud(bool value)
