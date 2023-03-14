@@ -18,16 +18,7 @@ namespace XIV.Utils
         public int number1;
         public int number2;
         public int answer;
-        static Random rnd;
-        static Random random
-        {
-            get
-            {
-                if (rnd == null) rnd = new Random();
-                return rnd;
-            }
-            set => rnd = value;
-        }
+        static readonly Random random = new Random();
 
         public const int MAX_VALUE_OF_ANSWER = 1000000;
 
