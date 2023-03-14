@@ -78,12 +78,11 @@ namespace LessonIsMath.CollectableSystems
         InteractionPositionData IInteractable.GetInteractionPositionData(IInteractor interactor)
         {
             var interactorPos = (interactor as Component).transform.position;
-            var transformPos = transform.position.SetY(interactorPos.y);
             return new InteractionPositionData
             {
                 startPos = interactorPos,
-                targetPosition = Vector3.MoveTowards(transformPos, interactorPos, 0.25f),
-                targetForwardDirection = (interactorPos - transformPos).normalized,
+                targetPosition = interactionPos.position.SetY(interactorPos.y),
+                targetForwardDirection = interactionPos.forward,
             };
         }
 
