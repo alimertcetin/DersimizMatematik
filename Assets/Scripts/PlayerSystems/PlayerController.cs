@@ -76,10 +76,7 @@ namespace LessonIsMath.PlayerSystems
                 else movement = Vector3.zero;
             }
 
-            if (movement.sqrMagnitude > 0)
-            {
-                transform.rotation = playerInputProvider.GetRotation();
-            }
+            transform.rotation = playerInputProvider.GetRotation();
             
             movement.y = storedVerticalAcceleration;
             movement.y += Physics.gravity.y * gravityScale * Time.deltaTime;
