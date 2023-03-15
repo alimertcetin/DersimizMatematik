@@ -37,7 +37,7 @@ namespace XIV.EventSystem.Events
             return this;
         }
 
-        public void Update(float deltaTime)
+        void IEvent.Update(float deltaTime)
         {
             waitDuration -= deltaTime;
             if (waitDuration > 0) return;
@@ -52,12 +52,12 @@ namespace XIV.EventSystem.Events
             action.Invoke(timer);
         }
 
-        public bool IsDone()
+        bool IEvent.IsDone()
         {
             return timer.IsDone;
         }
 
-        public void Complete()
+        void IEvent.Complete()
         {
             onCompleted?.Invoke();
             action = null;
@@ -66,7 +66,7 @@ namespace XIV.EventSystem.Events
             cancelationCondition = null;
         }
 
-        public void Cancel()
+        void IEvent.Cancel()
         {
             onCanceled?.Invoke();
             action = null;
