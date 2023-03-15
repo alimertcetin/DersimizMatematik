@@ -129,6 +129,11 @@ namespace LessonIsMath.UI
                 inventory.Remove(currentKeycardItem, ref amount);
                 insertCardButton.image.color = Color.white;
                 currentKeycardItem = null;
+                if (keycardRequiredDoor.IsKeycardRequired() == false)
+                {
+                    SetKeycard(KeycardType.None);
+                    keycardUIChannel.RaiseEvent(false);
+                }
             });
             currentCardGo.transform.ScaleTween(Vector3.zero, 1f);
         }
