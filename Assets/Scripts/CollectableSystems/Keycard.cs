@@ -1,16 +1,17 @@
-﻿using System.Collections;
-using LessonIsMath.Input;
+﻿using LessonIsMath.Input;
 using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using XIV;
+using XIV.Easing;
+using XIV.EventSystem;
+using XIV.EventSystem.Events;
 using XIV.Extensions;
 using XIV.InventorySystem;
-using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.SaveSystems;
+using XIV.XIVMath;
 
 namespace LessonIsMath.CollectableSystems
 {
@@ -21,13 +22,15 @@ namespace LessonIsMath.CollectableSystems
         [SerializeField] KeycardItemSO keycardItemSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] ParticleSystem CollectedParticle;
+        [SerializeField] float collectDuration = 1.5f;
         [SerializeField] StringEventChannelSO warningChannel;
 
         Inventory inventory;
         bool collected;
         Collider col;
         new MeshRenderer renderer;
-        bool IInteractable.IsInInteraction => false;
+        bool isInInteraction;
+        bool IInteractable.IsInInteraction => isInInteraction;
 
         void Awake()
         {
@@ -37,16 +40,9 @@ namespace LessonIsMath.CollectableSystems
 
         void OnEnable() => inventoryLoadedChannel.Register(OnInventoryLoaded);
         void OnDisable() => inventoryLoadedChannel.Unregister(OnInventoryLoaded);
-        void OnInventoryLoaded(Inventory obj) => inventory = obj;
+        void OnInventoryLoaded(Inventory inventory) => this.inventory = inventory;
 
-        InteractionSettings IInteractable.GetInteractionSettings()
-        {
-            return new InteractionSettings
-            {
-                suspendMovement = false
-            };
-        }
-
+        InteractionSettings IInteractable.GetInteractionSettings() => new InteractionSettings();
         bool IInteractable.IsAvailableForInteraction() => !collected;
         
         void IInteractable.Interact(IInteractor interactor)
@@ -56,17 +52,36 @@ namespace LessonIsMath.CollectableSystems
 
             if (inventory.CanAdd(item, amount) == false)
             {
-                warningChannel.RaiseEvent("There is not enough space for this keycard", true);
+                warningChannel.RaiseEvent("There is not enough space for this keycard");
                 interactor.OnInteractionEnd(this);
                 return;
             }
 
-            inventory.TryAdd(keycardItemSO.GetItem(), ref amount);
+            isInInteraction = true;
 
-            SpawnParicle();
+            var interactorTransform = ((Component)interactor).transform;
+            var startPos = transform.position;
+            // endpos is player backpack position, it works for now but later on we could need IInteractor.GetBackpackPosition or something like that
+            var endPos = interactorTransform.position - (interactorTransform.forward * 0.15f) + (Vector3.up * 1.15f);
+            var mid1 = startPos + (endPos - startPos) * 0.25f + Vector3.up;
+            var mid2 = startPos + (endPos - startPos) * 0.75f + Random.insideUnitSphere;
+            XIVEventSystem.SendEvent(new InvokeForSecondsEvent(collectDuration).AddAction((timer) =>
+            {
+                var endPos = interactorTransform.position - (interactorTransform.forward * 0.15f) + (Vector3.up * 1.15f);
+                var t = EasingFunction.SmoothStart1(timer.NormalizedTime);
+#if UNITY_EDITOR
+                XIVDebug.DrawBezier(startPos, mid1,  mid2, endPos, 0.25f);
+#endif
+                var newPosition = BezierMath.GetPoint(startPos, mid1,  mid2, endPos, t);
+                transform.position = newPosition;
+            }).OnCompleted(() =>
+            {
+                inventory.TryAdd(item, ref amount);
+                SpawnParicle(interactorTransform);
+                renderer.enabled = false;
+            }));
             collected = true;
             col.enabled = false;
-            renderer.enabled = false;
             interactor.OnInteractionEnd(this);
         }
 
@@ -78,22 +93,29 @@ namespace LessonIsMath.CollectableSystems
         InteractionPositionData IInteractable.GetInteractionPositionData(IInteractor interactor)
         {
             var interactorPos = (interactor as Component).transform.position;
+            var targetPos = Vector3.MoveTowards(interactorPos, transform.position.SetY(interactorPos.y), 0.2f);
             return new InteractionPositionData
             {
                 startPos = interactorPos,
-                targetPosition = interactionPos.position.SetY(interactorPos.y),
-                targetForwardDirection = interactionPos.forward,
+                targetPosition = interactorPos,
+                targetForwardDirection = (interactorPos - targetPos).normalized,
             };
         }
 
-        void SpawnParicle()
+        void SpawnParicle(Transform parent)
         {
-            GameObject go = Instantiate(CollectedParticle.gameObject);
+            GameObject go = Instantiate(CollectedParticle.gameObject, parent);
             go.transform.position = transform.position;
             Destroy(go, 5.0f);
         }
 
         #region --- SAVE ---
+
+        [System.Serializable]
+        struct SaveData
+        {
+            public bool isCollected;
+        }
 
         public object CaptureState()
         {
@@ -112,12 +134,6 @@ namespace LessonIsMath.CollectableSystems
                 col.enabled = true;
                 renderer.enabled = true;
             }
-        }
-
-        [System.Serializable]
-        struct SaveData
-        {
-            public bool isCollected;
         }
 
         #endregion
