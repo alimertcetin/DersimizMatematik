@@ -2,6 +2,7 @@
 using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
+using UnityEngine.Events;
 using XIV;
 using XIV.Easing;
 using XIV.EventSystem;
@@ -18,12 +19,12 @@ namespace LessonIsMath.CollectableSystems
     [RequireComponent(typeof(SaveableEntity))]
     public class Keycard : MonoBehaviour, ISaveable, IInteractable
     {
-        [SerializeField] Transform interactionPos;
         [SerializeField] KeycardItemSO keycardItemSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] ParticleSystem CollectedParticle;
         [SerializeField] float collectDuration = 1.5f;
         [SerializeField] StringEventChannelSO warningChannel;
+        [SerializeField] UnityEvent onKeycardCollected;
 
         Inventory inventory;
         bool collected;
@@ -79,6 +80,7 @@ namespace LessonIsMath.CollectableSystems
                 inventory.TryAdd(item, ref amount);
                 SpawnParicle(interactorTransform);
                 renderer.enabled = false;
+                onKeycardCollected.Invoke();
             }));
             collected = true;
             col.enabled = false;
