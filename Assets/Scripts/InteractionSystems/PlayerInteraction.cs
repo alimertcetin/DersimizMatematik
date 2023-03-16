@@ -95,7 +95,7 @@ namespace LessonIsMath.InteractionSystems
                 if (interactionSettings.disableInteractionKey) InputManager.Interaction.Disable();
                 playerAnimationController.HandleInteractionAnimation(interactable, (IInteractable interactable) =>
                 {
-                    notificationChannel.RaiseEvent("", false);
+                    notificationChannel.RaiseEvent("");
                     if (interactable == null)
                     {
                         if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
@@ -255,7 +255,7 @@ namespace LessonIsMath.InteractionSystems
         {
             currentInteractable = otherInteractable;
             if (currentInteractable != null) notificationChannel.RaiseEvent(currentInteractable.GetInteractionString());
-            else notificationChannel.RaiseEvent("", false);
+            else notificationChannel.RaiseEvent("");
         }
 
         class InteractionHelper : MonoBehaviour

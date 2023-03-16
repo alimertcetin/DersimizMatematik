@@ -116,13 +116,13 @@ namespace LessonIsMath.UI
 
             if (txt_InputField.text.Length > textMaxLenght)
             {
-                warningUIChannel.RaiseEvent("You cant enter anymore number", true);
+                warningUIChannel.RaiseEvent("You cant enter anymore number");
                 return;
             }
 
             if (IsExist(out int index) == false)
             {
-                warningUIChannel.RaiseEvent("This number is not exists in your inventory!", true);
+                warningUIChannel.RaiseEvent("This number is not exists in your inventory!");
                 return;
             }
 
@@ -156,7 +156,7 @@ namespace LessonIsMath.UI
         {
             if (arithmeticOperationDoor.SolveQuestion(int.Parse(txt_InputField.text)) == false)
             {
-                warningUIChannel.RaiseEvent("Wrong answer", true);
+                warningUIChannel.RaiseEvent("Wrong answer");
                 return;
             }
 

@@ -84,15 +84,15 @@ namespace LessonIsMath.UI
             else UISystem.Hide<HUD_UI>();
         }
 
-        void ShowWarning(string text, bool show)
+        void ShowWarning(string text)
         {
-            warningPopup.ShowWarning(text, show, warningTime);
+            warningPopup.ShowWarning(text, string.IsNullOrEmpty(text) == false, warningTime);
         }
 
-        void ShowNotification(string str, bool value)
+        void ShowNotification(string text)
         {
-            notification.SetText(str);
-            notification.gameObject.SetActive(value);
+            notification.SetText(text);
+            notification.gameObject.SetActive(string.IsNullOrEmpty(text) == false);
         }
     }
 }

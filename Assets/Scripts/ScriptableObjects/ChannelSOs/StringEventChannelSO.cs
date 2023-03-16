@@ -9,15 +9,14 @@ namespace LessonIsMath.ScriptableObjects.ChannelSOs
     [CreateAssetMenu(menuName = "Events/String Event Channel")]
     public class StringEventChannelSO : EventChannelBaseSO
     {
-        public UnityAction<string, bool> OnEventRaised;
+        public UnityAction<string> OnEventRaised;
 
         /// <param name="strValue">Leave empty "" if boolValue = false</param>
-        /// <param name="boolValue">Show the text</param>
-        public void RaiseEvent(string strValue = "", bool boolValue = true)
+        public void RaiseEvent(string strValue)
         {
             if (OnEventRaised != null)
             {
-                OnEventRaised.Invoke(strValue, boolValue);
+                OnEventRaised.Invoke(strValue);
             }
             else
             {
