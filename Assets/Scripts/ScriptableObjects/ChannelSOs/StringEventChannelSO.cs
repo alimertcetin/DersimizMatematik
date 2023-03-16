@@ -11,7 +11,6 @@ namespace LessonIsMath.ScriptableObjects.ChannelSOs
     {
         public UnityAction<string> OnEventRaised;
 
-        /// <param name="strValue">Leave empty "" if boolValue = false</param>
         public void RaiseEvent(string strValue)
         {
             if (OnEventRaised != null)
