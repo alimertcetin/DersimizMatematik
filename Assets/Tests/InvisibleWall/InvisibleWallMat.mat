@@ -34,8 +34,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 8400000, guid: dd4b3dc62e2570d4f96ab18846026fa9, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture:
-        m_Texture: {fileID: 2800000, guid: 95b9350b42122d248ba49e35589760b8, type: 3}
+        m_Texture: {fileID: 8400000, guid: dd4b3dc62e2570d4f96ab18846026fa9, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -53,15 +57,15 @@ Material:
     m_Ints: []
     m_Floats:
     - _CloseDistance: 6.76
-    - _Distance: 7
+    - _Distance: 5
     - _FarDistance: 10
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Speed: 0.4
-    - _TilingSpeed: 0.2
+    - _Speed: 0
+    - _TilingSpeed: 0
     m_Colors:
-    - _Color: {r: 0.3018868, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: -1, g: 0, b: 0, a: 0}
-    - _OffsetDirection: {r: -1, g: 0, b: 0, a: 0}
-    - _Tiling: {r: 10, g: 10, b: 0, a: 0}
+    - _OffsetDirection: {r: 1, g: 1, b: 0, a: 0}
+    - _Tiling: {r: -1, g: -1, b: 0, a: 0}
   m_BuildTextureStacks: []

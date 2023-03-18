@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5364b1207114e219f921c0319c45d68, type: 3}
+  m_Name: Gif 5
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: -719952257, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 360472497, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 1579096196, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 1120558036, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 168859767, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 1870030460, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: -807075542, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: -75990178, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 1598722152, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 2127760170, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: -250616765, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 1492545876, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  framesPerSecond: 8
