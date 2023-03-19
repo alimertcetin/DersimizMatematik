@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using LessonIsMath.DoorSystems;
 using UnityEngine;
 
@@ -7,7 +7,7 @@ namespace LessonIsMath.InteractionSystems
     public class PlayerDoorInteraction : InteractionHandlerBase
     {
         [SerializeField] UnlockedDoorInteraction unlockedDoorInteraction;
-        IInteractor interactor;
+        [SerializeField] KeycardDoorInteraction keycardDoorInteraction;
         DoorManager currentUnavailableDoorManager;
 
         void Awake()
@@ -17,12 +17,10 @@ namespace LessonIsMath.InteractionSystems
 
         void Update()
         {
-            unlockedDoorInteraction.Update();
-        }
-
-        public override void Init(IInteractor interactor)
-        {
-            this.interactor = interactor;
+            if (unlockedDoorInteraction.hasTarget)
+            {
+                unlockedDoorInteraction.Update();
+            }
         }
 
         public override void TriggerEnter(Collider other)
@@ -39,7 +37,7 @@ namespace LessonIsMath.InteractionSystems
             if (other.TryGetComponent(out DoorManager doorManager) == false) return;
             for (int i = 0; i < doorManager.managedDoors.Length; i++)
             {
-                if (unlockedDoorInteraction.HasTarget(doorManager.managedDoors[i]))
+                if (unlockedDoorInteraction.IsTarget(doorManager.managedDoors[i]))
                 {
                     unlockedDoorInteraction.ClearTarget();
                     return;
@@ -47,21 +45,28 @@ namespace LessonIsMath.InteractionSystems
             }
         }
 
-        public override void OnInteractionStart(IInteractable interactable)
+        public override IEnumerator OnInteractionStart(IInteractable interactable)
         {
-            if (interactable is DoorManager doorManager)
+            if (interactable is not DoorManager doorManager) yield break;
+
+            currentUnavailableDoorManager = doorManager;
+
+            if (doorManager.GetState().HasFlag(DoorState.RequiresKeycard))
             {
-                currentUnavailableDoorManager = doorManager;
+                yield return keycardDoorInteraction.OnInteractionStart(doorManager);
             }
+            
         }
 
-        public override void OnInteractionEnd(IInteractable interactable)
+        public override IEnumerator OnInteractionEnd(IInteractable interactable)
         {
             if (interactable is DoorManager doorManager && doorManager == currentUnavailableDoorManager 
                                                         && currentUnavailableDoorManager.GetState().HasFlag(DoorState.Unlocked))
             {
                 unlockedDoorInteraction.SetTarget(currentUnavailableDoorManager.managedDoors);
             }
+
+            yield return keycardDoorInteraction.OnInteractionEnd();
         }
     }
 }

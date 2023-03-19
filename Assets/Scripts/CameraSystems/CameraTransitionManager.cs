@@ -22,7 +22,7 @@ namespace LessonIsMath.CameraSystems
 
     public class CameraTransitionManager : MonoBehaviour
     {
-        public static List<CameraDataContainer> CameraDataContainers = new List<CameraDataContainer>(4);
+        public static Dictionary<CameraType, CameraDataContainer> CameraDataContainers = new Dictionary<CameraType, CameraDataContainer>(4);
         [SerializeField] CameraTransitionEventChannelSO cameraTransitionChannel;
 
         void OnEnable()
@@ -37,18 +37,9 @@ namespace LessonIsMath.CameraSystems
 
         void HandleTransition(CameraType cameraType)
         {
-            int count = CameraDataContainers.Count;
-            for (int i = 0; i < count; i++)
-            {
-                var container = CameraDataContainers[i];
-                if (container.CameraType != cameraType)
-                {
-                    container.VirtualCamera.Priority = CameraPriority.Inactive;
-                    continue;
-                }
-                
-                container.VirtualCamera.Priority = CameraPriority.Override;
-            }
+            var activeBrain = CinemachineCore.Instance.GetActiveBrain(0);
+            activeBrain.ActiveVirtualCamera.Priority = CameraPriority.Inactive;
+            CameraDataContainers[cameraType].VirtualCamera.Priority = CameraPriority.Override;
         }
 
         // Update is called once per frame

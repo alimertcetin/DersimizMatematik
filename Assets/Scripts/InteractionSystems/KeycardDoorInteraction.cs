@@ -1,38 +1,50 @@
+using System.Collections;
+using Cinemachine;
 using LessonIsMath.DoorSystems;
-using LessonIsMath.PlayerSystems;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
+using XIV.Utils;
+using CameraType = LessonIsMath.CameraSystems.CameraType;
 
 namespace LessonIsMath.InteractionSystems
 {
+    [System.Serializable]
     public class KeycardDoorInteraction
     {
-        public bool hasTarget { get; private set; }
-        
-        DoorManager doorManager;
-        Transform transform;
-        PlayerAnimationController playerAnimationController;
-        
-        public void Init(Transform transform)
+        [SerializeField] CameraTransitionEventChannelSO cameraTransitionChannel;
+        [SerializeField] Timer timer = new Timer(2.5f);
+        bool inInteraction;
+
+        public IEnumerator OnInteractionStart(DoorManager doorManager)
         {
-            this.transform = transform;
-            playerAnimationController = transform.GetComponentInChildren<PlayerAnimationController>();
+            if (doorManager.GetState().HasFlag(DoorState.RequiresKeycard) == false) yield break;
+
+            inInteraction = true;
+            cameraTransitionChannel.RaiseEvent(CameraType.SideViewLeft);
+            yield return null;
+            
+            var activeBrain = CinemachineCore.Instance.GetActiveBrain(0);
+            while (timer.Update(Time.deltaTime) == false && activeBrain.IsBlending)
+            {
+                yield return null;
+            }
+            timer.Restart();
         }
 
-        public void Update()
+        public IEnumerator OnInteractionEnd()
         {
-            // var cardReader = doorManager.GetCardReader();
-        }
-
-        public void SetTarget(DoorManager doorManager)
-        {
-            hasTarget = true;
-            this.doorManager = doorManager;
-        }
-
-        public void ClearTarget()
-        {
-            hasTarget = false;
-            doorManager = null;
+            if (inInteraction == false) yield break;
+            inInteraction = false;
+            
+            cameraTransitionChannel.RaiseEvent(CameraType.Character);
+            yield return null;
+            
+            var activeBrain = CinemachineCore.Instance.GetActiveBrain(0);
+            while (timer.Update(Time.deltaTime) == false && activeBrain.IsBlending)
+            {
+                yield return null;
+            }
+            timer.Restart();
         }
     }
 }

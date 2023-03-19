@@ -1,14 +1,8 @@
 ﻿using System;
-using LessonIsMath.DoorSystems;
 using LessonIsMath.InteractionSystems;
-using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
-using XIV.Easing;
 using XIV.EventSystem;
 using XIV.EventSystem.Events;
-using XIV.Utils;
-using CameraType = LessonIsMath.CameraSystems.CameraType;
 using Random = UnityEngine.Random;
 
 namespace LessonIsMath.PlayerSystems
@@ -16,7 +10,6 @@ namespace LessonIsMath.PlayerSystems
     [RequireComponent(typeof(AudioSource))]
     public class PlayerAnimationController : MonoBehaviour
     {
-        [SerializeField] CameraTransitionEventChannelSO cameraTransitionChannel;
         [SerializeField] AudioClip[] stepSound = null;
         AudioSource audioSource;
 
@@ -83,33 +76,8 @@ namespace LessonIsMath.PlayerSystems
 
         public void HandleInteractionAnimation(IInteractable interactable, Action<IInteractable> onAnimationEnd = null)
         {
-            if (interactable is DoorManager doorManager)
-            {
-                if (doorManager.GetState().HasFlag(DoorState.RequiresKeycard))
-                {
-                    // TODO : Move to PlayerInteraction
-                    cameraTransitionChannel.RaiseEvent(CameraType.SideViewLeft);
-                    var invokeUntilEvent = XIVEventSystem.GetEvent<InvokeUntilEvent>() as IEvent;
-                    XIVEventSystem.CancelEvent(invokeUntilEvent);
-                    Timer transitionDuration = new Timer(2.5f);
-                    XIVEventSystem.SendEvent(new InvokeUntilEvent()
-                        .AddAction(() => transitionDuration.Update(Time.deltaTime))
-                        .OnCompleted(() => cameraTransitionChannel.RaiseEvent(CameraType.Character))
-                        .AddCancelCondition(() => interactable.IsInInteraction == false && transitionDuration.IsDone));
-                    onAnimationEnd?.Invoke(interactable);
-                    return;
-                }
-                onAnimationEnd?.Invoke(interactable);
-                return;
-            }
-            else
-            {
-#if UNITY_EDITOR
-                Debug.LogWarning("Animation is not implemented : " + interactable);
-#endif
-                cameraTransitionChannel.RaiseEvent(CameraType.Character);
-                onAnimationEnd?.Invoke(interactable);
-            }
+            Debug.LogWarning("Animation is not implemented : " + interactable);
+            onAnimationEnd?.Invoke(interactable);
         }
 
         //Walk and run animation is using this method

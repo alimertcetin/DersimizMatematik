@@ -23,7 +23,7 @@ namespace LessonIsMath.InteractionSystems
         [SerializeField] float openDoorForce = 50f;
         List<Door> targets = new List<Door>(2);
         
-        bool hasTarget;
+        public bool hasTarget { get; private set; }
         float animationWeight;
         Vector3 previousPosition;
 
@@ -40,8 +40,7 @@ namespace LessonIsMath.InteractionSystems
 
         public void Update()
         {
-            var velocity = CalculateVelocity();
-            if (hasTarget == false) return;
+            var velocity = GetVelocity();
             var transformPosition = transform.position;
             
             var door = targets.GetClosestOnXZPlane(transformPosition);
@@ -102,7 +101,7 @@ namespace LessonIsMath.InteractionSystems
             else playerAnimationController.BendLeftHandFingers(weight);
         }
 
-        Vector3 CalculateVelocity()
+        Vector3 GetVelocity()
         {
             var currentPos = transform.position;
             var velocity = (currentPos - previousPosition) / Time.deltaTime;
@@ -142,18 +141,7 @@ namespace LessonIsMath.InteractionSystems
 #endif
         }
 
-        public bool HasTarget(Door door)
-        {
-            for (int i = 0; i < targets.Count; i++)
-            {
-                if (door == targets[i])
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public bool IsTarget(Door door) => targets.Contains(door);
 
         public void SetTarget(params Door[] doors)
         {
@@ -163,6 +151,8 @@ namespace LessonIsMath.InteractionSystems
             {
                 this.targets.Add(doors[i]);
             }
+
+            previousPosition = transform.position;
         }
 
         public void ClearTarget()

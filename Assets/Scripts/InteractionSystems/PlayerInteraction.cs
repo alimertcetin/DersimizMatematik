@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
@@ -39,6 +40,8 @@ namespace LessonIsMath.InteractionSystems
 
         const float INTERACTION_DISTANCE_THRESHOLD = 0.5f;
         BoxCollider interactionBoundingBox;
+        Coroutine interactionCoroutine;
+        Queue<IInteractable> waitingInteracionEnd = new Queue<IInteractable>(2);
 
         void Awake()
         {
@@ -68,73 +71,82 @@ namespace LessonIsMath.InteractionSystems
 
         void PlayerControls.IInteractionActions.OnInteract(InputAction.CallbackContext context)
         {
-            void OnTargetReached(IInteractable interactable)
-            {
-                var targetData = interactable.GetInteractionPositionData(this);
-                // TODO : Consider making target data class and update it when necessary
-                // target data could be changed until we reach the target
-                var distance = Vector3.Distance(transform.position, targetData.targetPosition);
-
-                if (distance > INTERACTION_DISTANCE_THRESHOLD)
-                {
-                    autoMovementInput.SetTarget(new InteractionData
-                    {
-                        PositionData = targetData,
-                        OnTargetReached = () => OnTargetReached(interactable),
-                    });
-                    return;
-                }
-
-                HandleInteraction(interactable);
-            }
-            
-            void HandleInteraction(IInteractable interactable)
-            {
-                var interactionSettings = interactable.GetInteractionSettings();
-                if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Disable();
-                if (interactionSettings.disableInteractionKey) InputManager.Interaction.Disable();
-                playerAnimationController.HandleInteractionAnimation(interactable, (IInteractable interactable) =>
-                {
-                    notificationChannel.RaiseEvent("");
-                    if (interactable == null)
-                    {
-                        if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
-                        if (interactionSettings.disableInteractionKey) InputManager.Interaction.Enable();
-                        return;
-                    }
-                    for (int i = 0; i < interactionHandlers.Length; i++)
-                    {
-                        interactionHandlers[i].OnInteractionStart(currentInteractable);
-                    }
-                    interactable.Interact(this);
-                });
-            }
-
             if (context.performed == false || currentInteractable == null) return;
             if (currentInteractable.IsAvailableForInteraction() == false) return;
             
+            if (SetAutoMovementIfNeeded()) return;
+            StartAnimation();
+        }
+
+        bool SetAutoMovementIfNeeded()
+        {
             InteractionPositionData interactionPositionData = currentInteractable.GetInteractionPositionData(this);
             var dot = Vector3.Dot(transform.forward, -interactionPositionData.targetForwardDirection);
             var distance = Vector3.Distance(transform.position, interactionPositionData.targetPosition);
             if (distance > INTERACTION_DISTANCE_THRESHOLD || dot < 0.6f)
             {
                 var interactable = currentInteractable;
-                autoMovementInput.SetTarget(new InteractionData
-                {
-                    PositionData = interactionPositionData,
-                    OnTargetReached = () => OnTargetReached(interactable),
-                });
-                return;
+                autoMovementInput.SetTarget(new InteractionData { PositionData = interactionPositionData, OnTargetReached = () => OnTargetReached(interactable), });
+                return true;
             }
-            
-            HandleInteraction(currentInteractable);
+
+            return false;
+        }
+
+        void OnTargetReached(IInteractable interactable)
+        {
+            if (SetAutoMovementIfNeeded()) return;
+            StartAnimation();
+        }
+
+        void StartAnimation()
+        {
+            var interactionSettings = currentInteractable.GetInteractionSettings();
+            if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Disable();
+            if (interactionSettings.disableInteractionKey) InputManager.Interaction.Disable();
+            playerAnimationController.HandleInteractionAnimation(currentInteractable, (IInteractable interactable) =>
+            {
+                notificationChannel.RaiseEvent("");
+                if (interactable == null)
+                {
+                    if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
+                    if (interactionSettings.disableInteractionKey) InputManager.Interaction.Enable();
+                    return;
+                }
+
+                currentInteractable = interactable;
+                if (interactionCoroutine != null) return;
+                interactionCoroutine = StartCoroutine(OnInteractionStart());
+            });
+        }
+
+        IEnumerator OnInteractionStart()
+        {
+            for (int i = 0; i < interactionHandlers.Length; i++)
+            {
+                yield return interactionHandlers[i].OnInteractionStart(currentInteractable);
+            }
+
+            interactionCoroutine = null;
+            currentInteractable.Interact(this);
         }
 
         void IInteractor.OnInteractionEnd(IInteractable interactable)
         {
+            if (interactionCoroutine != null)
+            {
+                waitingInteracionEnd.Enqueue(interactable);
+                return;
+            }
+
+            interactionCoroutine = StartCoroutine(OnInteractionEnd(interactable));
+        }
+
+        IEnumerator OnInteractionEnd(IInteractable interactable)
+        {
             for (int i = 0; i < interactionHandlers.Length; i++)
             {
-                interactionHandlers[i].OnInteractionEnd(interactable);
+                yield return interactionHandlers[i].OnInteractionEnd(interactable);
             }
 
             var interactionSettings = interactable.GetInteractionSettings();
@@ -143,11 +155,17 @@ namespace LessonIsMath.InteractionSystems
             if (interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable) == false)
             {
                 ChangeCurrentInteractable(interactable);
-                return;
+                interactionCoroutine = null;
+                yield break;
             }
 
             interactables.Remove(interactable);
             RefreshCurrentInteractable();
+            interactionCoroutine = null;
+            if (waitingInteracionEnd.Count > 0)
+            {
+                ((IInteractor)this).OnInteractionEnd(waitingInteracionEnd.Dequeue());
+            }
         }
 
         public void TriggerEnter(Collider other)
