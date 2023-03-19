@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using XIVEditor.Utils;
 
-namespace XIVEditor.Windows
+namespace XIV.GifAnimation.XIVEditor.Windows
 {
     // https://forum.unity.com/threads/extending-instead-of-replacing-built-in-inspectors.407612/
     public class CustomSpriteWindow : EditorWindow

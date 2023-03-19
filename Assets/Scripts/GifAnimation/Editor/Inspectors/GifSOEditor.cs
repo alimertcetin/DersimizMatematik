@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using XIV.GifAnimation.ScriptableObjects;
 using XIV.Utils;
-using XIVEditor.Utils;
-using Object = UnityEngine.Object;
 
-namespace XIVEditor.Inspectors
+namespace XIV.GifAnimation.XIVEditor.Inspectors
 {
     [CustomEditor(typeof(GifSO))]
     public class GifSOEditor : Editor

@@ -1,37 +1,41 @@
 using UnityEngine;
+using XIV.GifAnimation.ScriptableObjects;
 using XIV.Utils;
 
-public class GifAnimator : MonoBehaviour
+namespace XIV.GifAnimation
 {
-    [SerializeField] RenderTexture renderTexture;
-    [SerializeField] GifSO gifSO;
-    
-    int currentSpriteIndex;
-    Color[] pixelBuffer;
-    Timer timer;
-    
-    void Start()
+    public class GifAnimator : MonoBehaviour
     {
-        timer = new Timer(1f / gifSO.framesPerSecond);
-        pixelBuffer = new Color[renderTexture.width * renderTexture.height];
-    }
+        [SerializeField] RenderTexture renderTexture;
+        [SerializeField] GifSO gifSO;
+    
+        int currentSpriteIndex;
+        Color[] pixelBuffer;
+        Timer timer;
+    
+        void Start()
+        {
+            timer = new Timer(1f / gifSO.framesPerSecond);
+            pixelBuffer = new Color[renderTexture.width * renderTexture.height];
+        }
 
-    void Update()
-    {
-        // Check if it's time to write the next frame
-        if (timer.Update(Time.deltaTime) == false) return;
+        void Update()
+        {
+            // Check if it's time to write the next frame
+            if (timer.Update(Time.deltaTime) == false) return;
         
-        timer.Restart();
+            timer.Restart();
 
-        // renderTexture.DiscardContents(true, false);
-        var currentSprite = gifSO.frames[currentSpriteIndex];
-        var texture = TextureUtils.CreateTextureNonAlloc(currentSprite, renderTexture.width, renderTexture.height, pixelBuffer);
-        Graphics.Blit(texture, renderTexture);
-        currentSpriteIndex = (currentSpriteIndex + 1) % gifSO.frames.Length;
-    }
+            // renderTexture.DiscardContents(true, false);
+            var currentSprite = gifSO.frames[currentSpriteIndex];
+            var texture = TextureUtils.CreateTextureNonAlloc(currentSprite, renderTexture.width, renderTexture.height, pixelBuffer);
+            Graphics.Blit(texture, renderTexture);
+            currentSpriteIndex = (currentSpriteIndex + 1) % gifSO.frames.Length;
+        }
 
-    void OnDestroy()
-    {
-        renderTexture.Release();
+        void OnDestroy()
+        {
+            renderTexture.Release();
+        }
     }
 }

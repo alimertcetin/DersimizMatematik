@@ -1,8 +1,11 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "DataContainers/GifSO")]
-public class GifSO : ScriptableObject
+namespace XIV.GifAnimation.ScriptableObjects
 {
-    public Sprite[] frames;
-    public int framesPerSecond;
+    [CreateAssetMenu(menuName = "DataContainers/GifSO")]
+    public class GifSO : ScriptableObject
+    {
+        public Sprite[] frames;
+        public int framesPerSecond;
+    }
 }
