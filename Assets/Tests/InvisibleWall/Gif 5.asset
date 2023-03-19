@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Gif 5
   m_EditorClassIdentifier: 
   frames:
-  - {fileID: -719952257, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
-  - {fileID: 360472497, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
-  - {fileID: 1579096196, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
-  - {fileID: 1120558036, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
-  - {fileID: 168859767, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
-  - {fileID: 1870030460, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
-  - {fileID: -807075542, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
-  - {fileID: -75990178, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
   - {fileID: 1598722152, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
   - {fileID: 2127760170, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
   - {fileID: -250616765, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
   - {fileID: 1492545876, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
-  framesPerSecond: 8
+  - {fileID: 168859767, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 1870030460, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: -807075542, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: -75990178, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: -719952257, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 360472497, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 1579096196, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  - {fileID: 1120558036, guid: b8ba9730a9972a1488800adb23732b39, type: 3}
+  framesPerSecond: 4
