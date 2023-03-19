@@ -2,12 +2,15 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace XIVEditor.Windows
+namespace LessonIsMath.XIVEditor.Windows
 {
     public class DoorCreatorEditor : EditorWindow
     {
         GameObject singleDoor;
         GameObject doubleDoor;
+        GameObject cardReader;
+
+        bool IsPrefabsFilled => singleDoor && doubleDoor && cardReader;
 
         [MenuItem("Lesson Is Math/DoorCreator")]
         static void Init()
@@ -31,6 +34,7 @@ namespace XIVEditor.Windows
         {
             DrawObjectField("Single Door", ref singleDoor);
             DrawObjectField("Double Door", ref doubleDoor);
+            DrawObjectField("Card Reader", ref cardReader);
 
             EditorGUILayout.Space(20);
 
@@ -42,6 +46,11 @@ namespace XIVEditor.Windows
             if (GUILayout.Button("Create Double Door"))
             {
                 CreatePrefab(doubleDoor);
+            }
+
+            if (GUILayout.Button("Create Card Reader"))
+            {
+                CreatePrefab(cardReader);
             }
         }
 
@@ -91,12 +100,12 @@ namespace XIVEditor.Windows
                 var asset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
                 if (asset == null) continue;
                 var assetName = asset.name.ToLower();
-                if (assetName.Contains("door") == false) continue;
-
-                if (assetName.Contains("single")) singleDoor = asset;
-                else if (assetName.Contains("double")) doubleDoor = asset;
-
-                if (singleDoor != null && doubleDoor != null) break;
+                
+                if (assetName.Contains("single") && assetName.Contains("door")) singleDoor = asset;
+                else if (assetName.Contains("double") && assetName.Contains("door")) doubleDoor = asset;
+                else if (assetName.Contains("reader")) cardReader = asset;
+                
+                if (IsPrefabsFilled) break;
             }
         }
 
