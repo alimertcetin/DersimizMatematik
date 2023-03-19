@@ -1,7 +1,7 @@
 using UnityEngine;
 using XIV.Utils;
 
-public class SpriteAnimation : MonoBehaviour
+public class GifAnimator : MonoBehaviour
 {
     [SerializeField] RenderTexture renderTexture;
     [SerializeField] GifSO gifSO;
