@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 
-namespace XIV.EditorUtils
+namespace XIVEditor.Utils
 {
     public static class AssetUtils
     {

@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using XIV.Utils;
 
-namespace XIV.EditorUtils
+namespace XIVEditor.Utils
 {
     public static class AnimationConstantsGenerator
     {

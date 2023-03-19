@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace XIV.EditorUtils
+namespace XIVEditor.Windows
 {
     public class DoorCreatorEditor : EditorWindow
     {

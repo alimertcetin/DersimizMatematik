@@ -6,7 +6,7 @@ using UnityEngine;
 using XIV.Utils;
 using Object = UnityEngine.Object;
 
-namespace XIV.EditorUtils
+namespace XIVEditor.Inspectors
 {
     [CustomEditor(typeof(GifSO))]
     public class GifSOEditor : Editor

@@ -1,4 +1,4 @@
-﻿namespace XIV.EditorUtils
+﻿namespace XIVEditor
 {
     public static class FilePaths
     {

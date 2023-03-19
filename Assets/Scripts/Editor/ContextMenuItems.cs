@@ -1,7 +1,8 @@
 ﻿using System.IO;
 using UnityEditor;
+using XIVEditor.Utils;
 
-namespace XIV.EditorUtils
+namespace XIVEditor
 {
     public static class ContextMenuItems
     {
