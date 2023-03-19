@@ -4,6 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using XIV.Utils;
+using XIVEditor.Utils;
 using Object = UnityEngine.Object;
 
 namespace XIVEditor.Inspectors
@@ -35,33 +36,12 @@ namespace XIVEditor.Inspectors
                     Texture2D texture = TextureUtils.CreateTexture(sprite, frameWidth, frameHeight);
                     if (GUILayout.Button(new GUIContent(texture, $"Open {sprite.name} in new Inspector")))
                     {
-                        OpenInspectorForAsset(sprite);
-                        HighlightAsset(sprite);
+                        XIVEditor.Windows.CustomSpriteWindow.Show(sprite);
                     }
                 }
                 GUILayout.FlexibleSpace();
                 EditorGUILayout.EndHorizontal();
             }
-        }
-        
-        public static void OpenInspectorForAsset(Object asset)
-        {
-            Type inspectorType = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
-            EditorWindow inspectorWindow = (EditorWindow)CreateInstance(inspectorType);
-            MethodInfo targetMethod = inspectorType.GetMethod("SetObjectsLocked", BindingFlags.NonPublic | BindingFlags.Instance);
-            targetMethod.Invoke(inspectorWindow, new object[] { new List<UnityEngine.Object>() { asset } });
-            inspectorWindow.Show();
-        }
-
-        public static void SelectAsset(Object asset)
-        {
-            var path = AssetDatabase.GetAssetPath(asset);
-            Selection.activeObject = AssetDatabase.LoadAssetAtPath(path, asset.GetType());
-        }
-
-        public static void HighlightAsset(Object asset)
-        {
-            EditorGUIUtility.PingObject(asset);
         }
     }
 }
