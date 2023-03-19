@@ -11,7 +11,7 @@ public static class AnimationConstants
 		// Members
 		public const string AJ_Jump = "Jump";
 		public const string AJ_Idle = "Idle";
-		public const string AJ_Walk = "Walk";
+		public const string AJ_StandardWalk = "StandardWalk";
 		public const string AJ_Run = "Run";
 		public const string AJ_RightHandHold = "RightHandHold";
 		public const string AJ_RightHandRelease = "RightHandRelease";
