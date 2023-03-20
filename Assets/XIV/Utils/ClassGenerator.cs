@@ -199,13 +199,14 @@
         {
             OpenBrackets(classBuilder);
 
-            if (innerClassBuilder.builder.Length > 0) AddComment("Inner Classes", classBuilder, false);
+            if (innerClassBuilder.builder.Length > 0) AddComment("Inner Classes", classBuilder, true);
 
             string[] innerClassLines = innerClassBuilder.builder.ToString().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < innerClassLines.Length; i++)
             {
                 WriteLine(innerClassLines[i], classBuilder);
             }
+            if (innerClassLines.Length > 0) WriteLine("", classBuilder);
 
             if (memberBuilder.builder.Length > 0) AddComment("Members", classBuilder, true);
             string[] memberLines = memberBuilder.builder.ToString().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -213,6 +214,7 @@
             {
                 WriteLine(memberLines[i], classBuilder);
             }
+            if (memberLines.Length > 0) WriteLine("", classBuilder);
 
             if (methodBuilder.builder.Length > 0) AddComment("Functions", classBuilder, true);
             string[] methodLines = methodBuilder.builder.ToString().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -220,7 +222,9 @@
             {
                 WriteLine(methodLines[i], classBuilder);
             }
+            if (methodLines.Length > 0) WriteLine("", classBuilder);
             CloseBrackets(classBuilder, "class " + className);
+            WriteLine(" ", classBuilder);
         }
 
         void WriteClassInsideNamespace()
@@ -236,7 +240,7 @@
                 OpenBrackets(namespaceBuilder);
             }
 
-            string[] classLines = classBuilder.builder.ToString().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] classLines = classBuilder.builder.ToString().Split(Environment.NewLine.ToCharArray());
             for (int i = 0; i < classLines.Length; i++)
             {
                 WriteLine(classLines[i], namespaceBuilder);
@@ -285,7 +289,7 @@
             var braceLine = "}";
             if (IsNull(bracesLineComment) == false)
             {
-                braceLine += "// " + bracesLineComment;
+                braceLine += " // " + bracesLineComment;
             }
             WriteLine(braceLine, builder);
         }
