@@ -2521,7 +2521,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.0494038, y: 1}
+    m_SensorSize: {x: 1.1449814, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -4051,28 +4051,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7339219b0f376f49901033661895936, type: 3}
---- !u!1 &374652636 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2817176522323790147, guid: f7339219b0f376f49901033661895936,
-    type: 3}
-  m_PrefabInstance: {fileID: 374652635}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &374652647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 374652636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d53d0d7fcd494251bfc1956b82803b7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  keycardUIChannel: {fileID: 11400000, guid: 86e504e99d67f864dbca3c5e121fa9de, type: 2}
-  requiredKeycards:
-  - {fileID: 11400000, guid: 01de6989c3fac1642af1ce88e486c766, type: 2}
-  cardReader: {fileID: 591908830}
 --- !u!1001 &385872674
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11938,7 +11916,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.0494038, y: 1}
+    m_SensorSize: {x: 1.1449814, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -12016,7 +11994,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.0494038, y: 1}
+    m_SensorSize: {x: 1.1449814, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -14294,7 +14272,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.0494038, y: 1}
+    m_SensorSize: {x: 1.1449814, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
