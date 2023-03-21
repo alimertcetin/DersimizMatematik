@@ -4,7 +4,7 @@ using XIVEditor.Utils;
 
 namespace XIVEditor
 {
-    public static class ContextMenuItems
+    public static class MenuItems
     {
         public const string BASE_MENU = "XIV Utilities";
         public const string CODE_GENERATION_MENU = BASE_MENU + "/Code Generation";
