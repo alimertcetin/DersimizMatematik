@@ -12,10 +12,14 @@ namespace LessonIsMath.ScriptableObjects.ChannelSOs
     {
         public UnityAction OnEventRaised;
 
+#if UNITY_EDITOR
+        [ContextMenu(nameof(RaiseEvent))]
+#endif
         public void RaiseEvent()
         {
             if (OnEventRaised != null)
                 OnEventRaised.Invoke();
         }
+
     }
 }
