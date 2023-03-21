@@ -33,8 +33,9 @@ namespace LessonIsMath.DoorSystems
         {
             keycardLock = TryGetComponent(out keycardRequiredDoor);
             arithmeticOperationLock = TryGetComponent(out arithmeticOperationDoor);
-            HandleDoorActivation();
         }
+
+        void Start() => HandleDoorActivation();
 
         public void RefreshDoorState()
         {
