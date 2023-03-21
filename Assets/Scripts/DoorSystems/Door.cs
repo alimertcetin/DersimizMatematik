@@ -60,6 +60,11 @@ namespace LessonIsMath.DoorSystems
         {
             if (this.enabled == false) return;
 
+            if (isOpen == false)
+            {
+                audioSource.pitch = doorOpenSoundPitch;
+                audioSource.PlayOneShot(doorOpenClips.PickRandom());
+            }
             if (openDoorFlag)
             {
                 this.force = force;
@@ -68,8 +73,6 @@ namespace LessonIsMath.DoorSystems
             openDoorFlag = true;
             isOpen = true;
             this.force = force;
-            audioSource.pitch = doorOpenSoundPitch;
-            audioSource.PlayOneShot(doorOpenClips.PickRandom());
             closeDoorFlag = false;
             closeDoorTimer.Restart();
             closeDelayTimer.Restart();
@@ -94,7 +97,6 @@ namespace LessonIsMath.DoorSystems
             var angle = Quaternion.Angle(doorInitialRotation, newRotation);
             if (angle > maxAngle)
             {
-                openDoorFlag = false;
                 force = Vector3.zero;
                 return;
             }
@@ -105,7 +107,7 @@ namespace LessonIsMath.DoorSystems
         {
             closeDoorTimer.Update(Time.deltaTime);
             var normalizedTime = EasingFunction.SmoothStop3(closeDoorTimer.NormalizedTime);
-            var handleRotationTime = 1 - XIVMathf.Remap(normalizedTime, 0.75f, 1f, 0f, 1f);
+            var handleRotationTime = 1 - XIVMathf.RemapClamped(normalizedTime, 0.75f, 1f, 0f, 1f);
             RotateDoorHandle(handleRotationTime);
             door.rotation = Quaternion.Lerp(closeStartRotation, doorInitialRotation, normalizedTime);
             if (normalizedTime > 0.8f && isPlayedCloseSound == false)
