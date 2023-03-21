@@ -8,6 +8,7 @@ namespace LessonIsMath.PlayerSystems
 {
     public class PlayerAnimationController : MonoBehaviour
     {
+        [SerializeField] PlayerFootStepSound footStepSound;
         bool isJumping;
         Animator animator;
 
@@ -18,6 +19,7 @@ namespace LessonIsMath.PlayerSystems
 
         public void PlayLocomotion(float speed)
         {
+            footStepSound.OnLocomotion();
             animator.SetFloat(AnimationConstants.AJ.Parameters.AJ_Speed_Float, speed);
         }
 
