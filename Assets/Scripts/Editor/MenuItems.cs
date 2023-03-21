@@ -9,6 +9,7 @@ namespace LessonIsMath.XIVEditor
         public const string WINDOW_MENU = BASE_MENU + "/Window";
 
         public const string DOOR_CREATOR_WINDOW_MENU = WINDOW_MENU + "/Door Creator";
+        public const string EASY_SCENE_WINDOW_MENU = WINDOW_MENU + "/Easy Scene Loader";
         
         [MenuItem(DOOR_CREATOR_WINDOW_MENU)]
         public static void ShowDoorCreatorWindow()
@@ -20,6 +21,18 @@ namespace LessonIsMath.XIVEditor
             }
 
             EditorWindow.CreateWindow<DoorCreatorEditor>().Show();
+        }
+        
+        [MenuItem(EASY_SCENE_WINDOW_MENU)]
+        public static void ShowSceneLoaderWindow()
+        {
+            if (EditorWindow.HasOpenInstances<EasySceneLoaderWindow>())
+            {
+                EditorWindow.GetWindow<EasySceneLoaderWindow>("Easy Scene Loader").Focus();
+                return;
+            }
+
+            EditorWindow.CreateWindow<EasySceneLoaderWindow>("Easy Scene Loader").Show();
         }
     }
 }
