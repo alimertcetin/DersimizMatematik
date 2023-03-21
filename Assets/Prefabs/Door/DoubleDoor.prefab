@@ -167,18 +167,6 @@ MonoBehaviour:
   - {fileID: 6438687352602823577}
   - {fileID: 5962578043414771599}
   - {fileID: 2366552969760788345}
-  inventoryLoadedChannel: {fileID: 11400000, guid: ab052fda52bf9e449a07470cb18d369b,
-    type: 2}
-  lockedDoorUIChannel: {fileID: 11400000, guid: 33d654f55ff99c441a9735f773bda76b,
-    type: 2}
-  requiredKeycards: []
-  useArithmeticOperation: 0
-  maxValueOfAnswer: 0
-  arithmeticOperation:
-    operationType: 0
-    number1: 0
-    number2: 0
-    answer: 0
 --- !u!1 &5692394148837946972
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,6 +340,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112887fd537e4314786ab2910a1368f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 4702948301598123776}
+  doorOpenClips:
+  - {fileID: 8300000, guid: 803f61865e9e3c8479b65861ff3d1385, type: 3}
+  - {fileID: 8300000, guid: 936c115fa10417644a82fecfadf6fe0a, type: 3}
+  doorCloseClips:
+  - {fileID: 8300000, guid: 5c32161ffa277a344bb9cc03eff7f366, type: 3}
+  - {fileID: 8300000, guid: b8b87ed59a48dc746b7c761a674c9368, type: 3}
   maxAngle: 90
   damping: 0.5
   door: {fileID: 2805912133262872139}
@@ -405,6 +400,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112887fd537e4314786ab2910a1368f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 4702948301598123776}
+  doorOpenClips:
+  - {fileID: 8300000, guid: 803f61865e9e3c8479b65861ff3d1385, type: 3}
+  - {fileID: 8300000, guid: 936c115fa10417644a82fecfadf6fe0a, type: 3}
+  doorCloseClips:
+  - {fileID: 8300000, guid: 5c32161ffa277a344bb9cc03eff7f366, type: 3}
+  - {fileID: 8300000, guid: b8b87ed59a48dc746b7c761a674c9368, type: 3}
   maxAngle: 90
   damping: 0.5
   door: {fileID: 4721882778822031376}

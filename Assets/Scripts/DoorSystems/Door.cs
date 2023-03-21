@@ -2,23 +2,33 @@
 using UnityEngine;
 using XIV.Utils;
 using XIV.Easing;
+using XIV.Extensions;
 using XIV.XIVMath;
 
 namespace LessonIsMath.DoorSystems
 {
+    // TODO : Needs cleanup
+    // Audio stuff and booleans...
     public class Door : MonoBehaviour
     {
+        [SerializeField] AudioSource audioSource;
+        [SerializeField, Range(-3f, 3f)] float doorOpenSoundPitch;
+        [SerializeField, Range(-3f, 3f)] float doorCloseSoundPitch;
+        [SerializeField] AudioClip[] doorOpenClips;
+        [SerializeField] AudioClip[] doorCloseClips;
         [SerializeField] float maxAngle;
         [SerializeField] float damping;
         [SerializeField] Transform door;
         [SerializeField] Transform doorHandle;
         [SerializeField] Timer closeDoorTimer;
         [SerializeField] Timer closeDelayTimer;
-        bool rotate;
-        bool close;
+        bool openDoorFlag;
+        bool closeDoorFlag;
         Vector3 force;
         Quaternion closeStartRotation;
         Quaternion doorInitialRotation;
+        bool isPlayedCloseSound;
+        bool isOpen;
 
         void Awake()
         {
@@ -27,11 +37,11 @@ namespace LessonIsMath.DoorSystems
 
         void Update()
         {
-            if (rotate)
+            if (openDoorFlag)
             {
                 RotateByForce();
             }
-            else if (close && closeDelayTimer.Update(Time.deltaTime))
+            else if (closeDoorFlag && closeDelayTimer.Update(Time.deltaTime))
             {
                 CloseByTimer();
             }
@@ -50,20 +60,28 @@ namespace LessonIsMath.DoorSystems
         {
             if (this.enabled == false) return;
 
+            if (openDoorFlag)
+            {
+                this.force = force;
+                return;
+            }
+            openDoorFlag = true;
+            isOpen = true;
             this.force = force;
-            rotate = true;
-            close = false;
+            audioSource.pitch = doorOpenSoundPitch;
+            audioSource.PlayOneShot(doorOpenClips.PickRandom());
+            closeDoorFlag = false;
             closeDoorTimer.Restart();
             closeDelayTimer.Restart();
         }
 
         public void CloseDoor()
         {
-            if (this.enabled == false) return;
+            if (this.enabled == false || isOpen == false) return;
 
             this.closeStartRotation = door.rotation;
-            rotate = false;
-            close = true;
+            openDoorFlag = false;
+            closeDoorFlag = true;
         }
         
         public Vector3 GetHandlePosition() => doorHandle.position;
@@ -76,7 +94,7 @@ namespace LessonIsMath.DoorSystems
             var angle = Quaternion.Angle(doorInitialRotation, newRotation);
             if (angle > maxAngle)
             {
-                rotate = false;
+                openDoorFlag = false;
                 force = Vector3.zero;
                 return;
             }
@@ -90,8 +108,17 @@ namespace LessonIsMath.DoorSystems
             var handleRotationTime = 1 - XIVMathf.Remap(normalizedTime, 0.75f, 1f, 0f, 1f);
             RotateDoorHandle(handleRotationTime);
             door.rotation = Quaternion.Lerp(closeStartRotation, doorInitialRotation, normalizedTime);
+            if (normalizedTime > 0.8f && isPlayedCloseSound == false)
+            {
+                isPlayedCloseSound = true;
+                audioSource.pitch = doorCloseSoundPitch;
+                audioSource.PlayOneShot(doorCloseClips.PickRandom());
+            }
+            
             if (!closeDoorTimer.IsDone) return;
-            close = false;
+            isPlayedCloseSound = false;
+            closeDoorFlag = false;
+            isOpen = false;
             closeDoorTimer.Restart();
             closeDelayTimer.Restart();
         }
