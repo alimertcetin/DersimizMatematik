@@ -12,21 +12,9 @@ namespace LessonIsMath.XIVEditor.Windows
 
         bool IsPrefabsFilled => singleDoor && doubleDoor && cardReader;
 
-        [MenuItem("Lesson Is Math/DoorCreator")]
-        static void Init()
-        {
-            if (EditorWindow.HasOpenInstances<DoorCreatorEditor>())
-            {
-                EditorWindow.GetWindow<DoorCreatorEditor>().Focus();
-                return;
-            }
-
-            EditorWindow.CreateWindow<DoorCreatorEditor>().Show();
-        }
-
         void OnBecameVisible()
         {
-            titleContent = new GUIContent(nameof(DoorCreatorEditor));
+            titleContent = new GUIContent("Door Creator");
             FindPrefabs();
         }
 
@@ -54,6 +42,10 @@ namespace LessonIsMath.XIVEditor.Windows
             }
         }
 
+        public GameObject CreateSingleDoor() => CreatePrefab(singleDoor);
+        public GameObject CreateDoubleDoor() => CreatePrefab(doubleDoor);
+        public GameObject CreateCardReader() => CreatePrefab(cardReader);
+
         static void DrawObjectField(string label, ref GameObject obj)
         {
             EditorGUILayout.BeginHorizontal();
@@ -62,9 +54,9 @@ namespace LessonIsMath.XIVEditor.Windows
             EditorGUILayout.EndHorizontal();
         }
 
-        void CreatePrefab(GameObject obj)
+        GameObject CreatePrefab(GameObject obj)
         {
-            GameObject doorPrefab = (GameObject)PrefabUtility.InstantiatePrefab(obj, SceneManager.GetActiveScene());
+            GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(obj, SceneManager.GetActiveScene());
 
             if (EditorWindow.HasOpenInstances<SceneView>() == false)
             {
@@ -72,8 +64,8 @@ namespace LessonIsMath.XIVEditor.Windows
                 var currentSceneView = EditorWindow.CreateWindow<SceneView>();
                 
                 Transform currentCamTransform = currentSceneView.camera.transform;
-                doorPrefab.transform.position = currentCamTransform.position + currentCamTransform.forward * 5f;
-                doorPrefab.transform.rotation = Quaternion.Euler(0, currentCamTransform.eulerAngles.y, 0);
+                prefab.transform.position = currentCamTransform.position + currentCamTransform.forward * 5f;
+                prefab.transform.rotation = Quaternion.Euler(0, currentCamTransform.eulerAngles.y, 0);
                 currentSceneView.Close();
                 EditorWindow.FocusWindowIfItsOpen(focusedWindowType);
             }
@@ -82,12 +74,13 @@ namespace LessonIsMath.XIVEditor.Windows
                 var currentSceneView = EditorWindow.GetWindow<SceneView>();
                 
                 Transform currentCamTransform = currentSceneView.camera.transform;
-                doorPrefab.transform.position = currentCamTransform.position + currentCamTransform.forward * 5f;
-                doorPrefab.transform.rotation = Quaternion.Euler(0, currentCamTransform.eulerAngles.y, 0);
+                prefab.transform.position = currentCamTransform.position + currentCamTransform.forward * 5f;
+                prefab.transform.rotation = Quaternion.Euler(0, currentCamTransform.eulerAngles.y, 0);
             }
 
-            Undo.RegisterCreatedObjectUndo(doorPrefab, "Created " + doorPrefab.name);
-            Selection.activeObject = doorPrefab;
+            Undo.RegisterCreatedObjectUndo(prefab, "Created " + prefab.name);
+            Selection.activeObject = prefab;
+            return prefab;
         }
 
         void FindPrefabs()
@@ -137,6 +130,5 @@ namespace LessonIsMath.XIVEditor.Windows
         //             break;
         //     }
         // }
-
     }
 }
