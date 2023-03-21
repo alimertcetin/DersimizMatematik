@@ -5,16 +5,12 @@
 		public static float Epsilon = float.Epsilon;
 		public static float Clamp01(float val)
 		{
-			if (val > 1) return 1f;
-			if (val < 0) return 0;
-			return val;
+			return val > 1 ? 1 : val < 0 ? 0 : val;
 		}
 		
 		public static float Clamp(float val, float min, float max)
 		{
-			if (val > max) return max;
-			if (val < min) return min;
-			return val;
+			return val > max ? max : val < min ? min : val;
 		}
 
 		public static float Lerp(float a, float b, float t)
@@ -42,6 +38,11 @@
 		public static float Remap(float val, float min, float max, float newMin, float newMax)
 		{
 			return (val - min) / (max - min) * (newMax - newMin) + newMin;
+		}
+
+		public static float RemapClamped(float val, float min, float max, float newMin, float newMax)
+		{
+			return Clamp(Remap(val, min, max, newMin, newMax), newMin, newMax);
 		}
 
 		public static float Max(float a, float b)
