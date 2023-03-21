@@ -153,5 +153,10 @@
 			return value < 0 ? (value % length) + length : value % length;
 		}
 
+		public static bool IsCloseToMax(float val, float min, float max)
+		{
+			var closest = max - val > val - min ? min : max;
+			return closest - max < Epsilon;
+		}
 	}
 }
