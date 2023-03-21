@@ -2393,7 +2393,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.7358779, y: 1}
+    m_SensorSize: {x: 0.846678, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -11812,7 +11812,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.7358779, y: 1}
+    m_SensorSize: {x: 0.846678, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -11828,7 +11828,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1290748179}
-  m_LocalRotation: {x: 0.08662752, y: 0.75311494, z: -0.101265706, w: 0.6442506}
+  m_LocalRotation: {x: 0.086627536, y: 0.75311494, z: -0.101265684, w: 0.6442507}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11890,7 +11890,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.7358779, y: 1}
+    m_SensorSize: {x: 0.846678, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -14168,7 +14168,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.7358779, y: 1}
+    m_SensorSize: {x: 0.846678, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -17285,6 +17285,11 @@ PrefabInstance:
       propertyPath: m_Lens.m_SensorSize.x
       value: 0.7358779
       objectReference: {fileID: 0}
+    - target: {fileID: 1270760059, guid: 8f0602776c8cf9048996f8666f9c80f5, type: 3}
+      propertyPath: keycardDoorInteraction.cameraTransitionChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a7bc8205b874a54ab012f8f491d6448,
+        type: 2}
     - target: {fileID: 2031107973431428538, guid: 8f0602776c8cf9048996f8666f9c80f5,
         type: 3}
       propertyPath: footStepSound
