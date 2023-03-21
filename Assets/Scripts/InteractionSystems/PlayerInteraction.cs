@@ -42,6 +42,7 @@ namespace LessonIsMath.InteractionSystems
         BoxCollider interactionBoundingBox;
         Coroutine interactionCoroutine;
         Queue<IInteractable> waitingInteracionEnd = new Queue<IInteractable>(2);
+        InteractionSettings cachedSettings;
 
         void Awake()
         {
@@ -101,16 +102,16 @@ namespace LessonIsMath.InteractionSystems
 
         void StartAnimation()
         {
-            var interactionSettings = currentInteractable.GetInteractionSettings();
-            if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Disable();
-            if (interactionSettings.disableInteractionKey) InputManager.Interaction.Disable();
+            cachedSettings = currentInteractable.GetInteractionSettings();
+            if (cachedSettings.suspendMovement) InputManager.CharacterMovement.Disable();
+            if (cachedSettings.disableInteractionKey) InputManager.Interaction.Disable();
             playerAnimationController.HandleInteractionAnimation(currentInteractable, (IInteractable interactable) =>
             {
                 notificationChannel.RaiseEvent("");
                 if (interactable == null)
                 {
-                    if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
-                    if (interactionSettings.disableInteractionKey) InputManager.Interaction.Enable();
+                    if (cachedSettings.suspendMovement) InputManager.CharacterMovement.Enable();
+                    if (cachedSettings.disableInteractionKey) InputManager.Interaction.Enable();
                     return;
                 }
 
@@ -128,6 +129,13 @@ namespace LessonIsMath.InteractionSystems
             }
 
             interactionCoroutine = null;
+
+            if (currentInteractable == null)
+            {
+                interactionCoroutine = StartCoroutine(OnInteractionEnd(currentInteractable));
+                yield break;
+            }
+            
             currentInteractable.Interact(this);
         }
 
@@ -149,10 +157,10 @@ namespace LessonIsMath.InteractionSystems
                 yield return interactionHandlers[i].OnInteractionEnd(interactable);
             }
 
-            var interactionSettings = interactable.GetInteractionSettings();
+            InteractionSettings interactionSettings = cachedSettings;
             if (interactionSettings.suspendMovement) InputManager.CharacterMovement.Enable();
             if (interactionSettings.disableInteractionKey) InputManager.Interaction.Enable();
-            if (interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable) == false)
+            if (interactable != null && interactable.IsAvailableForInteraction() && IsBlockedByAnything(interactable) == false)
             {
                 ChangeCurrentInteractable(interactable);
                 interactionCoroutine = null;
