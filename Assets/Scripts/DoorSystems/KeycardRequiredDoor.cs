@@ -155,6 +155,7 @@ namespace LessonIsMath.DoorSystems
             cardReader.RotateTowardsTween(cardReaderInitialRotation, 80f);
             cardReader.MoveTowardsTween(cardReaderInitialPosition, 5f, () =>
             {
+                doorManager.RefreshDoorState();
                 doorManager.OnInteractionEnd();
                 UIEventSystem.Unregister<KeycardUI>(this);
             });
