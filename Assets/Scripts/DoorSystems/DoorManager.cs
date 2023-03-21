@@ -1,6 +1,7 @@
 using System;
 using LessonIsMath.Input;
 using LessonIsMath.InteractionSystems;
+using LessonIsMath.UI;
 using UnityEngine;
 using XIV.Extensions;
 
@@ -42,10 +43,13 @@ namespace LessonIsMath.DoorSystems
 
         void HandleDoorActivation()
         {
-            bool val = !keycardLock || (arithmeticOperationLock && arithmeticOperationDoor.IsQuestionSolved());
+            bool keycardRequired = keycardLock && keycardRequiredDoor.IsKeycardRequired();
+            bool hasQuestion = arithmeticOperationLock && arithmeticOperationDoor.IsQuestionSolved() == false;
+            bool enableDoors = !keycardRequired && !hasQuestion;
+            
             for (int i = 0; i < managedDoors.Length; i++)
             {
-                managedDoors[i].enabled = val;
+                managedDoors[i].enabled = enableDoors;
             }
         }
 
