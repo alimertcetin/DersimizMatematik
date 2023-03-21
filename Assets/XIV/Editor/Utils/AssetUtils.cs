@@ -40,6 +40,27 @@ namespace XIVEditor.Utils
             return typeValuePair;
         }
         
+        public static T GetScriptableObject<T>(string scriptableObjectName) where T : ScriptableObject
+        {
+            Dictionary<Type, List<T>> scriptableObjects = AssetUtils.LoadAssetsOfType<T>("Assets/ScriptableObjects");
+            var type = typeof(T);
+            scriptableObjectName = scriptableObjectName.ToLower();
+            foreach (KeyValuePair<Type, List<T>> keyValuePair in scriptableObjects)
+            {
+                if (keyValuePair.Key != type) continue;
+
+                foreach (T scriptableObject in keyValuePair.Value)
+                {
+                    if (scriptableObject.name.ToLower() == scriptableObjectName)
+                    {
+                        return scriptableObject;
+                    }
+                }
+            }
+
+            return null;
+        }
+        
         public static void OpenInspectorForAsset(Object asset)
         {
             Type inspectorType = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
