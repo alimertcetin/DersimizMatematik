@@ -16,6 +16,8 @@ public static class PhysicsConstants
 	public static readonly int WaterLayer = LayerMask.NameToLayer("Water");
 	public const string UI = "UI";
 	public static readonly int UILayer = LayerMask.NameToLayer("UI");
+	public const string Ground = "Ground";
+	public static readonly int GroundLayer = LayerMask.NameToLayer("Ground");
 	
 } // class PhysicsConstants
  
