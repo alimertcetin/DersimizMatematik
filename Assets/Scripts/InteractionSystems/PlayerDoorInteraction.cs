@@ -41,7 +41,7 @@ namespace LessonIsMath.InteractionSystems
                 if (doorManagers[i].GetState().HasFlag(DoorState.Unlocked)) continue;
                 
                 var door = doorManagers[i].managedDoors.GetClosestOnXZPlane(currentPos);
-                var distance = Vector3.Distance(door.GetHandlePosition().OnXZ(), currentPosXZ);
+                var distance = Vector3.Distance(door.GetClosestHandlePosition(currentPos).OnXZ(), currentPosXZ);
                 if (distance > 0.5f) continue;
                 isPlayedFeedback = true;
                 AudioClip clip = doorLockedClips.PickRandom();

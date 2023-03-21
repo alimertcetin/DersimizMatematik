@@ -44,7 +44,7 @@ namespace LessonIsMath.InteractionSystems
             var transformPosition = transform.position;
             
             var door = targets.GetClosestOnXZPlane(transformPosition);
-            Vector3 handlePosition = door.GetHandlePosition();
+            Vector3 handlePosition = door.GetClosestHandlePosition(transformPosition);
             rightHandIKConstraint.data.target.position = handlePosition;
             leftHandIKConstraint.data.target.position = handlePosition;
 

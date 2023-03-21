@@ -19,7 +19,7 @@ namespace LessonIsMath.DoorSystems
         [SerializeField] float maxAngle;
         [SerializeField] float damping;
         [SerializeField] Transform door;
-        [SerializeField] Transform doorHandle;
+        [SerializeField] Transform[] doorHandles;
         [SerializeField] Timer closeDoorTimer;
         [SerializeField] Timer closeDelayTimer;
         bool openDoorFlag;
@@ -53,7 +53,10 @@ namespace LessonIsMath.DoorSystems
             
             var angle = Mathf.Lerp(0, -30f, t);
             var newRotation = Quaternion.Euler(0, 0, angle);
-            doorHandle.localRotation = newRotation;
+            for (int i = 0; i < doorHandles.Length; i++)
+            {
+                doorHandles[i].localRotation = newRotation;
+            }
         }
 
         public void ApplyRotationToDoor(Vector3 force)
@@ -87,7 +90,7 @@ namespace LessonIsMath.DoorSystems
             closeDoorFlag = true;
         }
         
-        public Vector3 GetHandlePosition() => doorHandle.position;
+        public Vector3 GetClosestHandlePosition(Vector3 position) => doorHandles.GetClosestOnXZPlane(position).position;
 
         void RotateByForce()
         {

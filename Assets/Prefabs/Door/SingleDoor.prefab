@@ -62,7 +62,9 @@ MonoBehaviour:
   maxAngle: 90
   damping: 10
   door: {fileID: 2815043205514224825}
-  doorHandle: {fileID: 7705056766323758290}
+  doorHandles:
+  - {fileID: 7705056766323758290}
+  - {fileID: 2084685619121737169}
   closeDoorTimer:
     duration: 2
   closeDelayTimer:
@@ -361,6 +363,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de28f13d342abf04c9456a32040d5bb6, type: 3}
+--- !u!4 &2084685619121737169 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8908050597291200901, guid: de28f13d342abf04c9456a32040d5bb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 7453890954888633428}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2630760902409032276 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4896500551081119232, guid: de28f13d342abf04c9456a32040d5bb6,
