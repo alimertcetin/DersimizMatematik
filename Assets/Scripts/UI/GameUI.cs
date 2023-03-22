@@ -6,7 +6,7 @@ namespace LessonIsMath.UI
     public abstract class GameUI : MonoBehaviour
     {
         [SerializeField] protected GameObject uiGameObject;
-        public bool isActive { get; private set; }
+        public bool isActive { get; protected set; }
         protected virtual void Awake() => UISystem.AddUI(this);
         public virtual void Show()
         {
