@@ -40,19 +40,6 @@ namespace LessonIsMath.CameraSystems
                 cinemachineFreeLook.ForceCameraPosition(cinemachineFreeLook.Follow.position + offset, rotation);
             }
         }
-    
-#if UNITY_EDITOR
-        bool toggle;
-        void Update()
-        {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (toggle) OnCharacterMovementEnabled();
-                else OnCharacterMovementDisabled();
-                toggle = !toggle;
-            }
-        }
-#endif
 
         void OnCharacterMovementEnabled()
         {
