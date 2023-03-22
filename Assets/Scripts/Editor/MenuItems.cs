@@ -1,5 +1,8 @@
+using LessonIsMath.UI.Components;
 using LessonIsMath.XIVEditor.Windows;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace LessonIsMath.XIVEditor
 {
@@ -47,5 +50,21 @@ namespace LessonIsMath.XIVEditor
 
             EditorWindow.CreateWindow<KeycardCreatorWindow>("Keycard Creator").Show();
         }
+
+        // hierarchy
+        [MenuItem("GameObject/UI/Custom Button", false, 0)]
+        static void AddComponent(MenuCommand menuCommand)
+        {
+            var parent = (GameObject)Selection.activeObject;
+            EditorApplication.ExecuteMenuItem("GameObject/UI/Button - TextMeshPro");
+            for (int i = 0; i < Selection.objects.Length; i++)
+            {
+                var activeGo = (GameObject)Selection.objects[i];
+                Object.DestroyImmediate(activeGo.GetComponent<Button>());
+                activeGo.AddComponent<CustomButton>();
+                activeGo.transform.SetParent(parent.transform);
+            }
+        }
+        
     }
 }
