@@ -14,6 +14,7 @@ namespace LessonIsMath.XIVEditor.Windows
         List<SceneAsset> scenes;
         List<SceneAsset> testScenes;
         Vector2 scrollPos;
+        bool additiveLoadToggle;
 
         void OnProjectChange()
         {
@@ -30,6 +31,8 @@ namespace LessonIsMath.XIVEditor.Windows
                 AddScenes("Assets/Scenes", scenes);
                 AddScenes("Assets/Tests", testScenes);
             }
+
+            additiveLoadToggle = GUILayout.Toggle(additiveLoadToggle, "Load additive");
             
             GUILayout.Label("Game Scenes", EditorStyles.boldLabel);
 
@@ -39,7 +42,7 @@ namespace LessonIsMath.XIVEditor.Windows
                 GUILayout.Space(10);
                 if (GUILayout.Button(sceneAsset.name, GUILayout.Height(50)) == false) continue;
 
-                LoadScene(sceneAsset);
+                LoadScene(sceneAsset, additiveLoadToggle);
             }
             
             GUILayout.Label("Test Scenes", EditorStyles.boldLabel);
@@ -49,12 +52,12 @@ namespace LessonIsMath.XIVEditor.Windows
                 GUILayout.Space(10);
                 if (GUILayout.Button(sceneAsset.name, GUILayout.Height(50)) == false) continue;
 
-                LoadScene(sceneAsset);
+                LoadScene(sceneAsset, additiveLoadToggle);
             }
             EditorGUILayout.EndScrollView();
         }
 
-        static void LoadScene(SceneAsset sceneAsset)
+        static void LoadScene(SceneAsset sceneAsset, bool additive)
         {
             int countLoaded = SceneManager.sceneCount;
             Scene[] loadedScenes = new Scene[countLoaded];
@@ -63,12 +66,17 @@ namespace LessonIsMath.XIVEditor.Windows
                 loadedScenes[i] = SceneManager.GetSceneAt(i);
             }
 
-            bool isSaved = EditorSceneManager.SaveModifiedScenesIfUserWantsTo(loadedScenes);
-            if (isSaved)
+            if (additive)
             {
-                if (Application.isPlaying) SceneManager.LoadScene(sceneAsset.name);
-                else EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(sceneAsset));
+                if (Application.isPlaying) SceneManager.LoadScene(sceneAsset.name, LoadSceneMode.Additive);
+                else EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(sceneAsset), OpenSceneMode.Additive);
+                return;
             }
+            // returns false if canceled
+            bool shouldLoad = EditorSceneManager.SaveModifiedScenesIfUserWantsTo(loadedScenes);
+            if (shouldLoad == false) return;
+            if (Application.isPlaying) SceneManager.LoadScene(sceneAsset.name);
+            else EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(sceneAsset));
         }
 
         void AddScenes(string path, List<SceneAsset> collection)
