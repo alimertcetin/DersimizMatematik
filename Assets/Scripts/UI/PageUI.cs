@@ -6,7 +6,7 @@ namespace LessonIsMath.UI
     public abstract class PageUI : MonoBehaviour
     {
         [SerializeField] protected GameObject uiGameObject;
-        public bool isActive { get; private set; }
+        public bool isActive { get; protected set; }
         public virtual void Show()
         {
             uiGameObject.transform.localScale = Vector3.zero;
