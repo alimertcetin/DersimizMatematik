@@ -26,7 +26,11 @@ namespace LessonIsMath.XIVEditor.Inspectors
                 {
                     if (hasKeycard)
                     {
-                        Undo.DestroyObjectImmediate(keycardRequiredDoor.GetCardReader().gameObject);
+                        CardReader[] cardReaders = ReflectionUtils.GetFieldValue<CardReader[]>("cardReaders", keycardRequiredDoor);
+                        for (int i = 0; i < cardReaders.Length; i++)
+                        {
+                            Undo.DestroyObjectImmediate(cardReaders[i].gameObject);
+                        }
                         Undo.DestroyObjectImmediate(keycardRequiredDoor);
                     }
                     else
@@ -75,11 +79,26 @@ namespace LessonIsMath.XIVEditor.Inspectors
             var keycardUIChannel = AssetUtils.GetScriptableObject<BoolEventChannelSO>("keycardUIChannel");
             ReflectionUtils.SetField("keycardUIChannel", keycardRequiredDoor, keycardUIChannel);
             var doorCreatorEditor = EditorWindow.CreateWindow<DoorCreatorEditor>();
-            doorCreatorEditor.Show(true);
-            var cardReaderGo = doorCreatorEditor.CreateCardReader();
+            doorCreatorEditor.Show();
+            var cardReader1 = doorCreatorEditor.CreateCardReader();
+            var cardReader2 = doorCreatorEditor.CreateCardReader();
             doorCreatorEditor.Close();
-            cardReaderGo.transform.position = doorManager.transform.position;
-            ReflectionUtils.SetField("cardReader", keycardRequiredDoor, cardReaderGo.GetComponent<CardReader>());
+            var doorTransform = doorManager.transform;
+            var doorTransformPosition = doorTransform.position;
+            var doorTransformForward = doorTransform.forward;
+            cardReader1.transform.position = doorTransformPosition + doorTransformForward * 0.2f;
+            cardReader2.transform.position = doorTransformPosition + doorTransformForward * 0.2f + Vector3.up * 0.2f;
+            cardReader1.transform.rotation = Quaternion.LookRotation(doorTransformForward);
+            cardReader2.transform.rotation = Quaternion.LookRotation(-doorTransformForward);
+            
+            Undo.SetTransformParent(cardReader1.transform, doorTransform, true, "SetParent");
+            Undo.SetTransformParent(cardReader2.transform, doorTransform, true, "SetParent");
+            
+            ReflectionUtils.SetField("cardReaders", keycardRequiredDoor, new CardReader[]
+            {
+                cardReader1.GetComponent<CardReader>(),
+                cardReader2.GetComponent<CardReader>()
+            });
             
             Selection.objects = currentSelection;
         }

@@ -89,7 +89,7 @@ namespace LessonIsMath.DoorSystems
             this.interactor = interactor;
             if (keycardLock && keycardRequiredDoor.IsKeycardRequired())
             {
-                keycardRequiredDoor.OnInteract();
+                keycardRequiredDoor.OnInteract(((Component)interactor).transform.position);
                 return;
             }
             if (arithmeticOperationLock && arithmeticOperationDoor.IsQuestionSolved() == false)

@@ -15,12 +15,15 @@ namespace LessonIsMath.DoorSystems
     {
         [SerializeField] BoolEventChannelSO keycardUIChannel;
         [SerializeField] KeycardItemSO[] requiredKeycards;
-        [SerializeField] CardReader cardReader;
+        [SerializeField] CardReader[] cardReaders;
         Transform cardReaderParent;
         Vector3 cardReaderInitialPosition;
         Quaternion cardReaderInitialRotation;
         bool[] removedKeycards;
         DoorManager doorManager;
+        CardReader activeCardReader;
+
+        public CardReader GetCardReader() => activeCardReader;
 
         void Awake()
         {
@@ -32,8 +35,6 @@ namespace LessonIsMath.DoorSystems
         {
             UpdateCardReader();
         }
-
-        public CardReader GetCardReader() => cardReader;
 
         /// <summary>
         /// If <paramref name="item"/> is not removed returns index of item, -1 otherwise
@@ -60,10 +61,13 @@ namespace LessonIsMath.DoorSystems
             int length = requiredKeycards.Length;
             CountKeycards(out var greenCount, out var yellowCount, out var redCount);
             var current = greenCount + yellowCount + redCount;
-            cardReader.UpdateVisual(1 - (current / (float)length));
+            for (int i = 0; i < cardReaders.Length; i++)
+            {
+                cardReaders[i].UpdateVisual(1 - (current / (float)length));
+            }
         }
 
-        public void OnInteract()
+        public void OnInteract(Vector3 interactorPos)
         {
             if (IsKeycardRequired() == false)
             {
@@ -71,25 +75,27 @@ namespace LessonIsMath.DoorSystems
                 return;
             }
 
-            var cardReaderTransform = cardReader.transform;
+            activeCardReader = cardReaders.GetClosestOnXZPlane(interactorPos);
+
+            var cardReaderTransform = activeCardReader.transform;
             cardReaderInitialPosition = cardReaderTransform.position;
             cardReaderInitialRotation = cardReaderTransform.rotation;
             cardReaderParent = cardReaderTransform.parent;
             var camTransform = Camera.main.transform;
-            cardReader.MoveTowardsTween(camTransform, () => camTransform.forward, 5f, () =>
+            activeCardReader.MoveTowardsTween(camTransform, () => camTransform.forward, 5f, () =>
             {
                 UISystem.GetUI<KeycardUI>().SetKeycardRequiredDoor(this);
                 cardReaderTransform.SetParent(camTransform);
                 keycardUIChannel.RaiseEvent(true);
                 UIEventSystem.Register<KeycardUI>(this);
             });
-            cardReader.LookTween(camTransform, 80f, () =>
+            activeCardReader.LookTween(camTransform, 80f, () =>
             {
                 bool isDone = cardReaderTransform.parent == camTransform;
                 var angle = Quaternion.Angle(Quaternion.LookRotation(-camTransform.forward), cardReaderTransform.rotation);
                 if (angle > 0)
                 {
-                    cardReader.LookTween(camTransform, 80f);
+                    activeCardReader.LookTween(camTransform, 80f);
                 }
                 return isDone;
             });
@@ -151,9 +157,9 @@ namespace LessonIsMath.DoorSystems
 
         void IUIEventListener.OnHideUI(GameUI ui)
         {
-            cardReader.transform.SetParent(cardReaderParent);
-            cardReader.RotateTowardsTween(cardReaderInitialRotation, 80f);
-            cardReader.MoveTowardsTween(cardReaderInitialPosition, 5f, () =>
+            activeCardReader.transform.SetParent(cardReaderParent);
+            activeCardReader.RotateTowardsTween(cardReaderInitialRotation, 80f);
+            activeCardReader.MoveTowardsTween(cardReaderInitialPosition, 5f, () =>
             {
                 doorManager.RefreshDoorState();
                 doorManager.OnInteractionEnd();
