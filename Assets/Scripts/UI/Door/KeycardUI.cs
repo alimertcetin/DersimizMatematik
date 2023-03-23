@@ -75,12 +75,14 @@ namespace LessonIsMath.UI
             base.Show();
             InputManager.GameUI.SetCallbacks(this);
             InputManager.GameUI.Enable();
+            InputManager.GameState.Disable();
         }
 
         public override void Hide()
         {
             base.Hide();
             InputManager.GameUI.Disable();
+            InputManager.GameState.Enable();
         }
 
         void OnInventoryLoaded(Inventory inventory)
