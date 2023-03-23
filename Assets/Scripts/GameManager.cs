@@ -1,53 +1,36 @@
-﻿using System;
-using LessonIsMath.Input;
+﻿using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
-using LessonIsMath.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour, PlayerControls.IGameStateActions
+namespace LessonIsMath
 {
-    [SerializeField] private BoolEventChannelSO PauseMenuUIChannel = default;
-    bool isPaused = false;
-
-    private void Awake()
+    public class GameManager : MonoBehaviour, PlayerControls.IGameStateActions
     {
-        InputManager.GameState.SetCallbacks(this);
-    }
+        [SerializeField] BoolEventChannelSO pauseMenuUIChannel;
 
-    private void OnEnable()
-    {
-        InputManager.GameState.Enable();
-    }
-
-    private void OnDisable()
-    {
-        InputManager.GameState.Disable();
-    }
-
-    private void OnApplicationQuit()
-    {
-        CursorManager.UnlockCursor(CursorLockMode.None);
-    }
-
-    void PlayerControls.IGameStateActions.OnEscape(InputAction.CallbackContext context)
-    {
-        if (context.performed == false) return;
-
-        if (!isPaused)
+        void Awake()
         {
-            CursorManager.UnlockCursor();
-            InputManager.CharacterMovement.Disable();
-            PauseMenuUIChannel.RaiseEvent(true);
+            InputManager.GameState.SetCallbacks(this);
         }
-        else
+
+        void OnEnable()
         {
-            CursorManager.LockCursor();
-            InputManager.CharacterMovement.Enable();
-            PauseMenuUIChannel.RaiseEvent(false);
+            InputManager.GameState.Enable();
         }
-        isPaused = !isPaused;
+
+        void OnDisable()
+        {
+            InputManager.GameState.Disable();
+        }
+
+        void PlayerControls.IGameStateActions.OnEscape(InputAction.CallbackContext context)
+        {
+            if (context.performed == false) return;
+        
+            pauseMenuUIChannel.RaiseEvent(true);
+        }
+
     }
 
 }
