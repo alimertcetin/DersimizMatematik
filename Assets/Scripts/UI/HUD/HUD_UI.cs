@@ -1,18 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using LessonIsMath.UI;
 using TMPro;
 using UnityEngine.UI;
 using XIV.EventSystem;
 using XIV.EventSystem.Events;
 using XIV.Extensions;
-using XIV.InventorySystem.UI;
 
 namespace XIV.UI
 {
-    public class HUD_UI : GameUI
+    public class HUD_UI : ParentGameUI
     {
-        [SerializeField] InventoryPanel numbers;
-        [SerializeField] InventoryPanel keycards;
+        [SerializeField] HUDNumbersPage numbers;
+        [SerializeField] HUDKeycardsPage keycards;
         [SerializeField] float alphaFadeDuration = 0.5f;
         Image[] uiImages;
         TMP_Text[] uiTexts;
@@ -41,10 +41,10 @@ namespace XIV.UI
             }
         }
 
-        public void ShowNumbers() => numbers.gameObject.SetActive(true);
-        public void HideNumbers() => numbers.gameObject.SetActive(false);
-        public void ShowKeycards() => keycards.gameObject.SetActive(true);
-        public void HideKeycards() => keycards.gameObject.SetActive(false);
+        public void ShowNumbers() => numbers.Show();
+        public void HideNumbers() => numbers.Hide();
+        public void ShowKeycards() => keycards.Show();
+        public void HideKeycards() => keycards.Hide();
 
         public override void Show()
         {
