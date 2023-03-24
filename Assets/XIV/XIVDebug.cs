@@ -189,7 +189,7 @@ namespace XIV
             public DynamicArray<TextData> textDatas = new DynamicArray<TextData>(8);
 
             static TextHelper instance;
-            public static TextHelper Instance => instance == null ? new GameObject("XIVDebug - TextHelper").AddComponent<TextHelper>() : instance;
+            public static TextHelper Instance => instance == null ? instance = new GameObject("XIVDebug - TextHelper").AddComponent<TextHelper>() : instance;
 
             void OnDrawGizmos()
             {
