@@ -341,8 +341,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 4702948301598123776}
-  doorOpenSoundPitch: 0
-  doorCloseSoundPitch: 0
+  doorOpenSoundPitch: 1
+  doorCloseSoundPitch: 1.5
   doorOpenClips:
   - {fileID: 8300000, guid: 803f61865e9e3c8479b65861ff3d1385, type: 3}
   - {fileID: 8300000, guid: 936c115fa10417644a82fecfadf6fe0a, type: 3}
@@ -405,8 +405,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 4702948301598123776}
-  doorOpenSoundPitch: 0
-  doorCloseSoundPitch: 0
+  doorOpenSoundPitch: 1
+  doorCloseSoundPitch: 1.5
   doorOpenClips:
   - {fileID: 8300000, guid: 803f61865e9e3c8479b65861ff3d1385, type: 3}
   - {fileID: 8300000, guid: 936c115fa10417644a82fecfadf6fe0a, type: 3}
