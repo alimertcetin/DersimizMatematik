@@ -34,7 +34,8 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
         {
             return new InteractionSettings
             {
-                suspendMovement = true
+                disableInteractionKey = true,
+                suspendMovement = true,
             };
         }
 

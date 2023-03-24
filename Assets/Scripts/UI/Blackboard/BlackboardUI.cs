@@ -10,11 +10,10 @@ using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 
 namespace LessonIsMath.UI
 {
-    public class BlackboardUI : GameUI, PlayerControls.IGameUIActions
+    public class BlackboardUI : ParentGameUI, PlayerControls.IGameUIActions
     {
         // TODO : Remove channel dependency
         [SerializeField] BoolEventChannelSO blackBoardUIChannel = default;
-        [SerializeField] GameObject mainPageGo;
         [SerializeField] EarnNumberPage earnNumberPage;
         [SerializeField] MakeOperationPage makeOperationPage;
         [SerializeField] CustomButton btn_EarnNumber;
@@ -48,7 +47,6 @@ namespace LessonIsMath.UI
         public override void Show()
         {
             base.Show();
-            mainPageGo.SetActive(true);
             btn_Exit.RegisterOnClick(() => blackBoardUIChannel.RaiseEvent(false));
 
             btn_EarnNumber.onClick.AddListener(ShowEarnNumberUI);
@@ -56,13 +54,11 @@ namespace LessonIsMath.UI
             InputManager.GameUI.SetCallbacks(this);
             InputManager.GameUI.Enable();
             InputManager.GameState.Disable();
-            InputManager.CharacterMovement.Disable();
         }
 
         public override void Hide()
         {
             base.Hide();
-            mainPageGo.SetActive(false);
             btn_Exit.UnregisterOnClick();
 
             btn_EarnNumber.onClick.RemoveListener(ShowEarnNumberUI);
@@ -73,21 +69,24 @@ namespace LessonIsMath.UI
 
             InputManager.GameUI.Disable();
             InputManager.GameState.Enable();
-            InputManager.CharacterMovement.Enable();
         }
 
         void ShowEarnNumberUI()
         {
             InputManager.GameUI.Disable();
-            mainPageGo.SetActive(false);
-            makeOperationPage.Show();
+            OpenPage(earnNumberPage);
         }
 
         void ShowMakeOperationUI()
         {
             InputManager.GameUI.Disable();
-            mainPageGo.SetActive(false);
-            earnNumberPage.Show();
+            OpenPage(makeOperationPage);
+        }
+
+        public override void ComeBack(PageUI from)
+        {
+            base.ComeBack(from);
+            InputManager.GameUI.Enable();
         }
 
         void PlayerControls.IGameUIActions.OnExit(InputAction.CallbackContext context)

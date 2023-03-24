@@ -54,12 +54,15 @@ namespace LessonIsMath.UI
         public override void Show()
         {
             base.Show();
-            InputManager.EarnNumberUI.Enable();
+            CursorManager.UnlockCursor();
             InputManager.PageUI.SetCallbacks(this);
             InputManager.EarnNumberUI.SetCallbacks(this);
+            InputManager.EarnNumberUI.Enable();
+            InputManager.PageUI.Enable();
+            InputManager.Keypad.Enable();
             keypad.Enable();
+            
             txt_InputField.text = "";
-
             btn_GenerateQuestion.onClick.AddListener(GenerateQuestion);
             GenerateQuestion();
         }
@@ -68,6 +71,8 @@ namespace LessonIsMath.UI
         {
             base.Hide();
             InputManager.EarnNumberUI.Disable();
+            InputManager.PageUI.Disable();
+            InputManager.Keypad.Disable();
             keypad.Disable();
 
             btn_GenerateQuestion.onClick.RemoveListener(GenerateQuestion);
@@ -81,7 +86,7 @@ namespace LessonIsMath.UI
         void OnBackPressed()
         {
             Hide();
-            UISystem.Show<BlackboardUI>();
+            UISystem.GetUI<BlackboardUI>().ComeBack(this);
         }
 
         void OnNumberButtonClicked(int value)

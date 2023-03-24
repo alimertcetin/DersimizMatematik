@@ -46,14 +46,17 @@ namespace LessonIsMath.UI
         public override void Show()
         {
             base.Show();
-            InputManager.MakeOperationUI.Enable();
+            CursorManager.UnlockCursor();
             InputManager.PageUI.SetCallbacks(this);
             InputManager.MakeOperationUI.SetCallbacks(this);
+            InputManager.MakeOperationUI.Enable();
+            InputManager.PageUI.Enable();
+            InputManager.Keypad.Enable();
+            keypad.Enable();
 
             btn_Back.RegisterOnClick(OnBackPressed);
             btn_Subtract.RegisterOnClick(() => SelectOperation(ArithmeticOperationType.Subtract));
             btn_Add.RegisterOnClick(() => SelectOperation(ArithmeticOperationType.Add));
-            keypad.Enable();
 
             txt_ReviewInput.text = "";
             txt_InputField.text = "";
@@ -62,13 +65,17 @@ namespace LessonIsMath.UI
         public override void Hide()
         {
             base.Hide();
+            InputManager.MakeOperationUI.Disable();
+            InputManager.PageUI.Disable();
+            InputManager.Keypad.Disable();
+            keypad.Disable();
+            
             btn_Back.UnregisterOnClick();
             btn_Subtract.UnregisterOnClick();
             btn_Add.UnregisterOnClick();
             keypad.Disable();
 
             CancelOperation();
-            InputManager.MakeOperationUI.Disable();
         }
 
         public void SetBlackboard(BlackboardUI blackboardUI)
@@ -79,7 +86,7 @@ namespace LessonIsMath.UI
         void OnBackPressed()
         {
             Hide();
-            UISystem.Show<BlackboardUI>();
+            UISystem.GetUI<BlackboardUI>().ComeBack(this);
         }
 
         void OnNumberButtonClicked(int value)

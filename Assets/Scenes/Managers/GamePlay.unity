@@ -9675,9 +9675,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiGameObject: {fileID: 918857758}
+  mainPageGO: {fileID: 4413410045843761875}
   blackBoardUIChannel: {fileID: 11400000, guid: 0bae65bfeaddbf148a28958dbd7c060d,
     type: 2}
-  mainPageGo: {fileID: 4413410045843761875}
   earnNumberPage: {fileID: 2138739363}
   makeOperationPage: {fileID: 351823737}
   btn_EarnNumber: {fileID: 4413410045459515073}

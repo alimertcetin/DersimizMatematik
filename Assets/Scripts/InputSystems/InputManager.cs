@@ -26,6 +26,7 @@ namespace LessonIsMath.Input
 
             public static void Enable()
             {
+                // TODO : Should not call any unrelated functions
                 CursorManager.UnlockCursor();
                 PlayerControls.GameState.Enable();
                 OnEnable.Invoke();
@@ -50,6 +51,7 @@ namespace LessonIsMath.Input
 
             public static void Enable()
             {
+                // TODO : Should not call any unrelated functions
                 CursorManager.LockCursor();
                 PlayerControls.CharacterMovement.Enable();
                 OnEnable.Invoke();
@@ -143,17 +145,12 @@ namespace LessonIsMath.Input
 
             public static void Enable()
             {
-                CursorManager.UnlockCursor();
-                Keypad.Enable();
-                PageUI.Enable();
                 PlayerControls.MakeOperationUI.Enable();
                 OnEnable.Invoke();
             }
 
             public static void Disable()
             {
-                Keypad.Disable();
-                PageUI.Disable();
                 PlayerControls.MakeOperationUI.Disable();
                 OnDisable.Invoke();
             }
@@ -171,17 +168,12 @@ namespace LessonIsMath.Input
 
             public static void Enable()
             {
-                CursorManager.UnlockCursor();
-                Keypad.Enable();
-                PageUI.Enable();
                 PlayerControls.EarnNumberUI.Enable();
                 OnEnable.Invoke();
             }
 
             public static void Disable()
             {
-                Keypad.Disable();
-                PageUI.Disable();
                 PlayerControls.EarnNumberUI.Disable();
                 OnDisable.Invoke();
             }
