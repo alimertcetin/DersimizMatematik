@@ -237,6 +237,29 @@ namespace XIV
             DrawText(position, text, size, Color.black, duration);
         }
 
+        public static void DrawTextOnLine(Vector3 from, Vector3 to, string text, int size, Color color, float t, float duration)
+        {
+            var position = from + (to - from) * t;
+            DrawText(position, text, size, color, duration);
+        }
+        
+        public static void DrawTextOnLine(Vector3 from, Vector3 to, string text, int size, Color color, float duration = 0f)
+        {
+            DrawTextOnLine(from, to, text, size, color, 0.5f, duration);
+        }
+        
+        public static void DrawTextOnLine(Vector3 from, Vector3 to, string text, int size, float duration = 0f)
+        {
+            DrawTextOnLine(from, to, text, size, Color.black, 0.5f, duration);
+        }
+        
+        public static void DrawTextOnLine(Vector3 from, Vector3 to, string text, float duration = 0f)
+        {
+            var position = from + (to - from) * 0.5f;
+            var size = (int)HandleUtility.GetHandleSize(position);
+            DrawText(position, text, size, Color.black, duration);
+        }
+
     }
     
 #endif
