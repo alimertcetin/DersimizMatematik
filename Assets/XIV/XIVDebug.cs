@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using XIV.Collections;
+using XIV.Utils;
 using XIV.XIVMath;
 
 namespace XIV
@@ -168,6 +172,69 @@ namespace XIV
             Debug.DrawLine(p2, p6, Color.gray, duration);
             Debug.DrawLine(p3, p7, Color.green, duration);
             Debug.DrawLine(p4, p8, Color.cyan, duration);
+        }
+        
+        // Text
+        class TextHelper : MonoBehaviour
+        {
+            public struct TextData
+            {
+                public Vector3 position;
+                public string text;
+                public int size;
+                public Color color;
+                public Timer timer;
+            }
+
+            public DynamicArray<TextData> textDatas = new DynamicArray<TextData>(8);
+
+            static TextHelper instance;
+            public static TextHelper Instance => instance == null ? new GameObject("XIVDebug - TextHelper").AddComponent<TextHelper>() : instance;
+
+            void OnDrawGizmos()
+            {
+                for (int i = textDatas.Count - 1; i >= 0; i--)
+                {
+                    ref var textData = ref textDatas[i];
+                    var style = new GUIStyle();
+                    style.fontSize = textData.size;
+                    style.normal.textColor = textData.color;
+                    Handles.Label(textData.position, textData.text, style);
+                    if (textData.timer.Update(Time.deltaTime))
+                    {
+                        textDatas.RemoveAt(i);
+                    }
+                }
+            }
+
+            void OnDestroy()
+            {
+                instance = null;
+            }
+        }
+
+        
+        public static void DrawText(Vector3 position, string text, int size, Color color, float duration = 0f)
+        {
+            TextHelper.Instance.textDatas.Add() = new TextHelper.TextData
+            {
+                position = position, 
+                text = text,
+                color = color,
+                size = size,
+                timer = new Timer(duration),
+            };
+        }
+        
+        public static void DrawText(Vector3 position, string text, int size, float duration = 0f)
+        {
+            DrawText(position, text, size, Color.black, duration);
+        }
+        
+        public static void DrawText(Vector3 position, string text, float duration = 0f)
+        {
+            var size = (int)HandleUtility.GetHandleSize(position);
+            DrawText(position, text, size, Color.black, duration);
         }
 
     }
