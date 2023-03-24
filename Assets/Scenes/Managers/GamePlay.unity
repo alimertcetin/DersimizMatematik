@@ -9514,7 +9514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80922971cc9c5d54684925e84d51fd55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenuUIChannel: {fileID: 0}
+  pauseMenuUIChannel: {fileID: 11400000, guid: 77ca716e0c3c99048bd165e42a32553b, type: 2}
 --- !u!4 &1920720305
 Transform:
   m_ObjectHideFlags: 0
