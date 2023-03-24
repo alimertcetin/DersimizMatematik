@@ -145,8 +145,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.9449673, y: 1.2970521, z: 2.6120038}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.565135, y: 1.2970521, z: 1.9262261}
+  m_Center: {x: -0.07890177, y: 0, z: 0}
 --- !u!114 &6670929561562814570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +350,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5c32161ffa277a344bb9cc03eff7f366, type: 3}
   - {fileID: 8300000, guid: b8b87ed59a48dc746b7c761a674c9368, type: 3}
   maxAngle: 90
-  damping: 0.5
+  damping: 10
   door: {fileID: 2805912133262872139}
   doorHandles:
   - {fileID: 7713624474157350432}
@@ -414,7 +414,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5c32161ffa277a344bb9cc03eff7f366, type: 3}
   - {fileID: 8300000, guid: b8b87ed59a48dc746b7c761a674c9368, type: 3}
   maxAngle: 90
-  damping: 0.5
+  damping: 10
   door: {fileID: 4721882778822031376}
   doorHandles:
   - {fileID: 899499405697566843}
@@ -665,7 +665,7 @@ PrefabInstance:
     - target: {fileID: 4896500551081119232, guid: de28f13d342abf04c9456a32040d5bb6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.000000059604645
       objectReference: {fileID: 0}
     - target: {fileID: 4896500551081119232, guid: de28f13d342abf04c9456a32040d5bb6,
         type: 3}
