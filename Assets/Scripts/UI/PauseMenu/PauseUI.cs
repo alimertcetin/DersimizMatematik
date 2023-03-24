@@ -7,7 +7,7 @@ using XIV.SaveSystems;
 
 namespace LessonIsMath.UI
 {
-    public class PausedMenu_UI : ParentGameUI, PlayerControls.IGameUIActions
+    public class PauseUI : ParentGameUI, PlayerControls.IGameUIActions
     {
         [SerializeField] BoolEventChannelSO pauseMenuUIChannel;
         [Header("Broadcasting To")]

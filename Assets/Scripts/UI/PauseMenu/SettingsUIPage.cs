@@ -31,7 +31,7 @@ namespace LessonIsMath.UI
         {
             InputManager.PageUI.Disable();
             base.Hide();
-            UISystem.GetUI<PausedMenu_UI>().ComeBack(this);
+            UISystem.GetUI<PauseUI>().ComeBack(this);
         }
 
         void OnBackPressed()

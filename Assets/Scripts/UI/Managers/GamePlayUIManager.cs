@@ -49,12 +49,12 @@ namespace LessonIsMath.UI
             if (value)
             {
                 InputManager.CharacterMovement.Disable();
-                UISystem.Show<PausedMenu_UI>();
+                UISystem.Show<PauseUI>();
             }
             else
             {
                 InputManager.CharacterMovement.Enable();
-                UISystem.Hide<PausedMenu_UI>();
+                UISystem.Hide<PauseUI>();
             }
         }
 
