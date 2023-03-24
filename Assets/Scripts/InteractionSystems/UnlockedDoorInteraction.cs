@@ -4,11 +4,8 @@ using LessonIsMath.PlayerSystems;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using XIV;
-using XIV.EventSystem;
-using XIV.EventSystem.Events;
 using XIV.Extensions;
 using XIV.Utils;
-using XIV.XIVMath;
 
 namespace LessonIsMath.InteractionSystems
 {
@@ -22,162 +19,169 @@ namespace LessonIsMath.InteractionSystems
         [SerializeField] float maxDoorDistance = 2f;
         [SerializeField] float openDoorForce = 50f;
         List<Door> targets = new List<Door>(2);
-        
-        public bool hasTarget { get; private set; }
-        float animationWeight;
-        Vector3 previousPosition;
 
+        public bool hasTarget => rightHandInteraction.hasTarget || leftHandInteraction.hasTarget;
+
+        const float MAX_VELOCITY = 6F;
+        DoorHandInteraction rightHandInteraction;
+        DoorHandInteraction leftHandInteraction;
         Transform transform;
         PlayerAnimationController playerAnimationController;
-
-        const float MAX_VELOCITY = 3F;
-
+        Timer updateTargetsTimer = new Timer(0.25f);
+        
         public void Init(Transform transform)
         {
             this.transform = transform;
             playerAnimationController = transform.GetComponentInChildren<PlayerAnimationController>();
+            var doorHandIKSettings = new DoorHandIKSettings(hintOffsetAmount, weightIncreaseSpeed, maxDoorDistance, openDoorForce, MAX_VELOCITY);
+            rightHandInteraction = new DoorHandInteraction(transform, rightHandIKConstraint, playerAnimationController.BendRightHandFingers, doorHandIKSettings);
+            leftHandInteraction = new DoorHandInteraction(transform, leftHandIKConstraint, playerAnimationController.BendLeftHandFingers, doorHandIKSettings);
         }
 
         public void Update()
         {
-            var velocity = GetVelocity();
-            var transformPosition = transform.position;
-            
-            var door = targets.GetClosestOnXZPlane(transformPosition);
-            Vector3 handlePosition = door.GetClosestHandlePosition(transformPosition);
-            rightHandIKConstraint.data.target.position = handlePosition;
-            leftHandIKConstraint.data.target.position = handlePosition;
+            if (updateTargetsTimer.Update(Time.deltaTime))
+            {
+                UpdateTargets();
+                updateTargetsTimer.Restart();
+            }
 
-            Vector3 handlePosXZ = handlePosition.OnXZ();
-            Vector3 transformPositionXZ = transformPosition.OnXZ();
-            if (Vector3.Distance(transformPositionXZ, handlePosXZ) > maxDoorDistance) return;
-
-            Vector3 transformRight = transform.right;
-            bool isRightDominant = transformRight.IsSameDirection((handlePosXZ - transformPositionXZ).normalized);
-
-            TwoBoneIKConstraint dominantIK = GetDominant(isRightDominant, out var other);
-            SetIKWeights(dominantIK, other);
-            var offset = transformRight * hintOffsetAmount;
-            SetHintPosition(rightHandIKConstraint, offset);
-            SetHintPosition(leftHandIKConstraint, -offset);
-            animationWeight = XIVMathf.Remap(dominantIK.weight, 0.75f, 1f, 0f, 1f);
-            HandleAnimation(isRightDominant, animationWeight);
-            door.RotateDoorHandle(animationWeight);
-
-            if (Vector3.Distance(dominantIK.data.tip.position,handlePosition) > 0.1f) return;
-            
-            var velocityMagnitude = velocity.magnitude;
-            velocityMagnitude = Mathf.Clamp(velocityMagnitude, 0, MAX_VELOCITY);
-            door.ApplyRotationToDoor(transform.forward * (openDoorForce * (velocityMagnitude < 1 ? 1 : velocityMagnitude)));
-#if UNITY_EDITOR
-            Debug.Log("Velocity Magnitude : " + velocityMagnitude);
-            Vector3 rndVec = Random.insideUnitSphere;
-            velocity = velocity.normalized * velocityMagnitude;
-            Debug.DrawLine(transform.position, transform.position + velocity, new Color(rndVec.x, rndVec.y, rndVec.z), 3f);
-#endif
+            if (rightHandInteraction.hasTarget) rightHandInteraction.Update();
+            if (leftHandInteraction.hasTarget) leftHandInteraction.Update();
         }
-            
-        void SetIKWeights(TwoBoneIKConstraint ik, TwoBoneIKConstraint otherIk)
+
+        List<Door> GetPossibleDoors(Vector3 handPosition)
         {
-            var changeDelta = weightIncreaseSpeed * Time.deltaTime;
-            ik.weight = Mathf.MoveTowards(ik.weight, GetWeight(ik), changeDelta);
-            otherIk.weight = Mathf.MoveTowards(otherIk.weight, 0f, changeDelta);
+            float distance = float.MaxValue;
+            Vector3 handPositionXZ = handPosition.OnXZ();
+            Vector3 transformForward = transform.forward;
+            List<Door> doors = new List<Door>(targets.Count);
+            int count = 0;
+            for (var i = 0; i < targets.Count; i++)
+            {
+                Door target = targets[i];
+                Vector3 tempXZ = target.GetClosestHandlePosition(handPosition).OnXZ();
+                float dist = Vector3.Distance(tempXZ, handPositionXZ);
+                bool sameDirection = transformForward.IsSameDirection((tempXZ - handPositionXZ).normalized, 0.6f);
+#if UNITY_EDITOR
+                Vector3 temp = target.GetClosestHandlePosition(handPosition);
+                XIVDebug.DrawLine(handPosition, temp, Color.red, 0.2f);
+                XIVDebug.DrawTextOnLine(handPosition, temp, "Distance : " + dist, 8, Color.red);
+#endif
+                if (dist < distance && sameDirection)
+                {
+                    distance = dist;
+                    doors.Add(target);
+                    count++;
+                }
+            }
+
+            return doors;
         }
         
-        TwoBoneIKConstraint GetDominant(bool isRightDominant, out TwoBoneIKConstraint other)
+        float GetScore(Door door, Vector3 handPosition)
         {
-            if (isRightDominant)
-            {
-                other = leftHandIKConstraint;
-                return rightHandIKConstraint;
-            }
-            other = rightHandIKConstraint;
-            return leftHandIKConstraint;
+            Vector3 handlePosition = door.GetClosestHandlePosition(handPosition);
+            Vector3 transformForward = transform.forward;
+            // Calculate the distance between each hand and the handle
+            float handDistance = Vector3.Distance(handlePosition, handPosition);
+            float dot = Vector3.Dot((handlePosition - handPosition.SetY(handlePosition.y)).normalized, transformForward);
+            
+            // Assign weights to the distance and angle factors
+            float distanceWeight = 0.6f;
+            float dotWeight = 0.1f;
+            
+            // Calculate the score for each hand
+            float score = handDistance * distanceWeight + dot * dotWeight;
+            // Return true if the right hand has a higher score
+            return score;
         }
 
-        void HandleAnimation(bool isRightDominant, float weight)
-        {
-            if (isRightDominant) playerAnimationController.BendRightHandFingers(weight);
-            else playerAnimationController.BendLeftHandFingers(weight);
-        }
-
-        Vector3 GetVelocity()
-        {
-            var currentPos = transform.position;
-            var velocity = (currentPos - previousPosition) / Time.deltaTime;
-            previousPosition = currentPos;
-            return velocity;
-        }
-
-        float GetWeight(TwoBoneIKConstraint handIK)
-        {
-            Vector3 transformRootPosXZ = transform.position;
-            transformRootPosXZ.y = 0f;
-            Vector3 ikTargetPos = handIK.data.target.position;
-            Vector3 ikTargetPosXZ = ikTargetPos;
-            ikTargetPosXZ.y = 0f;
-
-            float tipToTargetDistance = Vector3.Distance(handIK.data.tip.position, ikTargetPos);
-            float weightMultiplier = Vector3.Dot(transform.forward, (ikTargetPosXZ - transformRootPosXZ).normalized);
-            weightMultiplier *= 1.2f;
-            float weight = (1 - (tipToTargetDistance / maxDoorDistance)) * weightMultiplier;
-            return Mathf.Clamp01(weight);
-        }
-
-        static void SetHintPosition(TwoBoneIKConstraint handIK, Vector3 offset)
-        {
-            Vector3 ikTipPos = handIK.data.tip.position;
-            Vector3 ikMidPos = handIK.data.mid.position;
-            Vector3 mid2 = ikTipPos;
-            mid2 += offset;
-            Vector3 mid1 = ikMidPos;
-            mid1 += offset;
-
-            Vector3 hintPos = BezierMath.GetPoint(ikMidPos, mid1, mid2, ikTipPos, 0.65f);
-            handIK.data.hint.position = hintPos;
-#if UNITY_EDITOR
-            XIVDebug.DrawBezier(ikMidPos, mid1, mid2, ikTipPos, Color.blue);
-            XIVDebug.DrawSphere(hintPos, 0.1f, Color.green);
-#endif
-        }
-
-        public bool IsTarget(Door door) => targets.Contains(door);
+        public bool IsTarget(Door door) => rightHandInteraction.IsTarget(door) || leftHandInteraction.IsTarget(door);
 
         public void SetTarget(params Door[] doors)
         {
-            int length = doors.Length;
-            hasTarget = length > 0;
-            for (var i = 0; i < length; i++)
+            targets.AddRange(doors);
+            UpdateTargets();
+        }
+
+        void UpdateTargets()
+        {
+            var rightLowest = GetLowestScoreDoor(rightHandIKConstraint.data.tip.position);
+            var leftLowest = GetLowestScoreDoor(leftHandIKConstraint.data.tip.position);
+            if (rightLowest == leftLowest)
             {
-                this.targets.Add(doors[i]);
+                var rightHandScore = GetScore(rightLowest, rightHandIKConstraint.data.tip.position);
+                var leftHandScore = GetScore(leftLowest, leftHandIKConstraint.data.tip.position);
+                if (rightHandScore < leftHandScore)
+                {
+                    rightHandInteraction.SetTarget(rightLowest);
+                    
+                    if (targets.Count > 1)
+                    {
+                        foreach (Door target in targets)
+                        {
+                            if (target != rightLowest)
+                            {
+                                leftHandInteraction.SetTarget(target);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (leftHandInteraction.hasTarget) leftHandInteraction.ClearTarget();
+                    }
+                }
+                else
+                {
+                    leftHandInteraction.SetTarget(rightLowest);
+                    
+                    if (targets.Count > 1)
+                    {
+                        foreach (Door target in targets)
+                        {
+                            if (target != rightLowest)
+                            {
+                                rightHandInteraction.SetTarget(target);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (rightHandInteraction.hasTarget) rightHandInteraction.ClearTarget();
+                    }
+                }
+
+            }
+            else
+            {
+                rightHandInteraction.SetTarget(rightLowest);
+                leftHandInteraction.SetTarget(leftLowest);
+            }
+        }
+
+        Door GetLowestScoreDoor(Vector3 handPos)
+        {
+            Door door = default;
+            float lowestScore = float.MaxValue;
+            foreach (Door target in targets)
+            {
+                var score = GetScore(target, handPos);
+                if (score < lowestScore)
+                {
+                    lowestScore = score;
+                    door = target;
+                }
             }
 
-            previousPosition = transform.position;
+            return door;
         }
 
         public void ClearTarget()
         {
-            for (int i = 0; i < this.targets.Count; i++)
-            {
-                targets[i].CloseDoor();
-            }
-            hasTarget = false;
-            this.targets.Clear();
-            
-            Vector3 transformRight = transform.right;
-            var rightHandWeight = rightHandIKConstraint.weight;
-            var leftHandWeight = leftHandIKConstraint.weight;
-            XIVEventSystem.SendEvent(new InvokeForSecondsEvent(1f).AddAction((Timer timer) =>
-            {
-                float normalizedTime = timer.NormalizedTime;
-                rightHandIKConstraint.weight = Mathf.Lerp(rightHandWeight, 0f, normalizedTime);
-                leftHandIKConstraint.weight = Mathf.Lerp(leftHandWeight, 0f, normalizedTime);
-                SetHintPosition(rightHandIKConstraint, transformRight * hintOffsetAmount);
-                SetHintPosition(leftHandIKConstraint, -(transformRight * hintOffsetAmount));
-                animationWeight = Mathf.Lerp(animationWeight, 0f, normalizedTime);
-                playerAnimationController.BendRightHandFingers(animationWeight);
-                playerAnimationController.BendLeftHandFingers(animationWeight);
-            }).AddCancelCondition(() => hasTarget));
+            if (rightHandInteraction.hasTarget) rightHandInteraction.ClearTarget();
+            if (leftHandInteraction.hasTarget) leftHandInteraction.ClearTarget();
+            targets.Clear();
         }
     }
 }
