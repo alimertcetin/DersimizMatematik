@@ -9576,13 +9576,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiGameObject: {fileID: 2889748933715290388}
+  mainPageGO: {fileID: 2889748933819769402}
   pauseMenuUIChannel: {fileID: 11400000, guid: 77ca716e0c3c99048bd165e42a32553b, type: 2}
   warningUIChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
   locationLoadChannel: {fileID: 11400000, guid: c3ca7424149b82a45ab3b5d5b9569604,
     type: 2}
   gamePlayScene: {fileID: 11400000, guid: acbe782f950bcef48a9798f3ca6f50bf, type: 2}
   mainMenu: {fileID: 11400000, guid: 6a7ed43e878192147820488102aefdf2, type: 2}
-  mainPage: {fileID: 2889748933819769402}
   settingsUIPage: {fileID: 578954804}
   btn_Resume: {fileID: 1052238871}
   btn_Load: {fileID: 2889748933805956172}

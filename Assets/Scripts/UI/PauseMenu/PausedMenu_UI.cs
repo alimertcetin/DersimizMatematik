@@ -7,7 +7,7 @@ using XIV.SaveSystems;
 
 namespace LessonIsMath.UI
 {
-    public class PausedMenu_UI : GameUI, PlayerControls.IGameUIActions
+    public class PausedMenu_UI : ParentGameUI, PlayerControls.IGameUIActions
     {
         [SerializeField] BoolEventChannelSO pauseMenuUIChannel;
         [Header("Broadcasting To")]
@@ -21,7 +21,6 @@ namespace LessonIsMath.UI
         [Header("Scenes To Load")]
         [SerializeField] GameSceneSO mainMenu;
 
-        [SerializeField] GameObject mainPage;
         [SerializeField] SettingsUIPage settingsUIPage;
         [SerializeField] CustomButton btn_Resume;
         [SerializeField] CustomButton btn_Load;
@@ -52,17 +51,20 @@ namespace LessonIsMath.UI
             InputManager.GameState.Disable();
             InputManager.GameUI.SetCallbacks(this);
             InputManager.GameUI.Enable();
-            InputManager.Interaction.Disable();
             base.Show();
-            mainPage.SetActive(true);
         }
 
         public override void Hide()
         {
             InputManager.GameState.Enable();
             InputManager.GameUI.Disable();
-            InputManager.Interaction.Enable();
             base.Hide();
+        }
+
+        public override void ComeBack(PageUI from)
+        {
+            InputManager.GameUI.Enable();
+            base.ComeBack(from);
         }
 
         void Resume()
@@ -84,8 +86,7 @@ namespace LessonIsMath.UI
         void ShowSettings()
         {
             InputManager.GameUI.Disable();
-            settingsUIPage.Show();
-            mainPage.SetActive(false);
+            OpenPage(settingsUIPage);
         }
 
         void OnExit()

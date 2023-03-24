@@ -30,16 +30,8 @@ namespace LessonIsMath.UI
         public override void Hide()
         {
             InputManager.PageUI.Disable();
-            uiGameObject.transform.localScale = Vector3.one;
-            uiGameObject.TweenCancelAll();
-            uiGameObject.TweenLocalScale(Vector3.zero, 0.5f)
-                .SetEaseExpoInOut()
-                .SetOnComplete(() =>
-                {
-                    uiGameObject.SetActive(false);
-                    isActive = false;
-                    UISystem.Show<PausedMenu_UI>();
-                });
+            base.Hide();
+            UISystem.GetUI<PausedMenu_UI>().ComeBack(this);
         }
 
         void OnBackPressed()
