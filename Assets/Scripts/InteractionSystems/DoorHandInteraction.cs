@@ -34,16 +34,17 @@ namespace LessonIsMath.InteractionSystems
     class DoorHandInteraction
     {
         public bool hasTarget { get; private set; }
-        public Door targetDoor { get; private set; }
 
         Vector3 previousPosition;
         DoorHandIKSettings doorHandIKSettings;
         Transform transform;
         TwoBoneIKConstraint handIKConstraint;
         Action<float> bendHandFingersAction;
-        
+
+        Door targetDoor;
         float animationWeight;
         IEvent clearEvent;
+        Timer waitTimer = new Timer(0.75f); // Wait for movement
 
         public DoorHandInteraction(Transform transform, TwoBoneIKConstraint handIKConstraint, Action<float> bendHandFingersAction, DoorHandIKSettings doorHandIKSettings)
         {
@@ -55,39 +56,55 @@ namespace LessonIsMath.InteractionSystems
 
         public void Update()
         {
-            var velocity = GetVelocity();
-            var transformPosition = transform.position;
-
-            var handlePosition = targetDoor.GetClosestHandlePosition(transformPosition);
-            handIKConstraint.data.target.position = handlePosition;
-
-            Vector3 handlePosXZ = handlePosition.OnXZ();
-            Vector3 transformPositionXZ = transformPosition.OnXZ();
-
+            Vector3 velocity = GetVelocity();
+            float velocityMagnitude = velocity.magnitude;
             Vector3 transformRight = transform.right;
-            var changeDelta = doorHandIKSettings.weightIncreaseSpeed * Time.deltaTime;
-            handIKConstraint.weight = Mathf.MoveTowards(handIKConstraint.weight, GetWeight(handIKConstraint), changeDelta);
-            var offset = transformRight * doorHandIKSettings.hintOffsetAmount;
+            Vector3 offset = transformRight * doorHandIKSettings.hintOffsetAmount;
+            if (velocityMagnitude < 0.0001f)
+            {
+                if (waitTimer.Update(Time.deltaTime))
+                {
+                    handIKConstraint.weight = Mathf.MoveTowards(handIKConstraint.weight, 0f, Time.deltaTime);
+                    SetHintPosition(handIKConstraint, offset);
+                    return;
+                }
+            }
+            else
+            {
+                waitTimer.Restart();
+            }
+            
+            Vector3 handPosition = handIKConstraint.data.tip.position;
+            Vector3 handlePosition = targetDoor.GetClosestHandlePosition(handPosition);
+            Vector3 handPositionXZ = handPosition.OnXZ();
+            Vector3 handlePosXZ = handlePosition.OnXZ();
+
+            handIKConstraint.data.target.position = handlePosition;
+            handIKConstraint.weight = Mathf.MoveTowards(handIKConstraint.weight, GetWeight(handIKConstraint), doorHandIKSettings.weightIncreaseSpeed * Time.deltaTime);
             SetHintPosition(handIKConstraint, offset);
             animationWeight = XIVMathf.RemapClamped(handIKConstraint.weight, 0.75f, 1f, 0f, 1f);
             bendHandFingersAction.Invoke(animationWeight);
 
-            var velocityMagnitude = velocity.magnitude;
 #if UNITY_EDITOR
-            XIVDebug.DrawLine(transformPosition.SetY(handlePosition.y), handlePosition, Color.green, 0.5f);
+            XIVDebug.DrawLine(handPosition, handlePosition, Color.red, 0.2f);
+            float dist = Vector3.Distance(handlePosXZ, handPositionXZ);
+            XIVDebug.DrawTextOnLine(handPosition, handlePosition, "Distance : " + dist, 8, Color.red);
+            
+            XIVDebug.DrawLine(handPosition.SetY(handlePosition.y), handlePosition, Color.green, 0.5f);
             Debug.Log("Velocity Magnitude : " + velocityMagnitude);
 #endif
 
-            if (Vector3.Distance(transformPositionXZ, handlePosXZ) > doorHandIKSettings.maxDoorDistance) return;
-            if (velocityMagnitude > doorHandIKSettings.maxVelocity)
+            var transformDistance = Vector3.Distance(transform.position.OnXZ(), targetDoor.transform.position.OnXZ());
+            if (velocityMagnitude > doorHandIKSettings.maxVelocity && transformDistance < 0.5f)
             {
                 targetDoor.ApplyRotationToDoor(transform.forward * (doorHandIKSettings.openDoorForce * doorHandIKSettings.maxVelocity));
                 return;
             }
-            targetDoor.RotateDoorHandle(animationWeight);
 
-            if (Vector3.Distance(handIKConstraint.data.tip.position,handlePosition) > 0.1f) return;
+            float handToHandleDitance = Vector3.Distance(handPositionXZ, handlePosXZ);
+            if (handToHandleDitance > 0.1f) return;
             
+            targetDoor.RotateDoorHandle(animationWeight);
             targetDoor.ApplyRotationToDoor(transform.forward * (doorHandIKSettings.openDoorForce * (velocityMagnitude < 1 ? 1 : velocityMagnitude)));
 #if UNITY_EDITOR
             Debug.Log("Velocity Magnitude : " + velocityMagnitude);
@@ -157,13 +174,13 @@ namespace LessonIsMath.InteractionSystems
             float rightHandWeight = handIKConstraint.weight;
             float animWeight = animationWeight;
             clearEvent = new InvokeForSecondsEvent(1f).AddAction((Timer timer) =>
-            {
-                float normalizedTime = timer.NormalizedTime;
-                handIKConstraint.weight = Mathf.Lerp(rightHandWeight, 0f, normalizedTime);
-                SetHintPosition(handIKConstraint, transformRight * doorHandIKSettings.hintOffsetAmount);
-                animationWeight = Mathf.Lerp(animWeight, 0f, normalizedTime);
-                bendHandFingersAction.Invoke(animationWeight);
-            })
+                {
+                    float normalizedTime = timer.NormalizedTime;
+                    handIKConstraint.weight = Mathf.Lerp(rightHandWeight, 0f, normalizedTime);
+                    SetHintPosition(handIKConstraint, transformRight * doorHandIKSettings.hintOffsetAmount);
+                    animationWeight = Mathf.Lerp(animWeight, 0f, normalizedTime);
+                    bendHandFingersAction.Invoke(animationWeight);
+                })
                 .AddCancelCondition(() => hasTarget)
                 .OnCanceled(() => clearEvent = null)
                 .OnCompleted(() => clearEvent = null);

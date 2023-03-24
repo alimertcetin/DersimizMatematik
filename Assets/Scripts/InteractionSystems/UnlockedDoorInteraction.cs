@@ -23,11 +23,13 @@ namespace LessonIsMath.InteractionSystems
         public bool hasTarget => rightHandInteraction.hasTarget || leftHandInteraction.hasTarget;
 
         const float MAX_VELOCITY = 6F;
+        const float DISTANCE_COST = 0.6f;
+        const float ANGLE_COST = 0.1f;
         DoorHandInteraction rightHandInteraction;
         DoorHandInteraction leftHandInteraction;
         Transform transform;
         PlayerAnimationController playerAnimationController;
-        Timer updateTargetsTimer = new Timer(0.25f);
+        Timer updateTargetsTimer = new Timer(0.5f);
         
         public void Init(Transform transform)
         {
@@ -50,53 +52,6 @@ namespace LessonIsMath.InteractionSystems
             if (leftHandInteraction.hasTarget) leftHandInteraction.Update();
         }
 
-        List<Door> GetPossibleDoors(Vector3 handPosition)
-        {
-            float distance = float.MaxValue;
-            Vector3 handPositionXZ = handPosition.OnXZ();
-            Vector3 transformForward = transform.forward;
-            List<Door> doors = new List<Door>(targets.Count);
-            int count = 0;
-            for (var i = 0; i < targets.Count; i++)
-            {
-                Door target = targets[i];
-                Vector3 tempXZ = target.GetClosestHandlePosition(handPosition).OnXZ();
-                float dist = Vector3.Distance(tempXZ, handPositionXZ);
-                bool sameDirection = transformForward.IsSameDirection((tempXZ - handPositionXZ).normalized, 0.6f);
-#if UNITY_EDITOR
-                Vector3 temp = target.GetClosestHandlePosition(handPosition);
-                XIVDebug.DrawLine(handPosition, temp, Color.red, 0.2f);
-                XIVDebug.DrawTextOnLine(handPosition, temp, "Distance : " + dist, 8, Color.red);
-#endif
-                if (dist < distance && sameDirection)
-                {
-                    distance = dist;
-                    doors.Add(target);
-                    count++;
-                }
-            }
-
-            return doors;
-        }
-        
-        float GetScore(Door door, Vector3 handPosition)
-        {
-            Vector3 handlePosition = door.GetClosestHandlePosition(handPosition);
-            Vector3 transformForward = transform.forward;
-            // Calculate the distance between each hand and the handle
-            float handDistance = Vector3.Distance(handlePosition, handPosition);
-            float dot = Vector3.Dot((handlePosition - handPosition.SetY(handlePosition.y)).normalized, transformForward);
-            
-            // Assign weights to the distance and angle factors
-            float distanceWeight = 0.6f;
-            float dotWeight = 0.1f;
-            
-            // Calculate the score for each hand
-            float score = handDistance * distanceWeight + dot * dotWeight;
-            // Return true if the right hand has a higher score
-            return score;
-        }
-
         public bool IsTarget(Door door) => rightHandInteraction.IsTarget(door) || leftHandInteraction.IsTarget(door);
 
         public void SetTarget(params Door[] doors)
@@ -104,52 +59,47 @@ namespace LessonIsMath.InteractionSystems
             targets.AddRange(doors);
             UpdateTargets();
         }
+        
+        float GetCost(Door door, Vector3 handPosition)
+        {
+            Vector3 handlePosition = door.GetClosestHandlePosition(handPosition);
+            Vector3 transformForward = transform.forward;
+            // Calculate the distance between each hand and the handle
+            float handDistance = Vector3.Distance(handlePosition, handPosition);
+            float dot = Vector3.Dot((handlePosition - handPosition.SetY(handlePosition.y)).normalized, transformForward);
+            
+            // Calculate the cost for each hand
+            float cost = handDistance * DISTANCE_COST + dot * ANGLE_COST;
+            return cost;
+        }
 
         void UpdateTargets()
         {
-            var rightLowest = GetLowestScoreDoor(rightHandIKConstraint.data.tip.position);
-            var leftLowest = GetLowestScoreDoor(leftHandIKConstraint.data.tip.position);
+            void SetTarget(DoorHandInteraction current, DoorHandInteraction other, Door door)
+            {
+                current.SetTarget(door);
+                if (other.hasTarget) other.ClearTarget();
+                for (var i = 0; i < targets.Count; i++)
+                {
+                    Door target = targets[i];
+                    if (target != door)
+                    {
+                        other.SetTarget(target);
+                    }
+                }
+            }
+            
+            var rightLowest = GetLowestCost(rightHandIKConstraint.data.tip.position, out var rightScore);
+            var leftLowest = GetLowestCost(leftHandIKConstraint.data.tip.position, out var leftScore);
             if (rightLowest == leftLowest)
             {
-                var rightHandScore = GetScore(rightLowest, rightHandIKConstraint.data.tip.position);
-                var leftHandScore = GetScore(leftLowest, leftHandIKConstraint.data.tip.position);
-                if (rightHandScore < leftHandScore)
+                if (rightScore < leftScore)
                 {
-                    rightHandInteraction.SetTarget(rightLowest);
-                    
-                    if (targets.Count > 1)
-                    {
-                        foreach (Door target in targets)
-                        {
-                            if (target != rightLowest)
-                            {
-                                leftHandInteraction.SetTarget(target);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (leftHandInteraction.hasTarget) leftHandInteraction.ClearTarget();
-                    }
+                    SetTarget(rightHandInteraction, leftHandInteraction, rightLowest);
                 }
                 else
                 {
-                    leftHandInteraction.SetTarget(rightLowest);
-                    
-                    if (targets.Count > 1)
-                    {
-                        foreach (Door target in targets)
-                        {
-                            if (target != rightLowest)
-                            {
-                                rightHandInteraction.SetTarget(target);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (rightHandInteraction.hasTarget) rightHandInteraction.ClearTarget();
-                    }
+                    SetTarget(leftHandInteraction, rightHandInteraction, rightLowest);
                 }
 
             }
@@ -160,16 +110,17 @@ namespace LessonIsMath.InteractionSystems
             }
         }
 
-        Door GetLowestScoreDoor(Vector3 handPos)
+        Door GetLowestCost(Vector3 handPos, out float cost)
         {
             Door door = default;
-            float lowestScore = float.MaxValue;
-            foreach (Door target in targets)
+            cost = float.MaxValue;
+            for (var i = 0; i < targets.Count; i++)
             {
-                var score = GetScore(target, handPos);
-                if (score < lowestScore)
+                Door target = targets[i];
+                var tempCost = GetCost(target, handPos);
+                if (tempCost < cost)
                 {
-                    lowestScore = score;
+                    cost = tempCost;
                     door = target;
                 }
             }
