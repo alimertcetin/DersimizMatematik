@@ -28,6 +28,8 @@ namespace LessonIsMath.UI
         bool deleteStarted = false;
         Stack<int> inputNumberItems;
         BlackboardUI blackboardUI;
+        string currentReview;
+        readonly List<string> reviewHistory = new();
 
         void Awake()
         {
@@ -60,6 +62,7 @@ namespace LessonIsMath.UI
             btn_Subtract.RegisterOnClick(() => SelectOperation(ArithmeticOperationType.Subtract));
             btn_Add.RegisterOnClick(() => SelectOperation(ArithmeticOperationType.Add));
 
+            reviewHistory.Clear();
             txt_ReviewInput.text = "";
             txt_InputField.text = "";
         }
@@ -116,7 +119,6 @@ namespace LessonIsMath.UI
                 Delete();
             }
             txt_InputField.text = "";
-            txt_ReviewInput.text = "";
             operation.Reset();
         }
 
@@ -146,10 +148,11 @@ namespace LessonIsMath.UI
             // Clear the review field, fill input field with previous number and clear the operationType
             operation.operationType = ArithmeticOperationType.None;
             txt_InputField.text = operation.number1.ToString();
-            txt_ReviewInput.text = "";
+            currentReview = "";
+            UpdateReview();
         }
 
-        private void Answer()
+        void Answer()
         {
             if (IsValidInput() == false) return;
 
@@ -168,7 +171,6 @@ namespace LessonIsMath.UI
 
             var answerText = answer.ToString();
             txt_InputField.text = answerText;
-            operation.Reset();
             inputNumberItems.Clear();
 
             int length = answerText.Length;
@@ -177,7 +179,19 @@ namespace LessonIsMath.UI
                 int digit = int.Parse(answerText[i].ToString());
                 inputNumberItems.Push(digit);
             }
-            txt_ReviewInput.text = "";
+            
+            var operatorStr = operation.operationType switch
+            {
+                ArithmeticOperationType.Add => operation.GetOperator().Green(),
+                ArithmeticOperationType.Subtract => operation.GetOperator().Red(),
+                _ => operation.GetOperator(),
+            };
+            currentReview = $"{operation.number1.ToString()} {operatorStr} {operation.number2.ToString()} = {answerText.Green()}";
+            if(reviewHistory.Count > 10) reviewHistory.RemoveAt(0);
+            reviewHistory.Add(currentReview);
+            UpdateReview();
+            currentReview = "";
+            operation.Reset();
         }
 
         void SelectOperation(ArithmeticOperationType operationType)
@@ -194,7 +208,18 @@ namespace LessonIsMath.UI
                 _ => operation.GetOperator(),
             };
 
-            txt_ReviewInput.text = $"{operation.number1.ToString().Green()} {operatorStr} ?";
+            currentReview = $"{operation.number1.ToString().Green()} {operatorStr} ?";
+            UpdateReview();
+            txt_ReviewInput.text += currentReview;
+        }
+
+        void UpdateReview()
+        {
+            txt_ReviewInput.text = "";
+            for (var i = 0; i < reviewHistory.Count; i++)
+            {
+                txt_ReviewInput.text += reviewHistory[i] + System.Environment.NewLine;
+            }
         }
 
         bool CanSelectOperation(out int number)
