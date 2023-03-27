@@ -21,7 +21,7 @@ namespace XIV.UI
         void UpdateProperties()
         {
             this.itemImage.sprite = inventoryItem.Item.UISprite;
-            this.amountText.text = inventoryItem.Amount > 1 ? inventoryItem.Amount.ToString() : "";
+            this.amountText.text = inventoryItem.Amount > 0 ? inventoryItem.Amount.ToString() : "";
         }
     }
 }
