@@ -19,15 +19,16 @@ namespace XIV.UI
         void Awake()
         {
             slots = contentParent.GetComponentsInChildren<HUDItemSlot>();
-        }
-
-        void OnEnable()
-        {
             for (var i = 0; i < slots.Length; i++)
             {
                 var slot = slots[i];
                 slot.SetItem(new ReadOnlyInventoryItem(new InventoryItem(i, 0, keycardItems[i].GetItem())));
+                slot.gameObject.SetActive(false);
             }
+        }
+
+        void OnEnable()
+        {
             inventoryLoadedChannel.Register(OnInventoryLoaded);
             inventoryChangedChannel.Register(OnInventoryChanged);
         }
@@ -40,18 +41,19 @@ namespace XIV.UI
 
         void OnInventoryLoaded(Inventory inventory)
         {
-            IList<ReadOnlyInventoryItem> numberItems = inventory.GetItemsOfType<KeycardItem>(_ => true);
+            IList<ReadOnlyInventoryItem> keycardItems = inventory.GetItemsOfType<KeycardItem>(_ => true);
             for (var i = 0; i < slots.Length; i++)
             {
                 HUDItemSlot slot = slots[i];
                 KeycardItem slotItem = (KeycardItem)slot.inventoryItem.Item;
-                for (var j = 0; j < numberItems.Count; j++)
+                for (var j = 0; j < keycardItems.Count; j++)
                 {
-                    ReadOnlyInventoryItem readOnlyInventoryItem = numberItems[j];
+                    ReadOnlyInventoryItem readOnlyInventoryItem = keycardItems[j];
                     KeycardItem inventoryItem = (KeycardItem)readOnlyInventoryItem.Item;
                     if (slotItem.KeycardType == inventoryItem.KeycardType)
                     {
                         slot.SetItem(readOnlyInventoryItem);
+                        slot.gameObject.SetActive(readOnlyInventoryItem.Amount > 0);
                         break;
                     }
                 }
@@ -71,6 +73,7 @@ namespace XIV.UI
                     if (slotItem.KeycardType == inventoryItem.KeycardType)
                     {
                         slot.SetItem(inventoryItemChange.ChangedItem);
+                        slot.gameObject.SetActive(inventoryItemChange.ChangedItem.Amount > 0);
                         break;
                     }
                 }
