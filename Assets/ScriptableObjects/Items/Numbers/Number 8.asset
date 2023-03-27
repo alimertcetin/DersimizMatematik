@@ -16,6 +16,5 @@ MonoBehaviour:
     title: Number
     description: 
     UISprite: {fileID: 21300000, guid: 88ab23954378c394cb1db3347d501aed, type: 3}
-    StackableAmount: 50
-    ItemType: 0
+    StackableAmount: 5
     Value: 8
