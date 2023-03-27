@@ -51,9 +51,7 @@ namespace LessonIsMath.CollectableSystems
             var item = keycardItemSO.GetItem();
             int amount = 1;
 
-            bool exists = inventory.Contains(item, out var itemIndex);
-            bool canAdd = inventory.CanAdd(item, amount);
-            if (canAdd == false || (exists && inventory[itemIndex].Amount >= item.StackableAmount))
+            if (inventory.CanAdd(item, amount) == false || (inventory.Contains(item, out var itemIndex) && inventory[itemIndex].Amount >= item.StackableAmount))
             {
                 warningChannel.RaiseEvent("There is not enough space for this keycard");
                 interactor.OnInteractionEnd(this);
