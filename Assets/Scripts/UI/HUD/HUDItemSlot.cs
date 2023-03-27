@@ -1,3 +1,4 @@
+using ElRaccoone.Tweens;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,15 @@ namespace XIV.UI
 
         public void SetItem(ReadOnlyInventoryItem inventoryItem)
         {
+            if (inventoryItem.Amount > this.inventoryItem.Amount)
+            {
+                amountText.TweenCancelAll();
+                var scale = amountText.transform.localScale;
+                amountText.TweenLocalScale(scale + Vector3.one * 0.2f, 0.15f)
+                    .SetOnCancel(() => amountText.transform.localScale = scale)
+                    .SetPingPong()
+                    .SetEaseBounceInOut();
+            }
             this.inventoryItem = inventoryItem;
             UpdateProperties();
         }
