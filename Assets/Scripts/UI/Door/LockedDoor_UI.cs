@@ -23,14 +23,14 @@ namespace LessonIsMath.UI
         Timer deleteTimer;
 
         // TODO : Remove event channel dependency
-        [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel = default;
-        [SerializeField] StringEventChannelSO warningUIChannel = default;
+        [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel;
+        [SerializeField] StringEventChannelSO warningUIChannel;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         Inventory inventory;
-        bool deleteStarted = false;
+        bool deleteStarted;
 
-        [SerializeField] TMP_Text txt_InputField = null;
-        [SerializeField] TMP_Text txt_Soru = null;
+        [SerializeField] TMP_Text txt_InputField;
+        [SerializeField] TMP_Text txt_Question;
         [SerializeField] int textMaxLenght = 14;
 
         List<NumberItem> inputNumberItems = new List<NumberItem>();
@@ -78,7 +78,7 @@ namespace LessonIsMath.UI
         {
             base.Show();
             keypad.Enable();
-            txt_Soru.text = arithmeticOperationDoor.GetQuestionString();
+            txt_Question.text = arithmeticOperationDoor.GetQuestionString() + " = ?";
             InputManager.GameUI.Enable();
             InputManager.GameUI.SetCallbacks(this);
             InputManager.Keypad.Enable();
