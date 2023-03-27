@@ -16,14 +16,10 @@ MonoBehaviour:
   items:
   - itemSO: {fileID: 11400000, guid: c93ca9d104d2d444498463f40387dff0, type: 2}
     amount: 5
-  - itemSO: {fileID: 11400000, guid: a924ca35315a3204a8b169e96f9be3eb, type: 2}
-    amount: 5
   - itemSO: {fileID: 11400000, guid: 01de6989c3fac1642af1ce88e486c766, type: 2}
     amount: 5
   runtimeItems:
   - <Index>k__BackingField: 0
     <Amount>k__BackingField: 5
   - <Index>k__BackingField: 1
-    <Amount>k__BackingField: 5
-  - <Index>k__BackingField: 2
     <Amount>k__BackingField: 5
