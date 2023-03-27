@@ -115,6 +115,10 @@ namespace LessonIsMath.UI
         {
             var item = numberItems[number].GetItem();
             int amount = 1;
+            if (inventory.CanAdd(item, amount) == false || (inventory.Contains(item, out var itemIndex) && inventory[itemIndex].Amount >= item.StackableAmount))
+            {
+                return false;
+            }
             return inventory.TryAdd(item, ref amount);
         }
 
