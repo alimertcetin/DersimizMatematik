@@ -4176,7 +4176,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0.16078432, g: 0.5019608, b: 0.7254902, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5681,7 +5681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1bf8b6b71b207a448ba85c3acfbe24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn_Enter: {fileID: 1625528770}
+  btn_Enter: {fileID: 1426804288}
   btn_Delete: {fileID: 1625528770}
   btn_Numbers:
   - {fileID: 193531807}
@@ -19441,7 +19441,7 @@ MonoBehaviour:
   inventoryChangedChannel: {fileID: 11400000, guid: 60b5a07e6b5fefb479993be56ed1f5d5,
     type: 2}
   onSceneReady: {fileID: 11400000, guid: 054c4698ba8cb9143b451505200edd52, type: 2}
-  inventorySO: {fileID: 11400000, guid: c424166b5883e644a8e7314112ca5e69, type: 2}
+  inventorySO: {fileID: 11400000, guid: f3d3b9187a8872449a544bf775c96a21, type: 2}
 --- !u!1 &1902826906
 GameObject:
   m_ObjectHideFlags: 0
