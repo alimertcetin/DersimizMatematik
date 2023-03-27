@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LessonIsMath.Input;
 using LessonIsMath.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.Extensions;
 using XIV.Utils;
 
 namespace LessonIsMath.UI
@@ -175,6 +177,7 @@ namespace LessonIsMath.UI
                 int digit = int.Parse(answerText[i].ToString());
                 inputNumberItems.Push(digit);
             }
+            txt_ReviewInput.text = "";
         }
 
         void SelectOperation(ArithmeticOperationType operationType)
@@ -184,7 +187,14 @@ namespace LessonIsMath.UI
             operation.number1 = number;
             operation.operationType = operationType;
             txt_InputField.text = "";
-            txt_ReviewInput.text = GetCurrentOperationReviewString();
+            var operatorStr = operationType switch
+            {
+                ArithmeticOperationType.Add => operation.GetOperator().Green(),
+                ArithmeticOperationType.Subtract => operation.GetOperator().Red(),
+                _ => operation.GetOperator(),
+            };
+
+            txt_ReviewInput.text = $"{operation.number1.ToString().Green()} {operatorStr} ?";
         }
 
         bool CanSelectOperation(out int number)
@@ -221,14 +231,6 @@ namespace LessonIsMath.UI
                 return false;
             }
             return true;
-        }
-
-        string GetCurrentOperationReviewString()
-        {
-            return
-                $"First Number : {operation.number1}, " +
-                $"Operation : {operation.operationType}, " +
-                $"Second Number : {operation.number2}";
         }
 
         void IKeypadListener.OnEnter() => Answer();
