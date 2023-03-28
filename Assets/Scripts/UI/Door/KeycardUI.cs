@@ -23,6 +23,7 @@ namespace LessonIsMath.UI
         [SerializeField] BoolEventChannelSO keycardUIChannel;
         [SerializeField] StringEventChannelSO warningChannel;
         [SerializeField] CustomButton insertCardButton;
+        [SerializeField] GameObject clickInsertIcon;
         [SerializeField] GameObject cardModelGreen;
         [SerializeField] GameObject cardModelYellow;
         [SerializeField] GameObject cardModelRed;
@@ -107,6 +108,7 @@ namespace LessonIsMath.UI
         {
             if (isInserting || spamLock) return;
 
+            clickInsertIcon.SetActive(false);
             if (currentKeycardItem == null)
             {
                 warningChannel.RaiseEvent("Select a card");
@@ -168,6 +170,7 @@ namespace LessonIsMath.UI
                 currentCardGo.transform.SetParent(Camera.main.transform);
                 spamLock = false;
                 SetButtonColors(Color.white);
+                clickInsertIcon.SetActive(keycardRequiredDoor.GetIndexOfRequiredItem(currentKeycardItem) > -1);
             });
         }
 
