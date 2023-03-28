@@ -15,31 +15,31 @@ MonoBehaviour:
   SlotCount: 13
   items:
   - itemSO: {fileID: 11400000, guid: 07ceeb899b4d27e4497f54d88efa30b9, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: c887c16a81875f049973cb29a1c26d6f, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: e9fee995c4f057049830c2be4aa14e04, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: 5e961bcc06b89b844bd8a0f43cab7710, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: 3f453f7cbcbee714d9a38703b15527b4, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: a85ed79f1d83dfa4a9eb81cdf999c2c3, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: c7bc2ad5105ce6b4ba5c2d36fe122233, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: a37771fd2514d254ab5563ace9c96a93, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: cb84796a19e87ce4ba24aef8af2e4a0a, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: 51bdcd87650013041aedcf3aa9ff29f4, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: 01de6989c3fac1642af1ce88e486c766, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: a924ca35315a3204a8b169e96f9be3eb, type: 2}
-    amount: 10
+    amount: 5
   - itemSO: {fileID: 11400000, guid: c93ca9d104d2d444498463f40387dff0, type: 2}
-    amount: 10
+    amount: 5
   runtimeItems:
   - <Index>k__BackingField: 0
     <Amount>k__BackingField: 10
