@@ -40,7 +40,7 @@ namespace XIV.GifAnimation.XIVEditor.Windows
             defaultEditor.OnInspectorGUI();
             if (GUILayout.Button("Select Sprite"))
             {
-                AssetUtils.HighlightAsset(sprite);
+                EditorUtils.Highlight(sprite);
             }
             
             EditorGUILayout.Space(50);
