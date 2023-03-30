@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -16,9 +17,36 @@ namespace LessonIsMath.XIVEditor.Windows
         Vector2 scrollPos;
         bool additiveLoadToggle;
 
+        string sceneFolder;
+        string testFolder;
+
+        string sceneFolderKey => nameof(EasySceneLoaderWindow) + "_SceneFolderPath";
+        string testFolderKey => nameof(EasySceneLoaderWindow) + "_TestFolderPath";
+
         void OnProjectChange()
         {
-            isInitialized = false;
+            scenes.Clear();
+            testScenes.Clear();
+            AddScenes(sceneFolder, scenes);
+            AddScenes(testFolder, testScenes);
+        }
+
+        public override void SaveChanges()
+        {
+            base.SaveChanges();
+            EditorPrefs.SetString(sceneFolderKey, sceneFolder);
+            EditorPrefs.SetString(testFolder, testFolder);
+        }
+
+        void OnEnable()
+        {
+            sceneFolder = EditorPrefs.GetString(sceneFolderKey, "Assets/Scenes");
+            testFolder = EditorPrefs.GetString(testFolder, "Assets/Tests");
+        }
+
+        void OnDestroy()
+        {
+            SaveChanges();
         }
 
         void OnGUI()
@@ -28,32 +56,56 @@ namespace LessonIsMath.XIVEditor.Windows
                 isInitialized = true;
                 scenes = new List<SceneAsset>(8);
                 testScenes = new List<SceneAsset>(8);
-                AddScenes("Assets/Scenes", scenes);
-                AddScenes("Assets/Tests", testScenes);
+                AddScenes(sceneFolder, scenes);
+                AddScenes(testFolder, testScenes);
             }
 
+            EditorGUILayout.BeginHorizontal();
             additiveLoadToggle = GUILayout.Toggle(additiveLoadToggle, "Load additive");
+
+            if (GUILayout.Button("Select scene folder"))
+            {
+                EditorUtils.HighlightOrCreateFolder(sceneFolder);
+            }
+
+            if (GUILayout.Button("Select test folder"))
+            {
+                EditorUtils.HighlightOrCreateFolder(testFolder);
+            }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Scene Folder Path");
+            sceneFolder = EditorGUILayout.TextField(sceneFolder);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Test Folder Path");
+            testFolder = EditorGUILayout.TextField(testFolder);
+            EditorGUILayout.EndHorizontal();
             
-            GUILayout.Label("Game Scenes", EditorStyles.boldLabel);
+            if (scenes.Count > 0) GUILayout.Label("Game Scenes", EditorStyles.boldLabel);
 
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-            foreach (SceneAsset sceneAsset in scenes)
+            for (var i = 0; i < scenes.Count; i++)
             {
+                SceneAsset sceneAsset = scenes[i];
                 GUILayout.Space(10);
                 if (GUILayout.Button(sceneAsset.name, GUILayout.Height(50)) == false) continue;
 
                 LoadScene(sceneAsset, additiveLoadToggle);
             }
-            
-            GUILayout.Label("Test Scenes", EditorStyles.boldLabel);
 
-            foreach (SceneAsset sceneAsset in testScenes)
+            if (testScenes.Count > 0) GUILayout.Label("Test Scenes", EditorStyles.boldLabel);
+
+            for (var i = 0; i < testScenes.Count; i++)
             {
+                SceneAsset sceneAsset = testScenes[i];
                 GUILayout.Space(10);
                 if (GUILayout.Button(sceneAsset.name, GUILayout.Height(50)) == false) continue;
 
                 LoadScene(sceneAsset, additiveLoadToggle);
             }
+
             EditorGUILayout.EndScrollView();
         }
 
