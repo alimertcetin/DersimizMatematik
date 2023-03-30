@@ -75,11 +75,6 @@ namespace XIVEditor.Utils
             var path = AssetDatabase.GetAssetPath(asset);
             Selection.activeObject = AssetDatabase.LoadAssetAtPath(path, asset.GetType());
         }
-
-        public static void HighlightAsset(Object asset)
-        {
-            EditorGUIUtility.PingObject(asset);
-        }
         
     }
 }
