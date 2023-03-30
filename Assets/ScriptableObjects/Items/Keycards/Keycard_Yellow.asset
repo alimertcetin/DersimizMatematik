@@ -16,5 +16,5 @@ MonoBehaviour:
     title: Keycard
     description: 
     UISprite: {fileID: 21300000, guid: f9382d8cbe54f354cafb7d93d950ec54, type: 3}
-    StackableAmount: 10
+    StackableAmount: 5
     KeycardType: 2
