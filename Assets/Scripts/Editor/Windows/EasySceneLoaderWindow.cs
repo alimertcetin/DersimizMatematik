@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -14,14 +13,29 @@ namespace LessonIsMath.XIVEditor.Windows
         bool isInitialized;
         List<SceneAsset> scenes;
         List<SceneAsset> testScenes;
-        Vector2 scrollPos;
+        Vector2 scenesScrollPos;
+        Vector2 buttonsScrollPos;
         bool additiveLoadToggle;
+        Color additiveLoadToggleColor => additiveLoadToggle ? Color.white : Color.gray;
 
         string sceneFolder;
         string testFolder;
 
         string sceneFolderKey => nameof(EasySceneLoaderWindow) + "_SceneFolderPath";
         string testFolderKey => nameof(EasySceneLoaderWindow) + "_TestFolderPath";
+
+        GUIStyle labelStyle;
+
+        void Initialize()
+        {
+            scenes = new List<SceneAsset>(8);
+            testScenes = new List<SceneAsset>(8);
+            AddScenes(sceneFolder, scenes);
+            AddScenes(testFolder, testScenes);
+            
+            labelStyle = EditorStyles.boldLabel;
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+        }
 
         void OnProjectChange()
         {
@@ -53,19 +67,27 @@ namespace LessonIsMath.XIVEditor.Windows
         {
             if (isInitialized == false)
             {
+                Initialize();
                 isInitialized = true;
-                scenes = new List<SceneAsset>(8);
-                testScenes = new List<SceneAsset>(8);
-                AddScenes(sceneFolder, scenes);
-                AddScenes(testFolder, testScenes);
             }
 
+            Color tempGUIColor = GUI.color;
+            Color labelColor = Color.green;
+
+            GUILayout.Space(20f);
+            buttonsScrollPos = EditorGUILayout.BeginScrollView(buttonsScrollPos, false, false, 
+                GUI.skin.horizontalScrollbar, GUIStyle.none, GUI.skin.scrollView);
+            buttonsScrollPos.y = 0f;
             EditorGUILayout.BeginHorizontal();
+            GUI.color = additiveLoadToggleColor;
             additiveLoadToggle = GUILayout.Toggle(additiveLoadToggle, "Load additive");
+            GUI.color = tempGUIColor;
             if (GUILayout.Button("Select scene folder")) EditorUtils.HighlightOrCreateFolder(sceneFolder);
             if (GUILayout.Button("Select test folder")) EditorUtils.HighlightOrCreateFolder(testFolder);
             if (GUILayout.Button("Refresh")) OnProjectChange();
             EditorGUILayout.EndHorizontal();
+            GUILayout.Space(20f);
+            EditorGUILayout.EndScrollView();
             
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Scene Folder Path");
@@ -77,9 +99,14 @@ namespace LessonIsMath.XIVEditor.Windows
             testFolder = EditorGUILayout.TextField(testFolder);
             EditorGUILayout.EndHorizontal();
             
-            if (scenes.Count > 0) GUILayout.Label("Game Scenes", EditorStyles.boldLabel);
-
-            scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+            GUILayout.Space(20f);
+            
+            scenesScrollPos = EditorGUILayout.BeginScrollView(scenesScrollPos, false, false);
+            
+            GUI.color = labelColor;
+            if (scenes.Count > 0) GUILayout.Label("Game Scenes", labelStyle);
+            GUI.color = tempGUIColor;
+            
             for (var i = 0; i < scenes.Count; i++)
             {
                 SceneAsset sceneAsset = scenes[i];
@@ -88,8 +115,12 @@ namespace LessonIsMath.XIVEditor.Windows
 
                 LoadScene(sceneAsset, additiveLoadToggle);
             }
+            
+            GUILayout.Space(20f);
 
-            if (testScenes.Count > 0) GUILayout.Label("Test Scenes", EditorStyles.boldLabel);
+            GUI.color = labelColor;
+            if (testScenes.Count > 0) GUILayout.Label("Test Scenes", labelStyle);
+            GUI.color = tempGUIColor;
 
             for (var i = 0; i < testScenes.Count; i++)
             {
@@ -101,6 +132,14 @@ namespace LessonIsMath.XIVEditor.Windows
             }
 
             EditorGUILayout.EndScrollView();
+            if (Event.current.isScrollWheel && Event.current.type != EventType.Used)
+            {
+                float scrollAmount = Event.current.delta.y * 10f;
+                float horizontalScrollPosition = buttonsScrollPos.x + scrollAmount;
+                buttonsScrollPos = new Vector2(horizontalScrollPosition, buttonsScrollPos.y);
+                buttonsScrollPos.x = buttonsScrollPos.x < 0 ? 0 : buttonsScrollPos.x;
+                Event.current.Use();
+            }
         }
 
         static void LoadScene(SceneAsset sceneAsset, bool additive)
