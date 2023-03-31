@@ -62,22 +62,16 @@ namespace LessonIsMath.XIVEditor.Windows
 
             EditorGUILayout.BeginHorizontal();
             additiveLoadToggle = GUILayout.Toggle(additiveLoadToggle, "Load additive");
-
-            if (GUILayout.Button("Select scene folder"))
-            {
-                EditorUtils.HighlightOrCreateFolder(sceneFolder);
-            }
-
-            if (GUILayout.Button("Select test folder"))
-            {
-                EditorUtils.HighlightOrCreateFolder(testFolder);
-            }
+            if (GUILayout.Button("Select scene folder")) EditorUtils.HighlightOrCreateFolder(sceneFolder);
+            if (GUILayout.Button("Select test folder")) EditorUtils.HighlightOrCreateFolder(testFolder);
+            if (GUILayout.Button("Refresh")) OnProjectChange();
             EditorGUILayout.EndHorizontal();
-
+            
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Scene Folder Path");
             sceneFolder = EditorGUILayout.TextField(sceneFolder);
             EditorGUILayout.EndHorizontal();
+            
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Test Folder Path");
             testFolder = EditorGUILayout.TextField(testFolder);
