@@ -35,13 +35,13 @@ namespace LessonIsMath.XIVEditor.Windows
         {
             base.SaveChanges();
             EditorPrefs.SetString(sceneFolderKey, sceneFolder);
-            EditorPrefs.SetString(testFolder, testFolder);
+            EditorPrefs.SetString(testFolderKey, testFolder);
         }
 
         void OnEnable()
         {
             sceneFolder = EditorPrefs.GetString(sceneFolderKey, "Assets/Scenes");
-            testFolder = EditorPrefs.GetString(testFolder, "Assets/Tests");
+            testFolder = EditorPrefs.GetString(testFolderKey, "Assets/Tests");
         }
 
         void OnDestroy()
