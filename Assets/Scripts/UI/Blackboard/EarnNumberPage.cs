@@ -1,4 +1,6 @@
 ﻿using LessonIsMath.Input;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
+using LessonIsMath.StatSystems;
 using LessonIsMath.UI.Components;
 using TMPro;
 using UnityEngine;
@@ -10,6 +12,7 @@ namespace LessonIsMath.UI
 {
     public class EarnNumberPage : PageUI, PlayerControls.IPageUIActions, PlayerControls.IEarnNumberUIActions, IKeypadListener
     {
+        [SerializeField] PageUIEventChannelSO earnNumberPageEventChannel;
         [SerializeField] Keypad keypad;
         [SerializeField] TMP_Text txt_InputField = null;
         [SerializeField] TMP_Text txt_Question = null;
@@ -65,6 +68,7 @@ namespace LessonIsMath.UI
             txt_InputField.text = "";
             btn_GenerateQuestion.onClick.AddListener(GenerateQuestion);
             GenerateQuestion();
+            earnNumberPageEventChannel.RaiseEvent(this);
         }
 
         public override void Hide()
@@ -76,6 +80,7 @@ namespace LessonIsMath.UI
             keypad.Disable();
 
             btn_GenerateQuestion.onClick.RemoveListener(GenerateQuestion);
+            earnNumberPageEventChannel.RaiseEvent(this);
         }
 
         public void SetBlackboard(BlackboardUI blackboardUI)
@@ -168,6 +173,5 @@ namespace LessonIsMath.UI
         }
 
         void IKeypadListener.OnNumberPressed(int value) => OnNumberButtonClicked(value);
-
     }
 }

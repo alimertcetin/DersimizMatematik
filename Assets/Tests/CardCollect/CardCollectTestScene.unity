@@ -2109,7 +2109,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.65360504, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3213,7 +3213,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 01de6989c3fac1642af1ce88e486c766, type: 2}
   - {fileID: 11400000, guid: a924ca35315a3204a8b169e96f9be3eb, type: 2}
   - {fileID: 11400000, guid: c93ca9d104d2d444498463f40387dff0, type: 2}
-  cardReader: {fileID: 591908830}
+  cardReaders: []
 --- !u!1001 &405271881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6214,6 +6214,7 @@ MonoBehaviour:
   keycardUIChannel: {fileID: 11400000, guid: 86e504e99d67f864dbca3c5e121fa9de, type: 2}
   warningChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
   insertCardButton: {fileID: 1349564940}
+  clickInsertIcon: {fileID: 0}
   cardModelGreen: {fileID: 5533971008582732913, guid: 4e4ecca88c762794b99ad8ce22325bf6,
     type: 3}
   cardModelYellow: {fileID: 3737026972107148931, guid: 88cf3a3e0bf7e464286d4d9510dc6b4d,
@@ -8915,7 +8916,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.65360504, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -8993,7 +8994,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.65360504, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -10580,7 +10581,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.65360504, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -10697,6 +10698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraType: 1
+  virtualCamera: {fileID: 1696305650}
 --- !u!1001 &1716073609
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13114,6 +13116,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 42348143131103772, guid: 8f0602776c8cf9048996f8666f9c80f5,
+        type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 1.7777778
+      objectReference: {fileID: 0}
     - target: {fileID: 3075126031327720571, guid: 8f0602776c8cf9048996f8666f9c80f5,
         type: 3}
       propertyPath: m_RootOrder

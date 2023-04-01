@@ -324,6 +324,7 @@ GameObject:
   - component: {fileID: 5498103317476391899}
   - component: {fileID: 8096816148636812082}
   - component: {fileID: 7948822216415367244}
+  - component: {fileID: 8868990091716556906}
   m_Layer: 0
   m_Name: AJ
   m_TagString: Player
@@ -512,6 +513,31 @@ MonoBehaviour:
       type: 2}
     timer:
       duration: 2.5
+--- !u!114 &8868990091716556906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4333779362443776375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d00135aca544eb29a59567312095c0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brainPowerStat:
+    brainPowerStatLoadedChannel: {fileID: 11400000, guid: 07ce0f56a6d773f44a58a5fbb59d4b25,
+      type: 2}
+    earnNumberPageEventChannel: {fileID: 11400000, guid: ef062e463596ce142a9c39ca09d55998,
+      type: 2}
+    makeOperationPageEventChannel: {fileID: 11400000, guid: afea2f392ad4f5b42bce2983cb26a1c2,
+      type: 2}
+    statData:
+      decreaseSpeed: 3
+      increaseSpeed: 1
+      min: 0
+      max: 100
+      current: 0
 --- !u!1 &4377842735809278105
 GameObject:
   m_ObjectHideFlags: 0

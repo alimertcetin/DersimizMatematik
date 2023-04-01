@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LessonIsMath.Input;
+using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.UI.Components;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace LessonIsMath.UI
 {
     public class MakeOperationPage : PageUI, PlayerControls.IMakeOperationUIActions, PlayerControls.IPageUIActions, IKeypadListener
     {
+        [SerializeField] PageUIEventChannelSO makeOperationPageEventChannel;
         [SerializeField] Keypad keypad;
         [SerializeField] TMP_Text txt_InputField = null;
         [SerializeField] TMP_Text txt_ReviewInput = null;
@@ -65,6 +67,7 @@ namespace LessonIsMath.UI
             reviewHistory.Clear();
             txt_ReviewInput.text = "";
             txt_InputField.text = "";
+            makeOperationPageEventChannel.RaiseEvent(this);
         }
 
         public override void Hide()
@@ -81,6 +84,7 @@ namespace LessonIsMath.UI
             keypad.Disable();
 
             CancelOperation();
+            makeOperationPageEventChannel.RaiseEvent(this);
         }
 
         public void SetBlackboard(BlackboardUI blackboardUI)
