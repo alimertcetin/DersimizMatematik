@@ -20,4 +20,4 @@ MonoBehaviour:
       increaseSpeed: 5
       min: 0
       max: 100
-      current: 0
+      current: 100
