@@ -4,6 +4,7 @@ using LessonIsMath.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using XIV.Utils;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,8 @@ namespace LessonIsMath.UI
         [SerializeField] CustomButton btn_Back;
         [SerializeField] float deleteDuration;
         [SerializeField] float waitDeleteDuration;
+        [SerializeField] Image timerFillImage;
+        [SerializeField] Timer generateQuestionTimer = new Timer(10f);
         Timer deleteTimer;
         Timer waitDeleteStartTimer;
 
@@ -35,6 +38,16 @@ namespace LessonIsMath.UI
 
         void Update()
         {
+            if (isActive == false) return;
+
+            if (generateQuestionTimer.Update(Time.deltaTime))
+            {
+                txt_InputField.text = string.Empty;
+                GenerateQuestion();
+            }
+
+            timerFillImage.fillAmount = 1f - generateQuestionTimer.NormalizedTime;
+            
             if (deleteStarted == false || waitDeleteStartTimer.Update(Time.deltaTime) == false || deleteTimer.Update(Time.deltaTime) == false) return;
 
             Delete();
@@ -110,6 +123,7 @@ namespace LessonIsMath.UI
             operation.GenerateQuestion(operationType, maxValueOfAnswer);
 
             txt_Question.text = $"{operation.number1} {operation.GetOperator()} {operation.number2} = ?";
+            generateQuestionTimer.Restart();
         }
 
         void Delete()
