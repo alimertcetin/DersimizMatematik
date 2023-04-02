@@ -48,6 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackBoardUIChannel: {fileID: 11400000, guid: 0bae65bfeaddbf148a28958dbd7c060d,
     type: 2}
+  statContainerLoadedChannel: {fileID: 11400000, guid: ec1ecbeb499a5414e949b4e54b5e5a2d,
+    type: 2}
+  warningChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
 --- !u!65 &7925226652351342284
 BoxCollider:
   m_ObjectHideFlags: 0

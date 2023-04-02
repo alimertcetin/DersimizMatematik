@@ -1,41 +1,57 @@
-using LessonIsMath.ScriptableObjects.ChannelSOs;
-using LessonIsMath.StatSystems;
 using LessonIsMath.UI;
+using LessonIsMath.StatSystems;
+using LessonIsMath.StatSystems.ScriptableObjects.ChannelSOs;
+using LessonIsMath.StatSystems.Stats;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace XIV.UI
 {
-    public class HUDBrainPowerPage : PageUI, IStatListener
+    public class HUDBrainPowerPage : PageUI
     {
-        [SerializeField] StatEventChannelSO brainPowerStatLoadedChannel;
+        [SerializeField] StatContainerChannelSO statContainerLoadedChannel;
+        [SerializeField] StatContainerChangeChannelSO statContainerChangedChannel;
         [SerializeField] Image fillArea;
+        [SerializeField] Image brainFillImage;
+
+        StatContainer statContainer;
 
         void OnEnable()
         {
-            brainPowerStatLoadedChannel.OnEventRaised += OnStatLoaded;
+            statContainerLoadedChannel.Register(OnStatContainerLoaded);
+            statContainerChangedChannel.Register(OnStatContainerChanged);
         }
 
         void OnDisable()
         {
-            brainPowerStatLoadedChannel.OnEventRaised -= OnStatLoaded;
+            statContainerLoadedChannel.Unregister(OnStatContainerLoaded);
+            statContainerChangedChannel.Unregister(OnStatContainerChanged);
         }
 
-        void OnStatLoaded(IStat stat)
+        void OnStatContainerLoaded(StatContainer statContainer)
         {
-            stat.Register(this);
-            UpdateUI(stat);
+            this.statContainer = statContainer;
         }
 
-        void UpdateUI(IStat stat)
+        void OnStatContainerChanged(StatContainerChange statContainerChange)
         {
-            StatData statData = stat.GetStatData();
+            UpdateUI();
+        }
+
+        void UpdateUI()
+        {
+            UpdateBrainPower(statContainer.GetStatData<BrainPowerStatItem>());
+            UpdateBrainCore(statContainer.GetStatData<BrainCoreStatItem>());
+        }
+
+        void UpdateBrainPower(StatData statData)
+        {
             fillArea.transform.localScale = new Vector3(statData.normalizedCurrent, 1, 1);
         }
 
-        void IStatListener.OnStatChanged(IStat stat)
+        void UpdateBrainCore(StatData statData)
         {
-            UpdateUI(stat);
+            brainFillImage.fillAmount = statData.normalizedCurrent;
         }
     }
 }

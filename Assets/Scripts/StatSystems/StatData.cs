@@ -12,5 +12,14 @@ namespace LessonIsMath.StatSystems
         public float current;
 
         public float normalizedCurrent => XIVMathf.Normalize(current, min, max);
+
+        public StatData(StatData other)
+        {
+            this.decreaseSpeed = other.decreaseSpeed;
+            this.increaseSpeed = other.increaseSpeed;
+            this.min = other.min;
+            this.max = other.max;
+            this.current = other.current;
+        }
     }
 }

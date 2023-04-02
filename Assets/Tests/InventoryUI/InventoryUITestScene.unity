@@ -1887,7 +1887,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1290748179}
-  m_LocalRotation: {x: 0.086627536, y: 0.75311494, z: -0.101265684, w: 0.6442507}
+  m_LocalRotation: {x: 0.08662752, y: 0.75311494, z: -0.101265706, w: 0.6442506}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3374,6 +3374,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3593637306731214763, guid: 8f0602776c8cf9048996f8666f9c80f5,
+        type: 3}
+      propertyPath: brainPowerStat.brainStatData.max
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3593637306731214763, guid: 8f0602776c8cf9048996f8666f9c80f5,
+        type: 3}
+      propertyPath: brainPowerStat.brainStatData.increaseSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8570205190955081398, guid: 8f0602776c8cf9048996f8666f9c80f5,
         type: 3}

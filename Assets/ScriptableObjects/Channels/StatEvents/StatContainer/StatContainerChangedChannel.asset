@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ffd894cf03141cb9b0457894e54167f, type: 3}
-  m_Name: BrainPowerLoadedChannel
+  m_Script: {fileID: 11500000, guid: 64e6a59c2e0a4b6b9e3ea61383e68553, type: 3}
+  m_Name: StatContainerChangedChannel
   m_EditorClassIdentifier: 
-  description: 

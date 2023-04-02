@@ -1,6 +1,9 @@
 ﻿using LessonIsMath.Input;
 using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
+using LessonIsMath.StatSystems;
+using LessonIsMath.StatSystems.ScriptableObjects.ChannelSOs;
+using LessonIsMath.StatSystems.Stats;
 using LessonIsMath.UI;
 using UnityEngine;
 
@@ -9,13 +12,30 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
     public class Blackboard : MonoBehaviour, IInteractable, IUIEventListener
     {
         [SerializeField] BoolEventChannelSO blackBoardUIChannel;
+        [SerializeField] StatContainerChannelSO statContainerLoadedChannel;
+        [SerializeField] StringEventChannelSO warningChannel;
 
         IInteractor interactor;
         public bool IsInInteraction { get; private set; }
 
-        void OnEnable() => UIEventSystem.Register<BlackboardUI>(this);
+        StatContainer statContainer;
+        
+        void OnEnable()
+        {
+            UIEventSystem.Register<BlackboardUI>(this);
+            statContainerLoadedChannel.Register(OnStatContainerLoaded);
+        }
 
-        void OnDisable() => UIEventSystem.Unregister<BlackboardUI>(this);
+        void OnDisable()
+        {
+            UIEventSystem.Unregister<BlackboardUI>(this);
+            statContainerLoadedChannel.Unregister(OnStatContainerLoaded);
+        }
+
+        void OnStatContainerLoaded(StatContainer statContainer)
+        {
+            this.statContainer = statContainer;
+        }
 
         void OnBlackBoardInteract(bool value)
         {
@@ -43,6 +63,14 @@ namespace LessonIsMath.World.Interactables.BlackboardSystems
 
         void IInteractable.Interact(IInteractor interactor)
         {
+            if (statContainer.GetStatData<BrainPowerStatItem>().normalizedCurrent < Mathf.Epsilon || 
+                statContainer.GetStatData<BrainCoreStatItem>().normalizedCurrent < Mathf.Epsilon)
+            {
+                interactor.OnInteractionEnd(this);
+                warningChannel.RaiseEvent("You do not have enough brain power to use Blackboard");
+                return;
+            }
+            
             this.interactor = interactor;
             blackBoardUIChannel.RaiseEvent(true);
             blackBoardUIChannel.OnEventRaised += OnBlackBoardInteract;
