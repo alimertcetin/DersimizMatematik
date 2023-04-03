@@ -1,4 +1,5 @@
-﻿using LessonIsMath.Input;
+﻿using System.Collections;
+using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.UI.Components;
 using LessonIsMath.ScriptableObjects.SceneSOs;
@@ -11,15 +12,14 @@ namespace LessonIsMath.UI
     public class PauseUI : ParentGameUI, PlayerControls.IGameUIActions
     {
         [SerializeField] BoolEventChannelSO pauseMenuUIChannel;
-        [Header("Broadcasting To")]
+        [SerializeField] BoolEventChannelSO showSaveIndicatorChannel;
+        [SerializeField] BoolEventChannelSO showLoadingScreenChannel;
+        
         [SerializeField] StringEventChannelSO warningUIChannel;
         [SerializeField] LoadEventChannelSO locationLoadChannel;
 
-        [Header("Scene To Unload")]
         [Tooltip("If exit pressed, unload this scene")]
         [SerializeField] GameSceneSO gamePlayScene;
-
-        [Header("Scenes To Load")]
         [SerializeField] GameSceneSO mainMenu;
 
         [SerializeField] SettingsUIPage settingsUIPage;
@@ -28,6 +28,8 @@ namespace LessonIsMath.UI
         [SerializeField] CustomButton btn_Save;
         [SerializeField] CustomButton btn_Settings;
         [SerializeField] CustomButton btn_Exit;
+
+        static readonly WaitForSeconds waitSaveSystem = new WaitForSeconds(2f);
 
         void OnEnable()
         {
@@ -75,13 +77,30 @@ namespace LessonIsMath.UI
 
         void Save()
         {
-            SaveSystem.Save();
-            warningUIChannel.RaiseEvent("Saved : " + Application.persistentDataPath);
+            StartCoroutine(HandleSave());
         }
 
         void Load()
         {
-            SaveSystem.Load();
+            StartCoroutine(HandleLoad());
+        }
+
+        IEnumerator HandleSave()
+        {
+            showSaveIndicatorChannel.RaiseEvent(true);
+            yield return SaveSystem.SaveAsync();
+            yield return waitSaveSystem;
+            showSaveIndicatorChannel.RaiseEvent(false);
+            warningUIChannel.RaiseEvent("Saved : " + Application.persistentDataPath);
+        }
+
+        IEnumerator HandleLoad()
+        {
+            showLoadingScreenChannel.RaiseEvent(true);
+            yield return SaveSystem.LoadAsync();
+            Resume();
+            yield return waitSaveSystem;
+            showLoadingScreenChannel.RaiseEvent(false);
         }
 
         void ShowSettings()
