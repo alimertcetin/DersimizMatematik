@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ElRaccoone.Tweens;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
@@ -23,11 +24,12 @@ namespace LessonIsMath.UI
         [SerializeField] BoolEventChannelSO keycardUIChannel;
         [SerializeField] StringEventChannelSO warningChannel;
         [SerializeField] CustomButton insertCardButton;
-        [SerializeField] GameObject clickInsertIcon;
+        [SerializeField] GameObject insertKeycardIcon;
         [SerializeField] GameObject cardModelGreen;
         [SerializeField] GameObject cardModelYellow;
         [SerializeField] GameObject cardModelRed;
 
+        Vector3 initialPosition;
         GameObject currentCardGo;
         Inventory inventory;
         InventorySlot[] slots;
@@ -46,6 +48,8 @@ namespace LessonIsMath.UI
             {
                 keycardButtons[i] = slots[i].GetComponent<CustomButton>();
             }
+
+            initialPosition = insertKeycardIcon.transform.position;
         }
 
         void OnEnable()
@@ -84,6 +88,18 @@ namespace LessonIsMath.UI
             base.Hide();
             InputManager.GameUI.Disable();
             InputManager.GameState.Enable();
+            insertKeycardIcon.TweenCancelAll();
+            insertKeycardIcon.SetActive(false);
+        }
+        
+        void StartIconTween(Vector3 initialPosition, Vector3 movement)
+        {
+            insertKeycardIcon.TweenPosition(initialPosition + movement, 0.5f)
+                .SetOnComplete(() =>
+                {
+                    insertKeycardIcon.TweenPosition(initialPosition - movement, 0.5f)
+                        .SetOnComplete(() => StartIconTween(initialPosition, movement));
+                });
         }
 
         void OnInventoryLoaded(Inventory inventory)
@@ -108,7 +124,7 @@ namespace LessonIsMath.UI
         {
             if (isInserting || spamLock) return;
 
-            clickInsertIcon.SetActive(false);
+            insertKeycardIcon.SetActive(false);
             if (currentKeycardItem == null)
             {
                 warningChannel.RaiseEvent("Select a card");
@@ -170,7 +186,12 @@ namespace LessonIsMath.UI
                 currentCardGo.transform.SetParent(Camera.main.transform);
                 spamLock = false;
                 SetButtonColors(Color.white);
-                clickInsertIcon.SetActive(keycardRequiredDoor.GetIndexOfRequiredItem(currentKeycardItem) > -1);
+                if (keycardRequiredDoor.GetIndexOfRequiredItem(currentKeycardItem) > -1)
+                {
+                    insertKeycardIcon.TweenCancelAll();
+                    insertKeycardIcon.SetActive(true);
+                    StartIconTween(initialPosition, Vector3.up * 5f);
+                }
             });
         }
 
