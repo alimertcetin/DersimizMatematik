@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LessonIsMath.ScriptableObjects.SceneSOs;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace LessonIsMath.ScriptableObjects.ChannelSOs
