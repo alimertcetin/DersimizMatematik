@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using LessonIsMath.DoorSystems;
+﻿using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
@@ -9,18 +8,12 @@ namespace LessonIsMath.UI
 {
     public class GamePlayUIManager : MonoBehaviour
     {
-        [SerializeField] float warningTime = 2f;
-        [SerializeField] Notification notification;
-        [SerializeField] WarningPopup warningPopup;
-
         [Header("Listening To")]
         [SerializeField] BoolEventChannelSO pauseMenuUIChannel;
         [SerializeField] BoolEventChannelSO blackBoardUIChannel;
         [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel;
         [SerializeField] BoolEventChannelSO keycardUIChannel;
         [SerializeField] BoolEventChannelSO hudUIChannel;
-        [SerializeField] StringEventChannelSO notificationChannel;
-        [SerializeField] StringEventChannelSO warningChannel;
 
         void OnEnable()
         {
@@ -29,8 +22,6 @@ namespace LessonIsMath.UI
             arithmeticDoorUIChannel.OnEventRaised += ShowLockedDoorUI;
             keycardUIChannel.OnEventRaised += ShowKeycardUI;
             hudUIChannel.OnEventRaised += ShowHud;
-            notificationChannel.OnEventRaised += ShowNotification;
-            warningChannel.OnEventRaised += ShowWarning;
         }
 
         void OnDisable()
@@ -40,8 +31,6 @@ namespace LessonIsMath.UI
             arithmeticDoorUIChannel.OnEventRaised -= ShowLockedDoorUI;
             keycardUIChannel.OnEventRaised -= ShowKeycardUI;
             hudUIChannel.OnEventRaised -= ShowHud;
-            notificationChannel.OnEventRaised -= ShowNotification;
-            warningChannel.OnEventRaised -= ShowWarning;
         }
 
         void ShowPauseMenuUI(bool value)
@@ -82,17 +71,6 @@ namespace LessonIsMath.UI
         {
             if (value) UISystem.Show<HUD_UI>();
             else UISystem.Hide<HUD_UI>();
-        }
-
-        void ShowWarning(string text)
-        {
-            warningPopup.ShowWarning(text, string.IsNullOrEmpty(text) == false, warningTime);
-        }
-
-        void ShowNotification(string text)
-        {
-            notification.SetText(text);
-            notification.gameObject.SetActive(string.IsNullOrEmpty(text) == false);
         }
     }
 }
