@@ -17,12 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 8187a441fa66f6944ba42efaeaf5f2a2
   m_SerializeEntries:
-  - m_GUID: aeaf7607040377743a201e410a1d9365
-    m_Address: Assets/Art/Sounds/Door SFX
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: e2084b821d8ab8d45b5146160474dde1
     m_Address: Assets/Art/Sounds/FootSteps_sounds
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aeaf7607040377743a201e410a1d9365
+    m_Address: Assets/Art/Sounds/Door SFX
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

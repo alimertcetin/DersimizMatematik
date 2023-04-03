@@ -22,11 +22,11 @@ public class LineTest : MonoBehaviour
         bool isBetween = Vector3.Distance(closestPointOnLine, pointPosition) < threshold;
         Debug.Log(isBetween);
 
-        XIVDebug.DrawSphere(lineStartPosition, debugRadius, Color.green, debugDuration);
-        XIVDebug.DrawSphere(lineEndPosition, debugRadius, Color.yellow, debugDuration);
-        XIVDebug.DrawSphere(closestPointOnLine, debugRadius, Color.red, debugDuration);
-        XIVDebug.DrawLine(lineStartPosition, pointPosition, Color.magenta, debugDuration);
-        XIVDebug.DrawLine(lineStartPosition, lineEndPosition, isBetween ? Color.red : Color.blue, debugDuration);
-        XIVDebug.DrawLine(pointPosition, closestPointOnLine, Color.cyan, debugDuration);
+        // XIVDebug.DrawSphere(lineStartPosition, debugRadius, Color.green, debugDuration);
+        // XIVDebug.DrawSphere(lineEndPosition, debugRadius, Color.yellow, debugDuration);
+        // XIVDebug.DrawSphere(closestPointOnLine, debugRadius, Color.red, debugDuration);
+        // XIVDebug.DrawLine(lineStartPosition, pointPosition, Color.magenta, debugDuration);
+        // XIVDebug.DrawLine(lineStartPosition, lineEndPosition, isBetween ? Color.red : Color.blue, debugDuration);
+        // XIVDebug.DrawLine(pointPosition, closestPointOnLine, Color.cyan, debugDuration);
     }
 }
