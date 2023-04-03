@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
+using XIV.SaveSystems;
 
 namespace LessonIsMath.SceneManagement
 {
@@ -90,6 +91,7 @@ namespace LessonIsMath.SceneManagement
 
         void UnloadPreviousScene()
         {
+            SaveSystem.Save();
             if (currentScene != null) //would be null if the game was started in Initialisation
             {
                 if (currentScene.sceneReference.OperationHandle.IsValid())
@@ -114,6 +116,8 @@ namespace LessonIsMath.SceneManagement
 
             currentScene = sceneToLoad;
             SetActiveScene();
+            yield return SaveSystem.LoadAsync();
+            
             if (showLoadingScreen)
             {
                 showLoadingScreenChannel.RaiseEvent(false);
