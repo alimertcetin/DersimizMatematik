@@ -186,10 +186,11 @@ namespace LessonIsMath.UI
                 currentCardGo.transform.SetParent(Camera.main.transform);
                 spamLock = false;
                 SetButtonColors(Color.white);
-                if (keycardRequiredDoor.GetIndexOfRequiredItem(currentKeycardItem) > -1)
+                bool activate = keycardRequiredDoor.GetIndexOfRequiredItem(currentKeycardItem) > -1;
+                insertKeycardIcon.SetActive(activate);
+                if (activate)
                 {
                     insertKeycardIcon.TweenCancelAll();
-                    insertKeycardIcon.SetActive(true);
                     StartIconTween(initialPosition, Vector3.up * 5f);
                 }
             });
