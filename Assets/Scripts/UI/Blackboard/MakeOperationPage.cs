@@ -107,7 +107,7 @@ namespace LessonIsMath.UI
             }
             if (blackboardUI.IsNumberExistsInInventory(value) == false)
             {
-                blackboardUI.ShowWarning(OperationWarnings.THIS_NUMBER_IS_NOT_EXIST_IN_INVENTORY);
+                blackboardUI.ShowWarning(OperationWarnings.THIS_NUMBER_DOES_NOT_EXIST_IN_INVENTORY);
                 return;
             }
 

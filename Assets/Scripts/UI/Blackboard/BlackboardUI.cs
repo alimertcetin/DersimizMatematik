@@ -120,14 +120,7 @@ namespace LessonIsMath.UI
 
         public bool IsNumberExistsInInventory(int number)
         {
-            for (int i = 0; i < inventory.SlotCount; i++)
-            {
-                if (inventory[i].Item is NumberItem item && item.Value == number)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return inventory.GetItemsOfType<NumberItem>((num) => num.Value == number).Count > 0;
         }
 
         public void ShowWarning(string text)
