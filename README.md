@@ -1,11 +1,10 @@
 # DersimizMatematik
- 
-Sistem Analizi dersi için oluşturduğum oyun projesi.
 
-A game project for System Analysis lesson
+This project is created for educational purposes. But later on I decided to keep it as an open source project.
 
-- In this game; we have a child character that tries to get out from school. But first he needs to unlock doors via correct passwords or keycards.
-- The project is still in development
+- In this game; we have a child character that tries to get out from the school. But first he needs to unlock doors by typing correct passwords or by using correct keycards.
+
+- Contributions are highly welcomed.
 
 ![Alt text](https://i.ibb.co/L6ZNz5Y/AJ-Back.jpg)
 ![Alt text](https://i.ibb.co/qdBP2xT/AJ-Front.jpg)
