@@ -13,11 +13,26 @@ MonoBehaviour:
   m_Name: BrainPowerStat
   m_EditorClassIdentifier: 
   item:
-    title: Brain Power
-    description: 
-    statData:
-      decreaseSpeed: 5
-      increaseSpeed: 5
-      min: 0
-      max: 100
-      current: 100
+    currentLevel: 0
+    levels:
+    - requiredExperience: 0
+      statData:
+        decreaseSpeed: 4
+        increaseSpeed: 1
+        min: 0
+        max: 100
+        current: 100
+    - requiredExperience: 20
+      statData:
+        decreaseSpeed: 2
+        increaseSpeed: 2
+        min: 0
+        max: 100
+        current: 100
+    - requiredExperience: 60
+      statData:
+        decreaseSpeed: 0.5
+        increaseSpeed: 4
+        min: 0
+        max: 100
+        current: 100

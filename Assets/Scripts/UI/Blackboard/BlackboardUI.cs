@@ -82,7 +82,7 @@ namespace LessonIsMath.UI
         {
             for (int i = 0; i < change.ChangeCount; i++)
             {
-                if (change.ChangedItems[i].changedStat.StatItem is not BrainCoreStatItem brainCoreStatItem) continue;
+                if (change.ChangedItems[i].ChangedStat.StatItem is not BrainCoreStatItem brainCoreStatItem) continue;
 
                 if (brainCoreStatItem.statData.current < brainCoreStatItem.statData.max)
                 {

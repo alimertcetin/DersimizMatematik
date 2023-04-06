@@ -14,6 +14,7 @@ namespace LessonIsMath.UI
     public class MakeOperationPage : PageUI, PlayerControls.IMakeOperationUIActions, PlayerControls.IPageUIActions, IKeypadListener
     {
         [SerializeField] PageUIEventChannelSO makeOperationPageEventChannel;
+        [SerializeField] BoolEventChannelSO solveQuestionSuccessChannel;
         [SerializeField] Keypad keypad;
         [SerializeField] TMP_Text txt_InputField = null;
         [SerializeField] TMP_Text txt_ReviewInput = null;

@@ -56,6 +56,13 @@ namespace LessonIsMath.StatSystems
             return items[index].statItem.statData;
         }
 
+        public T GetStatItem<T>() where T : StatItemBase
+        {
+            int index = IndexOf<T>();
+            if (index < 0) return default;
+            return (T)items[index].statItem;
+        }
+
         public bool Contains(StatItemBase item)
         {
             var index = IndexOf(item);
@@ -86,21 +93,31 @@ namespace LessonIsMath.StatSystems
             return -1;
         }
 
-        public void Add(StatItemBase item)
+        public void Add(StatItemBase item, bool informListeners = true)
         {
             items.Add() = new Stat(Count, item);
             itemChanges.Add() = new StatChange(Count, this[Count], false);
             Count++;
-            InformListeners();
+            if (informListeners) InformListeners();
         }
 
         public void UpdateStat<T>(StatData statData) where T : StatItemBase
         {
             int index = IndexOf<T>();
             if (index < 0) return;
-            items[index].statItem.statData = statData;
+            items[index].statItem.statData.Update(statData);
             
             itemChanges.Add() = new StatChange(index, this[index], false);
+            InformListeners();
+        }
+
+        public void UpdateStatItemExperience<T>(float amount) where T : StatItemBase
+        {
+            int index = IndexOf<T>();
+            if (index < 0) return;
+            bool levelUp = items[index].statItem.UpdateExperience(amount);
+            
+            itemChanges.Add() = new StatChange(index, this[index], false, levelUp);
             InformListeners();
         }
 
@@ -116,10 +133,10 @@ namespace LessonIsMath.StatSystems
             InformListeners();
         }
 
-        public void RemoveAt(int index)
+        public void RemoveAt(int index, bool informListeners = true)
         {
             Internal_RemoveAt(index);
-            InformListeners();
+            if (informListeners) InformListeners();
         }
 
         void Internal_RemoveAt(int index)

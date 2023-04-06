@@ -22,6 +22,7 @@ namespace LessonIsMath.UI
         Timer waitDeleteTimer;
         Timer deleteTimer;
 
+        [SerializeField] BoolEventChannelSO solveQuestionSuccessChannel;
         // TODO : Remove event channel dependency
         [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel;
         [SerializeField] StringEventChannelSO warningUIChannel;
@@ -157,12 +158,14 @@ namespace LessonIsMath.UI
             if (arithmeticOperationDoor.SolveQuestion(int.Parse(txt_InputField.text)) == false)
             {
                 warningUIChannel.RaiseEvent("Wrong answer");
+                solveQuestionSuccessChannel.RaiseEvent(false);
                 return;
             }
 
             txt_InputField.text = "";
             inputNumberItems.Clear();
             arithmeticDoorUIChannel.RaiseEvent(null, false);
+            solveQuestionSuccessChannel.RaiseEvent(true);
         }
 
         void PlayerControls.IGameUIActions.OnExit(InputAction.CallbackContext context)

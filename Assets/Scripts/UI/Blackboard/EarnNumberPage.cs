@@ -13,6 +13,7 @@ namespace LessonIsMath.UI
     public class EarnNumberPage : PageUI, PlayerControls.IPageUIActions, PlayerControls.IEarnNumberUIActions, IKeypadListener
     {
         [SerializeField] PageUIEventChannelSO earnNumberPageEventChannel;
+        [SerializeField] BoolEventChannelSO solveQuestionSuccessChannel;
         [SerializeField] Keypad keypad;
         [SerializeField] TMP_Text txt_InputField = null;
         [SerializeField] TMP_Text txt_Question = null;
@@ -145,6 +146,7 @@ namespace LessonIsMath.UI
             {
                 txt_InputField.text = "";
                 blackboardUI.ShowWarning(OperationWarnings.WRONG_ANSWER);
+                solveQuestionSuccessChannel.RaiseEvent(false);
                 return;
             }
             var number = Random.Range(0, 10);
@@ -153,11 +155,11 @@ namespace LessonIsMath.UI
                 blackboardUI.ShowWarning("Inventory is full");
                 return;
             }
-
             GenerateQuestion();
             txt_InputField.text = "";
 
             blackboardUI.ShowWarning("You earned " + number);
+            solveQuestionSuccessChannel.RaiseEvent(true);
         }
 
         void PlayerControls.IPageUIActions.OnBack(InputAction.CallbackContext context)

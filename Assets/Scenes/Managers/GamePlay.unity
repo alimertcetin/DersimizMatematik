@@ -3290,6 +3290,7 @@ MonoBehaviour:
     type: 2}
   statContainerChangedChannel: {fileID: 11400000, guid: e97efe9a5aa724147922c948a5cb2eb2,
     type: 2}
+  warningChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
   fillArea: {fileID: 123979119}
   brainFillImage: {fileID: 590522190}
 --- !u!1 &349400417
@@ -3361,6 +3362,7 @@ MonoBehaviour:
   uiGameObject: {fileID: 4413410046581580817}
   makeOperationPageEventChannel: {fileID: 11400000, guid: afea2f392ad4f5b42bce2983cb26a1c2,
     type: 2}
+  solveQuestionSuccessChannel: {fileID: 0}
   keypad: {fileID: 621492905}
   txt_InputField: {fileID: 822315231}
   txt_ReviewInput: {fileID: 492637211}
@@ -5619,6 +5621,8 @@ MonoBehaviour:
   btn_Back: {fileID: 752506315}
   waitDeleteDuration: 0.5
   deleteDuration: 0.25
+  solveQuestionSuccessChannel: {fileID: 11400000, guid: cc95be57a0079ce468bef1b742e852d6,
+    type: 2}
   arithmeticDoorUIChannel: {fileID: 11400000, guid: 33d654f55ff99c441a9735f773bda76b,
     type: 2}
   warningUIChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
@@ -9439,11 +9443,13 @@ MonoBehaviour:
     type: 2}
   statContainerChangeChannel: {fileID: 11400000, guid: e97efe9a5aa724147922c948a5cb2eb2,
     type: 2}
-  onSceneReady: {fileID: 11400000, guid: 054c4698ba8cb9143b451505200edd52, type: 2}
   statContainerSO: {fileID: 11400000, guid: 7b1dae21a339e5c4396253634d7b6493, type: 2}
   earnNumberPageEventChannel: {fileID: 11400000, guid: ef062e463596ce142a9c39ca09d55998,
     type: 2}
   makeOperationPageEventChannel: {fileID: 11400000, guid: afea2f392ad4f5b42bce2983cb26a1c2,
+    type: 2}
+  onSceneReady: {fileID: 11400000, guid: 054c4698ba8cb9143b451505200edd52, type: 2}
+  solveQuestionSuccessChannel: {fileID: 11400000, guid: cc95be57a0079ce468bef1b742e852d6,
     type: 2}
 --- !u!114 &947990528
 MonoBehaviour:
@@ -9457,7 +9463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 202117fb4b83f8a48bdc9d9489696bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: ed5790f0-cadf-41cb-9adc-5bcaac02f4aa
+  id: c1107ec4-2018-4c56-8090-88e86f596ad0
 --- !u!4 &947990529
 Transform:
   m_ObjectHideFlags: 0
@@ -24086,6 +24092,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiGameObject: {fileID: 4413410045301102735}
   earnNumberPageEventChannel: {fileID: 11400000, guid: ef062e463596ce142a9c39ca09d55998,
+    type: 2}
+  solveQuestionSuccessChannel: {fileID: 11400000, guid: cc95be57a0079ce468bef1b742e852d6,
     type: 2}
   keypad: {fileID: 104521574}
   txt_InputField: {fileID: 1315305387}

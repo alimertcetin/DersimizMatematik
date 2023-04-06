@@ -21,5 +21,14 @@ namespace LessonIsMath.StatSystems
             this.max = other.max;
             this.current = other.current;
         }
+
+        public void Update(StatData other)
+        {
+            this.decreaseSpeed = other.decreaseSpeed;
+            this.increaseSpeed = other.increaseSpeed;
+            this.min = other.min;
+            this.max = other.max;
+            this.current = XIVMathf.Clamp(other.current, min, max);
+        }
     }
 }

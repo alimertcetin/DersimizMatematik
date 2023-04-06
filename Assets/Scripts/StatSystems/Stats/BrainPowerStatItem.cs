@@ -9,5 +9,10 @@ namespace LessonIsMath.StatSystems.Stats
 
             return System.Object.Equals(otherStat, this);
         }
+
+        public override string ToString()
+        {
+            return "Brain Power";
+        }
     }
 }
