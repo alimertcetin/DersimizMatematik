@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Number 1
   m_EditorClassIdentifier: 
   item:
+    id: 4e0c6a24-780c-49f8-a44f-468063d5632d
     title: Number
     description: 
     UISprite: {fileID: 21300000, guid: 007fd9af6ff7c3646a41d9b86fd0d319, type: 3}

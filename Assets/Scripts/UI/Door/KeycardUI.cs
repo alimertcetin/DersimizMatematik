@@ -11,14 +11,17 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
+using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.ItemSOs;
+using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
 using XIV.InventorySystem.UI;
 
 namespace LessonIsMath.UI
 {
     public class KeycardUI : GameUI, PlayerControls.IGameUIActions
     {
+        [SerializeField] NonSerializedItemDataContainerSO ItemDataContainerSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] InventoryChangeChannelSO inventoryChangedChannel;
         [SerializeField] BoolEventChannelSO keycardUIChannel;
@@ -201,9 +204,9 @@ namespace LessonIsMath.UI
             IList<ReadOnlyInventoryItem> greenKeycards = inventory.GetItemsOfType<KeycardItem>((item) => item.KeycardType == KeycardType.Green);
             IList<ReadOnlyInventoryItem> yellowKeycards = inventory.GetItemsOfType<KeycardItem>((item) => item.KeycardType == KeycardType.Yellow);
             IList<ReadOnlyInventoryItem> redKeycards = inventory.GetItemsOfType<KeycardItem>((item) => item.KeycardType == KeycardType.Red);
-            slots[0].SetItem(greenKeycards[0]);
-            slots[1].SetItem(yellowKeycards[0]);
-            slots[2].SetItem(redKeycards[0]);
+            slots[0].SetItem(greenKeycards[0], ItemDataContainerSO.GetSprite(greenKeycards[0].Item));
+            slots[1].SetItem(yellowKeycards[0], ItemDataContainerSO.GetSprite(yellowKeycards[0].Item));
+            slots[2].SetItem(redKeycards[0], ItemDataContainerSO.GetSprite(redKeycards[0].Item));
         }
 
         public void SetKeycardRequiredDoor(KeycardRequiredDoor keycardRequiredDoor)

@@ -12,8 +12,8 @@ namespace XIV.UI
         [SerializeField] TMP_Text amountText;
         
         public ReadOnlyInventoryItem inventoryItem { get; private set; }
-
-        public void SetItem(ReadOnlyInventoryItem inventoryItem)
+        Sprite uiSprite;
+        public void SetItem(ReadOnlyInventoryItem inventoryItem, Sprite uiSprite)
         {
             if (inventoryItem.Amount > this.inventoryItem.Amount)
             {
@@ -24,13 +24,15 @@ namespace XIV.UI
                     .SetPingPong()
                     .SetEaseBounceInOut();
             }
+
+            this.uiSprite = uiSprite;
             this.inventoryItem = inventoryItem;
             UpdateProperties();
         }
 
         void UpdateProperties()
         {
-            this.itemImage.sprite = inventoryItem.Item.UISprite;
+            this.itemImage.sprite = uiSprite;
             this.amountText.text = inventoryItem.Amount > 0 ? inventoryItem.Amount.ToString() : "";
         }
     }

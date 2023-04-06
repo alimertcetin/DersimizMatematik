@@ -1,4 +1,6 @@
+using System;
 using System.Reflection;
+using XIV.Extensions;
 
 namespace XIVEditor.Utils
 {
@@ -45,6 +47,11 @@ namespace XIVEditor.Utils
         public static void SetProperty(string fieldName, object instance, object fieldValue)
         {
             SetProperty(fieldName, instance, fieldValue, DefaultFieldBindingFlags);
+        }
+
+        public static MethodInfo[] GetMethods<TAttribute>(Type type) where TAttribute : Attribute
+        {
+            return type.GetMethods(DefaultFieldBindingFlags).Split((m) => m.GetCustomAttribute<TAttribute>() != null);
         }
     }
 }

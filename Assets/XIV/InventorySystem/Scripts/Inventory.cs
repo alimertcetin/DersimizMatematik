@@ -52,11 +52,12 @@ namespace XIV.InventorySystem
             if (itemChanges.Count == 0) return;
             
             int count = listeners.Count;
+            var inventoryChange = new InventoryChange(itemChanges);
+            itemChanges.Clear();
             for (int i = 0; i < count; i++)
             {
-                listeners[i].OnInventoryChanged(new InventoryChange(itemChanges));
+                listeners[i].OnInventoryChanged(inventoryChange);
             }
-            itemChanges.Clear();
         }
 
         IList<InventoryItem> GetAllTypeOf<T>(FindItemCondition<T> condition) where T : ItemBase
@@ -162,7 +163,7 @@ namespace XIV.InventorySystem
         /// Tries to add as much as possible item at giving amount
         /// </summary>
         /// <returns>True if amount reaches 0 after add operation</returns>
-        public bool TryAdd(ItemBase item, ref int amount)
+        public bool TryAdd(ItemBase item, ref int amount, bool informListeners = true)
         {
             for (var i = 0; i < SlotCount; i++)
             {
@@ -173,8 +174,8 @@ namespace XIV.InventorySystem
             }
 
             if (amount > 0) AddNew(item, ref amount);
-            
-            InformListeners();
+
+            if (informListeners) InformListeners();
             return amount <= 0;
         }
 
@@ -239,10 +240,10 @@ namespace XIV.InventorySystem
             InformListeners();
         }
 
-        public void RemoveAt(int index, ref int amount)
+        public void RemoveAt(int index, ref int amount, bool informListeners = true)
         {
             Internal_RemoveAt(index, ref amount);
-            InformListeners();
+            if (informListeners) InformListeners();
         }
 
         void Internal_RemoveAt(int index, ref int amount)

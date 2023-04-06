@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Keycard_Red
   m_EditorClassIdentifier: 
   item:
+    id: cebc044d-a229-4461-a2f5-448a372b9745
     title: Keycard
     description: 
     UISprite: {fileID: 21300000, guid: 55a1efc60ddaa1641b264e301e829e43, type: 3}

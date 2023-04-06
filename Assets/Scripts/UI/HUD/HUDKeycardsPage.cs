@@ -3,13 +3,16 @@ using LessonIsMath.UI;
 using UnityEngine;
 using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
+using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.ItemSOs;
+using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
 
 namespace XIV.UI
 {
     public class HUDKeycardsPage : PageUI
     {
+        [SerializeField] NonSerializedItemDataContainerSO ItemDataContainerSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] InventoryChangeChannelSO inventoryChangedChannel;
         [SerializeField] Transform contentParent;
@@ -22,7 +25,7 @@ namespace XIV.UI
             for (var i = 0; i < slots.Length; i++)
             {
                 var slot = slots[i];
-                slot.SetItem(new ReadOnlyInventoryItem(new InventoryItem(i, 0, keycardItems[i].GetItem())));
+                slot.SetItem(new ReadOnlyInventoryItem(new InventoryItem(i, 0, keycardItems[i].GetItem())), ItemDataContainerSO.GetSprite(keycardItems[i].GetItem()));
                 slot.gameObject.SetActive(false);
             }
         }
@@ -52,7 +55,7 @@ namespace XIV.UI
                     KeycardItem inventoryItem = (KeycardItem)readOnlyInventoryItem.Item;
                     if (slotItem.KeycardType == inventoryItem.KeycardType)
                     {
-                        slot.SetItem(readOnlyInventoryItem);
+                        slot.SetItem(readOnlyInventoryItem, ItemDataContainerSO.GetSprite(readOnlyInventoryItem.Item));
                         slot.gameObject.SetActive(readOnlyInventoryItem.Amount > 0);
                         break;
                     }
@@ -72,7 +75,7 @@ namespace XIV.UI
                     KeycardItem slotItem = (KeycardItem)slot.inventoryItem.Item;
                     if (slotItem.KeycardType == inventoryItem.KeycardType)
                     {
-                        slot.SetItem(inventoryItemChange.ChangedItem);
+                        slot.SetItem(inventoryItemChange.ChangedItem, ItemDataContainerSO.GetSprite(inventoryItemChange.ChangedItem.Item));
                         slot.gameObject.SetActive(inventoryItemChange.ChangedItem.Amount > 0);
                         break;
                     }

@@ -9518,6 +9518,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiGameObject: {fileID: 1040533109}
+  ItemDataContainerSO: {fileID: 11400000, guid: a262821ea00c08745aedb44563ca6e62,
+    type: 2}
   inventoryLoadedChannel: {fileID: 11400000, guid: ab052fda52bf9e449a07470cb18d369b,
     type: 2}
   inventoryChangedChannel: {fileID: 11400000, guid: 60b5a07e6b5fefb479993be56ed1f5d5,
@@ -14724,6 +14726,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiGameObject: {fileID: 440899292}
+  ItemDataContainerSO: {fileID: 11400000, guid: a262821ea00c08745aedb44563ca6e62,
+    type: 2}
   inventoryLoadedChannel: {fileID: 11400000, guid: ab052fda52bf9e449a07470cb18d369b,
     type: 2}
   inventoryChangedChannel: {fileID: 11400000, guid: 60b5a07e6b5fefb479993be56ed1f5d5,
@@ -16827,6 +16831,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiGameObject: {fileID: 826582849}
+  ItemDataContainerSO: {fileID: 11400000, guid: a262821ea00c08745aedb44563ca6e62,
+    type: 2}
   inventoryLoadedChannel: {fileID: 11400000, guid: ab052fda52bf9e449a07470cb18d369b,
     type: 2}
   inventoryChangedChannel: {fileID: 11400000, guid: 60b5a07e6b5fefb479993be56ed1f5d5,

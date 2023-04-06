@@ -12,15 +12,17 @@ namespace XIV.InventorySystem.UI
         public bool IsEmpty => inventoryItem.Amount <= 0;
         
         public ReadOnlyInventoryItem inventoryItem { get; private set; }
+        Sprite uiSprite;
 
-        public void SetItem(ReadOnlyInventoryItem inventoryItem)
+        public void SetItem(ReadOnlyInventoryItem inventoryItem, Sprite uiSprite)
         {
             this.inventoryItem = inventoryItem;
-            UpdateVisual();
+            UpdateVisual(uiSprite);
         }
 
-        public void UpdateVisual()
+        public void UpdateVisual(Sprite uiSprite)
         {
+            this.uiSprite = uiSprite;
             bool empty = IsEmpty;
             if (empty == false) UpdateProperties();
             
@@ -29,7 +31,7 @@ namespace XIV.InventorySystem.UI
 
         void UpdateProperties()
         {
-            this.itemImage.sprite = inventoryItem.Item.UISprite;
+            this.itemImage.sprite = uiSprite;
             this.amountText.text = inventoryItem.Amount > 1 ? inventoryItem.Amount.ToString() : "";
         }
 

@@ -4,13 +4,16 @@ using LessonIsMath.UI;
 using UnityEngine;
 using XIV.InventorySystem;
 using XIV.InventorySystem.Items;
+using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.ItemSOs;
+using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
 
 namespace XIV.UI
 {
     public class HUDNumbersPage : PageUI
     {
+        [SerializeField] NonSerializedItemDataContainerSO ItemDataContainerSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] InventoryChangeChannelSO inventoryChangedChannel;
         [SerializeField] Transform contentParent;
@@ -27,7 +30,7 @@ namespace XIV.UI
             for (var i = 0; i < slots.Length; i++)
             {
                 var slot = slots[i];
-                slot.SetItem(new ReadOnlyInventoryItem(new InventoryItem(i, 0, numberItems[i].GetItem())));
+                slot.SetItem(new ReadOnlyInventoryItem(new InventoryItem(i, 0, numberItems[i].GetItem())), ItemDataContainerSO.GetSprite(numberItems[i].GetItem()));
             }
             inventoryLoadedChannel.Register(OnInventoryLoaded);
             inventoryChangedChannel.Register(OnInventoryChanged);
@@ -52,7 +55,7 @@ namespace XIV.UI
                     NumberItem inventoryItem = (NumberItem)readOnlyInventoryItem.Item;
                     if (slotItem.Value == inventoryItem.Value)
                     {
-                        slot.SetItem(readOnlyInventoryItem);
+                        slot.SetItem(readOnlyInventoryItem, ItemDataContainerSO.GetSprite(readOnlyInventoryItem.Item));
                         break;
                     }
                 }
@@ -71,7 +74,7 @@ namespace XIV.UI
                     NumberItem slotItem = (NumberItem)slot.inventoryItem.Item;
                     if (slotItem.Value == inventoryItem.Value)
                     {
-                        slot.SetItem(inventoryItemChange.ChangedItem);
+                        slot.SetItem(inventoryItemChange.ChangedItem, ItemDataContainerSO.GetSprite(inventoryItemChange.ChangedItem.Item));
                         break;
                     }
                 }

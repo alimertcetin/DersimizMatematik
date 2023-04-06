@@ -1,11 +1,14 @@
 ﻿using System;
 using UnityEngine;
+using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
+using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
 
 namespace XIV.InventorySystem.UI
 {
     public class InventoryPanel : MonoBehaviour
     {
+        [SerializeField] NonSerializedItemDataContainerSO ItemDataContainerSO;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] InventoryChangeChannelSO inventoryChangedChannel;
         
@@ -26,8 +29,7 @@ namespace XIV.InventorySystem.UI
             for (int i = 0; i < slotCount; i++)
             {
                 InventorySlot inventorySlot = slots[i];
-                inventorySlot.SetItem(default);
-                inventorySlot.UpdateVisual();
+                inventorySlot.SetItem(default, null);
             }
         }
 
@@ -43,8 +45,7 @@ namespace XIV.InventorySystem.UI
             for (int i = 0, j = startIndex; i < slotCount; i++, j++)
             {
                 InventorySlot inventorySlot = slots[i];
-                inventorySlot.SetItem(inventory[j]);
-                inventorySlot.UpdateVisual();
+                inventorySlot.SetItem(inventory[j], ItemDataContainerSO.GetSprite(inventory[j].Item));
             }
         }
 
@@ -56,8 +57,7 @@ namespace XIV.InventorySystem.UI
                 if (index < startIndex || index >= slotCount + startIndex) continue;
                 
                 var inventorySlot = slots[index - startIndex];
-                inventorySlot.SetItem(inventory[index]);
-                inventorySlot.UpdateVisual();
+                inventorySlot.SetItem(inventory[index], ItemDataContainerSO.GetSprite(inventory[index].Item));
             }
         }
     }

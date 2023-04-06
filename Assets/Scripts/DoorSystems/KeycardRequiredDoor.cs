@@ -120,7 +120,7 @@ namespace LessonIsMath.DoorSystems
             {
                 if (removedKeycards[i]) continue;
                 
-                switch (requiredKeycards[i].item.KeycardType)
+                switch (requiredKeycards[i].GetItem().KeycardType)
                 {
                     case KeycardType.Green:
                         greenCount++;
@@ -131,7 +131,7 @@ namespace LessonIsMath.DoorSystems
                     case KeycardType.Red:
                         redCount++;
                         break;
-                    default: throw new NotImplementedException(requiredKeycards[i].item.KeycardType + " is not implemented.");
+                    default: throw new NotImplementedException(requiredKeycards[i].GetItem().KeycardType + " is not implemented.");
                 }
             }
         }

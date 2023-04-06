@@ -3,7 +3,7 @@ using XIV.InventorySystem.Items;
 
 namespace XIV.InventorySystem.ScriptableObjects.ItemSOs
 {
-    [CreateAssetMenu(menuName = "Inventory/KeycardItemSO")]
+    [CreateAssetMenu(menuName = "Inventory/Items/Keycard/KeycardItem")]
     public class KeycardItemSO : ItemSO<KeycardItem>
     {
     }
