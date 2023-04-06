@@ -24104,7 +24104,7 @@ MonoBehaviour:
   waitDeleteDuration: 0.25
   timerFillImage: {fileID: 1304708279}
   generateQuestionTimer:
-    duration: 7
+    duration: 14
   maxValueOfAnswer: 500
   InputFiedlMaxTextLenght: 7
 --- !u!1 &2138740714
