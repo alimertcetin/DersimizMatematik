@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace XIV.InventorySystem.ScriptableObjects
@@ -27,6 +28,12 @@ namespace XIV.InventorySystem.ScriptableObjects
             {
                 ItemSO itemSO = items[i].itemSO;
                 int amount = items[i].amount;
+                if (amount <= 0)
+                {
+                    Debug.LogError(new InvalidOperationException("Amount cant be less than or equal to 0"));
+                    break;
+                }
+
                 bool isAdded = inventory.TryAdd(itemSO.GetBaseItem(), ref amount);
                 if (!isAdded)
                 {
