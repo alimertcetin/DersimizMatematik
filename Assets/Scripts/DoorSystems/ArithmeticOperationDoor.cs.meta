@@ -4,6 +4,8 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
+  - arithmeticDoorQuestionTimerChannel: {fileID: 11400000, guid: dca61ea673e19b842a8385cf71039ef8,
+      type: 2}
   - arithmeticDoorUIChannel: {fileID: 11400000, guid: 33d654f55ff99c441a9735f773bda76b,
       type: 2}
   executionOrder: 0

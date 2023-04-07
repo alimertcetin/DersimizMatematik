@@ -427,8 +427,6 @@ MonoBehaviour:
   loadLocationChannel: {fileID: 11400000, guid: c3ca7424149b82a45ab3b5d5b9569604,
     type: 2}
   loadMenuChannel: {fileID: 11400000, guid: 10e147533cc4a974f8c451c41b867959, type: 2}
-  coldStartupLocationChannel: {fileID: 11400000, guid: e2516161a4b0ab546aace669d5366b5e,
-    type: 2}
   showLoadingScreenChannel: {fileID: 11400000, guid: 4e05f22189e73674e8454a31f7d1e91f,
     type: 2}
   onSceneReadyChannel: {fileID: 11400000, guid: 054c4698ba8cb9143b451505200edd52,

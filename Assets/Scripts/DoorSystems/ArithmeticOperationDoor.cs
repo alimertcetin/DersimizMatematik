@@ -3,6 +3,7 @@ using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.UI;
 using UnityEngine;
+using XIV.EventSystem;
 using XIV.SaveSystems;
 using XIV.Utils;
 #if UNITY_EDITOR
@@ -14,34 +15,39 @@ namespace LessonIsMath.DoorSystems
     [RequireComponent(typeof(DoorManager))]
     public class ArithmeticOperationDoor : MonoBehaviour, ISaveable, IUIEventListener
     {
+        [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorQuestionTimerChannel;
         [SerializeField] ArithmeticDoorEventChannelSO arithmeticDoorUIChannel;
         [SerializeField] ArithmeticOperation arithmeticOperation;
         [SerializeField] int maxValueOfAnswer;
+        public float generateQuestionDuration;
         bool questionSolved;
         DoorManager doorManager;
+        IEvent generateQuestionEvent;
 
         void Awake()
         {
             doorManager = GetComponent<DoorManager>();
         }
 
-        public bool IsQuestionSolved()
-        {
-            return questionSolved;
-        }
+        public bool IsQuestionSolved() => questionSolved;
 
         public bool SolveQuestion(int answer)
         {
-#if UNITY_EDITOR
-            if (questionSolved)
-            {
-                Debug.LogError("Should not reach here");
-                return true;
-            }
-#endif
             questionSolved = arithmeticOperation.CalculateAnswer() == answer;
-            if (questionSolved) doorManager.RefreshDoorState();
             return questionSolved;
+        }
+
+        public void GenerateNewQuestion()
+        {
+            arithmeticOperation.GenerateQuestion((ArithmeticOperationType)UnityEngine.Random.Range(0, 2), maxValueOfAnswer);
+            for (int i = 0; i < 100; i++)
+            {
+                var answer = arithmeticOperation.answer;
+                var num1 = arithmeticOperation.number1;
+                var num2 = arithmeticOperation.number2;
+                if ((answer != num1 || answer != num2) && answer != 0) break;
+                arithmeticOperation.GenerateQuestion((ArithmeticOperationType)UnityEngine.Random.Range(0, 2), maxValueOfAnswer);
+            }
         }
 
         public string GetQuestionString() => arithmeticOperation.ToString();
@@ -56,6 +62,7 @@ namespace LessonIsMath.DoorSystems
 
         void IUIEventListener.OnHideUI(GameUI ui)
         {
+            arithmeticDoorQuestionTimerChannel.RaiseEvent(this, questionSolved == false);
             UIEventSystem.Unregister<LockedDoor_UI>(this);
             doorManager.OnInteractionEnd();
         }
@@ -80,7 +87,7 @@ namespace LessonIsMath.DoorSystems
         {
             SaveData saveData = (SaveData)state;
             questionSolved = saveData.questionSolved;
-            GetComponent<DoorManager>().RefreshDoorState();
+            doorManager.RefreshDoorState();
         }
 
         #endregion

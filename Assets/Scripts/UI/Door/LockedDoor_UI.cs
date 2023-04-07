@@ -55,7 +55,7 @@ namespace LessonIsMath.UI
 
         void OnEnable()
         {
-            btn_Back.RegisterOnClick(() => arithmeticDoorUIChannel.RaiseEvent(null, false));
+            btn_Back.RegisterOnClick(() => arithmeticDoorUIChannel.RaiseEvent(arithmeticOperationDoor, false));
             inventoryLoadedChannel.Register(OnInventoryLoaded);
         }
 
@@ -73,6 +73,11 @@ namespace LessonIsMath.UI
         public void SetDoor(ArithmeticOperationDoor arithmeticOperationDoor)
         {
             this.arithmeticOperationDoor = arithmeticOperationDoor;
+        }
+
+        public void UpdateQuestion()
+        {
+            txt_Question.text = arithmeticOperationDoor.GetQuestionString() + " = ?";
         }
 
         public override void Show()
@@ -164,13 +169,13 @@ namespace LessonIsMath.UI
 
             txt_InputField.text = "";
             inputNumberItems.Clear();
-            arithmeticDoorUIChannel.RaiseEvent(null, false);
+            arithmeticDoorUIChannel.RaiseEvent(arithmeticOperationDoor, false);
             solveQuestionSuccessChannel.RaiseEvent(true);
         }
 
         void PlayerControls.IGameUIActions.OnExit(InputAction.CallbackContext context)
         {
-            if (context.performed) arithmeticDoorUIChannel.RaiseEvent(null, false);
+            if (context.performed) arithmeticDoorUIChannel.RaiseEvent(arithmeticOperationDoor, false);
         }
 
         void IKeypadListener.OnEnter() => Answer();

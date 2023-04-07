@@ -161,7 +161,6 @@ namespace LessonIsMath.DoorSystems
             activeCardReader.RotateTowardsTween(cardReaderInitialRotation, 80f);
             activeCardReader.MoveTowardsTween(cardReaderInitialPosition, 5f, () =>
             {
-                doorManager.RefreshDoorState();
                 doorManager.OnInteractionEnd();
                 UIEventSystem.Unregister<KeycardUI>(this);
             });
@@ -188,6 +187,7 @@ namespace LessonIsMath.DoorSystems
             SaveData saveData = (SaveData)state;
             removedKeycards = saveData.removedKeycards;
             UpdateCardReader();
+            doorManager.RefreshDoorState();
         }
 
         #endregion

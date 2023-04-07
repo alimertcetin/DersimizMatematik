@@ -64,8 +64,16 @@ namespace LessonIsMath.XIVEditor.Inspectors
             }
             
             ArithmeticOperationDoor arithmeticOperationDoor = Undo.AddComponent<ArithmeticOperationDoor>(doorManager.gameObject);
-            var arithmeticDoorUIChannel = AssetUtils.GetScriptableObject<ArithmeticDoorEventChannelSO>("arithmeticDoorUIChannel");
-            ReflectionUtils.SetField("arithmeticDoorUIChannel", arithmeticOperationDoor, arithmeticDoorUIChannel);
+            
+            // Use default references
+            // var arithmeticDoorUIChannel = AssetUtils.GetScriptableObject<ArithmeticDoorEventChannelSO>("arithmeticDoorUIChannel");
+            // ReflectionUtils.SetField("arithmeticDoorUIChannel", arithmeticOperationDoor, arithmeticDoorUIChannel);
+            //
+            // var arithmeticDoorQuestionTimerChannel = AssetUtils.GetScriptableObject<ArithmeticDoorEventChannelSO>("arithmeticDoorQuestionTimerChannel");
+            // ReflectionUtils.SetField("arithmeticDoorQuestionTimerChannel", arithmeticOperationDoor, arithmeticDoorQuestionTimerChannel);
+            
+            ReflectionUtils.SetField("generateQuestionDuration", arithmeticOperationDoor, 90f);
+            
             var arithmeticOperation = new ArithmeticOperation();
             arithmeticOperation.GenerateQuestion(500);
             ReflectionUtils.SetField("arithmeticOperation", arithmeticOperationDoor, arithmeticOperation);

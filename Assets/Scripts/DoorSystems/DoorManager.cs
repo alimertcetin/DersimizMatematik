@@ -37,6 +37,7 @@ namespace LessonIsMath.DoorSystems
 
         void Start() => HandleDoorActivation();
 
+        // useful when loading the save data
         public void RefreshDoorState()
         {
             HandleDoorActivation();
@@ -56,6 +57,7 @@ namespace LessonIsMath.DoorSystems
 
         public void OnInteractionEnd()
         {
+            HandleDoorActivation();
             IsInInteraction = false;
             interactor.OnInteractionEnd(this);
         }
