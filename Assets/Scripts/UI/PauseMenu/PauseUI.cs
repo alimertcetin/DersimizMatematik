@@ -15,7 +15,6 @@ namespace LessonIsMath.UI
         [SerializeField] BoolEventChannelSO showSaveIndicatorChannel;
         [SerializeField] BoolEventChannelSO showLoadingScreenChannel;
         
-        [SerializeField] StringEventChannelSO warningUIChannel;
         [SerializeField] LoadEventChannelSO locationLoadChannel;
 
         [Tooltip("If exit pressed, unload this scene")]
@@ -91,7 +90,6 @@ namespace LessonIsMath.UI
             yield return SaveSystem.SaveAsync();
             yield return waitSaveSystem;
             showSaveIndicatorChannel.RaiseEvent(false);
-            warningUIChannel.RaiseEvent("Saved : " + Application.persistentDataPath);
         }
 
         IEnumerator HandleLoad()
