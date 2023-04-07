@@ -96,6 +96,7 @@ namespace LessonIsMath.InteractionSystems
 
         void OnTargetReached(IInteractable interactable)
         {
+            currentInteractable = interactable;
             if (SetAutoMovementIfNeeded()) return;
             StartAnimation();
         }
