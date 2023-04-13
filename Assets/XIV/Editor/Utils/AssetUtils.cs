@@ -61,6 +61,24 @@ namespace XIVEditor.Utils
             return null;
         }
         
+
+        public static GameObject FindPrefab(string prefabName)
+        {
+            string[] guids = AssetDatabase.FindAssets("t:Prefab");
+            
+            prefabName = prefabName.ToLower();
+            for (var i = 0; i < guids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                var asset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (asset == null || asset.name.ToLower() != prefabName) continue;
+                
+                return asset;
+            }
+
+            return null;
+        }
+        
         public static void OpenInspectorForAsset(Object asset)
         {
             Type inspectorType = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
