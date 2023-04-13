@@ -5,6 +5,7 @@ using LessonIsMath.UI.Components;
 using LessonIsMath.ScriptableObjects.SceneSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using XIV.SaveSystems;
 
 namespace LessonIsMath.UI
@@ -50,17 +51,26 @@ namespace LessonIsMath.UI
 
         public override void Show()
         {
+            InputManager.CharacterMovement.Disable();
             InputManager.GameState.Disable();
             InputManager.GameUI.SetCallbacks(this);
             InputManager.GameUI.Enable();
+            ButtonSetActive(btn_Load, SaveSystem.IsSaveExists());
             base.Show();
         }
 
         public override void Hide()
         {
+            InputManager.CharacterMovement.Enable();
             InputManager.GameState.Enable();
             InputManager.GameUI.Disable();
             base.Hide();
+        }
+
+        static void ButtonSetActive(Button button, bool value)
+        {
+            button.interactable = value;
+            button.targetGraphic.raycastTarget = value;
         }
 
         public override void ComeBack(PageUI from)

@@ -61,7 +61,6 @@ namespace XIV.SaveSystems
             }
         }
 
-
         static void CaptureState(Dictionary<string, object> state)
         {
             var saveables = Object.FindObjectsOfType<SaveableEntity>();
@@ -112,5 +111,7 @@ namespace XIV.SaveSystems
                 }
             }
         }
+
+        public static bool IsSaveExists() => File.Exists(SavePath);
     }
 }

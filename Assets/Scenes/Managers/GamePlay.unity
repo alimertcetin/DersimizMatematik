@@ -4058,7 +4058,7 @@ RectTransform:
   m_Children:
   - {fileID: 1397290238}
   m_Father: {fileID: 1769944242}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -9402,7 +9402,7 @@ RectTransform:
   - {fileID: 4413410045073580953}
   - {fileID: 666454697}
   m_Father: {fileID: 1769944242}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -16344,7 +16344,7 @@ RectTransform:
   - {fileID: 574487873}
   - {fileID: 1246177947}
   m_Father: {fileID: 1769944242}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -19281,11 +19281,11 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1872728861}
   - {fileID: 918857759}
   - {fileID: 1547147483}
   - {fileID: 440899293}
   - {fileID: 2889748933715290387}
-  - {fileID: 1872728861}
   - {fileID: 1759617557}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -20505,7 +20505,7 @@ RectTransform:
   - {fileID: 826582850}
   - {fileID: 1776934175}
   m_Father: {fileID: 1769944242}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -21724,7 +21724,6 @@ MonoBehaviour:
     type: 2}
   showLoadingScreenChannel: {fileID: 11400000, guid: 4e05f22189e73674e8454a31f7d1e91f,
     type: 2}
-  warningUIChannel: {fileID: 11400000, guid: d2825c4299b862d458afdb7103cfbdff, type: 2}
   locationLoadChannel: {fileID: 11400000, guid: c3ca7424149b82a45ab3b5d5b9569604,
     type: 2}
   gamePlayScene: {fileID: 11400000, guid: acbe782f950bcef48a9798f3ca6f50bf, type: 2}
@@ -25664,7 +25663,7 @@ RectTransform:
   - {fileID: 2889748933224466247}
   - {fileID: 198233473}
   m_Father: {fileID: 1769944242}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -25720,7 +25719,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0, g: 1, b: 0.9019608, a: 1}
     m_PressedColor: {r: 0.06666667, g: 0.4627451, b: 0.27058825, a: 0.54901963}
     m_SelectedColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 0.54901963}
-    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 0.54901963}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.2
   m_SpriteState:

@@ -35,16 +35,9 @@ namespace LessonIsMath.UI
 
         void ShowPauseMenuUI(bool value)
         {
-            if (value)
-            {
-                InputManager.CharacterMovement.Disable();
-                UISystem.Show<PauseUI>();
-            }
-            else
-            {
-                InputManager.CharacterMovement.Enable();
-                UISystem.Hide<PauseUI>();
-            }
+            if (value) UISystem.Show<PauseUI>();
+            else UISystem.Hide<PauseUI>();
+            hudUIChannel.RaiseEvent(!value);
         }
 
         void ShowBlackBoardUI(bool value)
