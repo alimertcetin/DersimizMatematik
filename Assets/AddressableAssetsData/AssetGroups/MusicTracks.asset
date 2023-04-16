@@ -16,11 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 6c2c70a9a493e1e4cbfcefa0f9f1c44c
-  m_SerializeEntries:
-  - m_GUID: 7bf8eea468c64b447947ebd09cc639e7
-    m_Address: "Assets/Art/Sounds/Ti\xEBsto - The Business (Official Music Video).mp3"
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 2435c3594dc347e42831982649921157, type: 2}
   m_SchemaSet:
