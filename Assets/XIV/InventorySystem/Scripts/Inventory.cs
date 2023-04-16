@@ -242,6 +242,7 @@ namespace XIV.InventorySystem
 
         public void RemoveAt(int index, ref int amount, bool informListeners = true)
         {
+            if (emptySlots[index]) return;
             Internal_RemoveAt(index, ref amount);
             if (informListeners) InformListeners();
         }
