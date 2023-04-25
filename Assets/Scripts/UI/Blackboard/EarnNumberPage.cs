@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using XIV.Core.Utils;
+using XIV.ScriptableObjects.Channels;
 using Random = UnityEngine.Random;
 
 namespace LessonIsMath.UI

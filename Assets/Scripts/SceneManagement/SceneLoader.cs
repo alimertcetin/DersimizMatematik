@@ -8,6 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using XIV.SaveSystems;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.SceneManagement
 {

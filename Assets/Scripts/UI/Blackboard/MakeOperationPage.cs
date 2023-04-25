@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV.Core.Extensions;
 using XIV.Core.Utils;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.UI
 {

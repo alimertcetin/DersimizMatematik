@@ -7,6 +7,7 @@ using LessonIsMath.UI;
 using UnityEngine;
 using XIV.Core.Extensions;
 using XIV.SaveSystems;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.DoorSystems
 {

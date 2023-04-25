@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using XIV.XIVEditor.Utils;
 using XIV.Core.Utils;
+using XIV.ScriptableObjects.Channels;
 using Object = UnityEngine.Object;
 
 namespace LessonIsMath.XIVEditor.Inspectors

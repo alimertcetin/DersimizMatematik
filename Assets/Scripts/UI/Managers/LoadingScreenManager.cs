@@ -1,5 +1,6 @@
 ﻿using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.UI
 {

@@ -1,8 +1,8 @@
-﻿using LessonIsMath.ScriptableObjects.ChannelSOs;
-using UnityEngine;
+﻿using UnityEngine;
 using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.SaveSystems;
+using XIV.ScriptableObjects.Channels;
 
 namespace XIV.InventorySystem
 {

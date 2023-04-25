@@ -15,6 +15,7 @@ using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
 using XIV.InventorySystem.UI;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.UI
 {

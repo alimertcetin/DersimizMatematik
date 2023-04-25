@@ -2,6 +2,7 @@
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath
 {

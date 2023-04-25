@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV.InventorySystem;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.UI
 {

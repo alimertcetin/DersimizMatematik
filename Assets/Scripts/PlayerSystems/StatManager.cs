@@ -9,6 +9,7 @@ using LessonIsMath.StatSystems.Drivers;
 using LessonIsMath.StatSystems.Stats;
 using UnityEngine;
 using XIV.SaveSystems;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.PlayerSystems
 {

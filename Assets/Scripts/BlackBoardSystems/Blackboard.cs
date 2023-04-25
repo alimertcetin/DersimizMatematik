@@ -6,6 +6,7 @@ using LessonIsMath.StatSystems.ScriptableObjects.ChannelSOs;
 using LessonIsMath.StatSystems.Stats;
 using LessonIsMath.UI;
 using UnityEngine;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.World.Interactables.BlackboardSystems
 {

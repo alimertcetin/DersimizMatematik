@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using LessonIsMath.DoorSystems;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.ScriptableObjects.ChannelSOs
 {

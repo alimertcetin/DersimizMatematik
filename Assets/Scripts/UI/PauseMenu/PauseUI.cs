@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using XIV.SaveSystems;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.UI
 {

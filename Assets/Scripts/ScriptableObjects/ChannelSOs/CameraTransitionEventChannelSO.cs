@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.ScriptableObjects.ChannelSOs
 {

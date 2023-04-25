@@ -1,6 +1,7 @@
 ﻿using LessonIsMath.ScriptableObjects.SceneSOs;
 using UnityEngine;
 using UnityEngine.Events;
+using XIV.ScriptableObjects.Channels;
 
 namespace LessonIsMath.ScriptableObjects.ChannelSOs
 {
