@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ElRaccoone.Tweens;
+using LessonIsMath.InventorySystem.Items;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
@@ -10,10 +11,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using XIV.InventorySystem;
-using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
 using XIV.InventorySystem.UI;
 

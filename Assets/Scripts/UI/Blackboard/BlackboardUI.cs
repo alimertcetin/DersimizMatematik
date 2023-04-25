@@ -1,4 +1,6 @@
-﻿using LessonIsMath.Input;
+﻿using LessonIsMath.InventorySystem.Items;
+using LessonIsMath.InventorySystem.ItemsSOs;
+using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.StatSystems;
 using LessonIsMath.StatSystems.ScriptableObjects.ChannelSOs;
@@ -7,9 +9,7 @@ using LessonIsMath.UI.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV.InventorySystem;
-using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 
 namespace LessonIsMath.UI
 {

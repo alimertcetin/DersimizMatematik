@@ -1,4 +1,5 @@
-﻿using LessonIsMath.Input;
+﻿using LessonIsMath.InventorySystem.ItemsSOs;
+using LessonIsMath.Input;
 using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
@@ -10,7 +11,6 @@ using XIV.EventSystem.Events;
 using XIV.Extensions;
 using XIV.InventorySystem;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.SaveSystems;
 using XIV.XIVMath;
 

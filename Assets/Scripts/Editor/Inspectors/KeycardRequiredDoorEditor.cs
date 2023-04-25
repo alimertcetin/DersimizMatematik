@@ -1,8 +1,8 @@
 using System;
+using LessonIsMath.InventorySystem.ItemsSOs;
 using LessonIsMath.DoorSystems;
 using UnityEditor;
 using UnityEngine;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIVEditor.Utils;
 
 namespace LessonIsMath.XIVEditor.Inspectors

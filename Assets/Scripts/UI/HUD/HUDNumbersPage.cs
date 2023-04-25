@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using LessonIsMath.InventorySystem.Items;
+using LessonIsMath.InventorySystem.ItemsSOs;
 using LessonIsMath.UI;
 using UnityEngine;
 using XIV.InventorySystem;
-using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
 
 namespace XIV.UI

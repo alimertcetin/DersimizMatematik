@@ -1,11 +1,11 @@
 using System;
+using LessonIsMath.InventorySystem.Items;
+using LessonIsMath.InventorySystem.ItemsSOs;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.Tween;
 using LessonIsMath.UI;
 using UnityEngine;
 using XIV.Extensions;
-using XIV.InventorySystem.Items;
-using XIV.InventorySystem.ScriptableObjects.ItemSOs;
 using XIV.SaveSystems;
 
 namespace LessonIsMath.DoorSystems

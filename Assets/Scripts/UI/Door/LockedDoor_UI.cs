@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LessonIsMath.InventorySystem.Items;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.Input;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
@@ -7,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using XIV.InventorySystem;
-using XIV.InventorySystem.Items;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.Utils;
 

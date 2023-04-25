@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using XIV.InventorySystem;
 
-namespace XIV.InventorySystem.Items
+namespace LessonIsMath.InventorySystem.Items
 {
     [System.Serializable]
     public class NumberItem : ItemBase

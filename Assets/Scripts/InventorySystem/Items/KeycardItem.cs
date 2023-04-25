@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using XIV.Extensions;
+using XIV.InventorySystem;
 
-namespace XIV.InventorySystem.Items
+namespace LessonIsMath.InventorySystem.Items
 {
     public enum KeycardType
     {
