@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using XIVEditor.Utils;
+using XIV.XIVEditor.Utils;
 
 namespace LessonIsMath.XIVEditor.Windows
 {

@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using XIVEditor.Utils;
+using XIV.XIVEditor.Utils;
 
 namespace XIV.GifAnimation.XIVEditor.Windows
 {

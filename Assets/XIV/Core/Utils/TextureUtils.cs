@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace XIV.Utils
+namespace XIV.Core.Utils
 {
     public static class TextureUtils
     {

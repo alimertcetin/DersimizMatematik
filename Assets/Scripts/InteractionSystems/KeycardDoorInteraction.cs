@@ -3,7 +3,7 @@ using Cinemachine;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
-using XIV.Utils;
+using XIV.Core.Utils;
 using CameraType = LessonIsMath.CameraSystems.CameraType;
 
 namespace LessonIsMath.InteractionSystems

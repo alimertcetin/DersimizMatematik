@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using XIV.XIVMath;
+using XIV.Core.XIVMath;
 
-namespace XIV.Utils
+namespace XIV.InventorySystem.Utils
 {
     public struct SlotStyleDisplayer
     {

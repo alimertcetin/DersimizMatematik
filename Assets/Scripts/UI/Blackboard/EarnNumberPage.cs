@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using XIV.Utils;
+using XIV.Core.Utils;
 using Random = UnityEngine.Random;
 
 namespace LessonIsMath.UI

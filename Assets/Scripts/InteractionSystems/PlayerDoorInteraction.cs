@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using LessonIsMath.DoorSystems;
 using UnityEngine;
+using XIV.Core.Extensions;
+using XIV.Core.XIVMath;
 using XIV.EventSystem;
 using XIV.EventSystem.Events;
-using XIV.Extensions;
-using XIV.XIVMath;
 
 namespace LessonIsMath.InteractionSystems
 {

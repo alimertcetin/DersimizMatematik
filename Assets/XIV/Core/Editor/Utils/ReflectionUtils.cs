@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using XIV.Extensions;
+using XIV.Core.Extensions;
 
-namespace XIVEditor.Utils
+namespace XIV.XIVEditor.Utils
 {
     public static class ReflectionUtils
     {
@@ -51,7 +51,7 @@ namespace XIVEditor.Utils
 
         public static MethodInfo[] GetMethods<TAttribute>(Type type) where TAttribute : Attribute
         {
-            return type.GetMethods(DefaultFieldBindingFlags).Split((m) => m.GetCustomAttribute<TAttribute>() != null);
+            return type.GetMethods(DefaultFieldBindingFlags).Split((m) => CustomAttributeExtensions.GetCustomAttribute<TAttribute>((MemberInfo)m) != null);
         }
     }
 }

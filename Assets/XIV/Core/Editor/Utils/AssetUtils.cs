@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace XIVEditor.Utils
+namespace XIV.XIVEditor.Utils
 {
     public static class AssetUtils
     {
@@ -81,7 +81,7 @@ namespace XIVEditor.Utils
         
         public static void OpenInspectorForAsset(Object asset)
         {
-            Type inspectorType = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
+            Type inspectorType = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.InspectorWindow");
             EditorWindow inspectorWindow = (EditorWindow)ScriptableObject.CreateInstance(inspectorType);
             MethodInfo targetMethod = inspectorType.GetMethod("SetObjectsLocked", BindingFlags.NonPublic | BindingFlags.Instance);
             targetMethod.Invoke(inspectorWindow, new object[] { new List<Object>() { asset } });

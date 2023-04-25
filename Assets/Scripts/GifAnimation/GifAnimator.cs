@@ -1,6 +1,6 @@
 using UnityEngine;
+using XIV.Core.Utils;
 using XIV.GifAnimation.ScriptableObjects;
-using XIV.Utils;
 
 namespace XIV.GifAnimation
 {

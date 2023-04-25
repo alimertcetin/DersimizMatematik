@@ -6,8 +6,8 @@ using LessonIsMath.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using XIV.Extensions;
-using XIV.Utils;
+using XIV.Core.Extensions;
+using XIV.Core.Utils;
 
 namespace LessonIsMath.UI
 {

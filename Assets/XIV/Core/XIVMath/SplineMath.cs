@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace XIV.XIVMath
+namespace XIV.Core.XIVMath
 {
 	/// <summary>
 	/// Spline Math for Cubic Bezier Curves

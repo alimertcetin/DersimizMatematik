@@ -1,9 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using XIV.Utils;
-using XIV.Easing;
-using XIV.Extensions;
-using XIV.XIVMath;
+using XIV.Core.Extensions;
+using XIV.Core.Utils;
+using XIV.Core.XIVMath;
 
 namespace LessonIsMath.DoorSystems
 {

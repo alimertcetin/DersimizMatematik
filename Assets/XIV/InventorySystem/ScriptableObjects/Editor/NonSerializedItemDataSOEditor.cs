@@ -1,8 +1,8 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using XIV.Core.Utils;
 using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
-using XIV.Utils;
 
 namespace XIV.InventorySystem.XIVEditor
 {

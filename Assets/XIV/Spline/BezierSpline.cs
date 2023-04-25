@@ -1,11 +1,11 @@
-﻿using XIV.XIVMath;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using XIV.Core.XIVMath;
+using XIV.Spline.Utils;
 
 namespace XIV.Spline
 {
-    using System;
-    using System.Collections.Generic;
-    using UnityEngine;
-
     public class BezierSpline : MonoBehaviour
     {
         public int CurveCount => (points.Length - 1) / 3;

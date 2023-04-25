@@ -1,6 +1,6 @@
 using System;
 
-namespace XIV.Extensions
+namespace XIV.Core.Extensions
 {
     public static class ArrayExtensions
     {

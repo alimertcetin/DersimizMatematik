@@ -1,4 +1,4 @@
-using XIV.XIVMath;
+using XIV.Core.XIVMath;
 
 namespace LessonIsMath.StatSystems
 {

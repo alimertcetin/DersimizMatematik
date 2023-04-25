@@ -1,6 +1,6 @@
 using UnityEditor;
 using UnityEngine;
-using XIVEditor.Utils;
+using XIV.XIVEditor.Utils;
 
 namespace LessonIsMath.XIVEditor.Windows
 {

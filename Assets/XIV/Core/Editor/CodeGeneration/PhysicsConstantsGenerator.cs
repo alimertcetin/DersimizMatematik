@@ -1,12 +1,7 @@
-using UnityEditor;
 using UnityEditorInternal;
-using UnityEngine;
-using XIV.Utils;
-using AnimatorController = UnityEditor.Animations.AnimatorController;
-using AnimatorControllerLayer = UnityEditor.Animations.AnimatorControllerLayer;
-using AnimatorControllerParameter = UnityEngine.AnimatorControllerParameter;
+using XIV.Core.Utils;
 
-namespace XIVEditor.Utils
+namespace XIV.XIVEditor.CodeGeneration
 {
     public static class PhysicsConstantsGenerator
     {

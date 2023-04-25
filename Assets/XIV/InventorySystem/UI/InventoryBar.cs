@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using XIV.InventorySystem.ScriptableObjects;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
-using XIV.Utils;
+using XIV.InventorySystem.Utils;
 
 namespace XIV.InventorySystem.UI
 {
@@ -12,26 +11,33 @@ namespace XIV.InventorySystem.UI
         [SerializeField] InventoryItemChannelSO useItemRequestChannel;
         [SerializeField] InventoryChannelSO inventoryLoadedChannel;
         [SerializeField] InventoryChangeChannelSO inventoryChangedChannel;
-        
+
         [SerializeField] Transform contentParent;
         [SerializeField] Transform selectionIndicator;
         [SerializeField] float transitionDuration;
-        ScrollSelector scrollSelector;
-        InventorySlot[] slots;
-        int slotCount;
         Inventory inventory;
+        ScrollSelector scrollSelector;
+        int slotCount;
+        InventorySlot[] slots;
+
+        void Update()
+        {
+            scrollSelector.Update(Time.deltaTime, Input.mouseScrollDelta);
+            selectionIndicator.position = scrollSelector.CurrentPos;
+            if (Input.GetKeyDown(KeyCode.F)) UseSelected();
+        }
 
         void OnEnable()
         {
             inventoryLoadedChannel.Register(OnInventoryLoaded);
             inventoryChangedChannel.Register(OnInventoryChanged);
             scrollSelector = new ScrollSelector(contentParent, transitionDuration);
-            
+
             slotCount = contentParent.childCount;
             slots = contentParent.GetComponentsInChildren<InventorySlot>();
-            for (int i = 0; i < slotCount; i++)
+            for (var i = 0; i < slotCount; i++)
             {
-                InventorySlot inventorySlot = slots[i];
+                var inventorySlot = slots[i];
                 inventorySlot.SetItem(default, null);
             }
         }
@@ -42,33 +48,23 @@ namespace XIV.InventorySystem.UI
             inventoryChangedChannel.Unregister(OnInventoryChanged);
         }
 
-        void Update()
-        {
-            scrollSelector.Update(Time.deltaTime, Input.mouseScrollDelta);
-            selectionIndicator.position = scrollSelector.CurrentPos;
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                UseSelected();
-            }
-        }
-
         void OnInventoryLoaded(Inventory inventory)
         {
             this.inventory = inventory;
-            for (int i = 0; i < slotCount; i++)
+            for (var i = 0; i < slotCount; i++)
             {
-                InventorySlot inventorySlot = slots[i];
+                var inventorySlot = slots[i];
                 inventorySlot.SetItem(inventory[i], ItemDataContainerSO.GetSprite(inventory[i].Item));
             }
         }
 
         void OnInventoryChanged(InventoryChange inventoryChange)
         {
-            for (int i = 0; i < inventoryChange.ChangeCount; i++)
+            for (var i = 0; i < inventoryChange.ChangeCount; i++)
             {
                 int index = inventoryChange.ChangedItems[i].ChangedIndex;
                 if (index >= slotCount) continue;
-                
+
                 var inventorySlot = slots[index];
                 inventorySlot.SetItem(inventory[index], ItemDataContainerSO.GetSprite(inventory[index].Item));
             }
@@ -83,6 +79,5 @@ namespace XIV.InventorySystem.UI
             var item = inventorySlot.inventoryItem;
             useItemRequestChannel.RaiseEvent(item, 1);
         }
-
     }
 }

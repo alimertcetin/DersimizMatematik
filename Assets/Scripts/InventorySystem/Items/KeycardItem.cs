@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using XIV.Extensions;
+using XIV.Core.Extensions;
 using XIV.InventorySystem;
 
 namespace LessonIsMath.InventorySystem.Items

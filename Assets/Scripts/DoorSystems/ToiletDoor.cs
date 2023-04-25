@@ -1,7 +1,6 @@
 using LessonIsMath.Input;
 using LessonIsMath.InteractionSystems;
 using UnityEngine;
-using XIV.Extensions;
 
 namespace LessonIsMath.DoorSystems
 {

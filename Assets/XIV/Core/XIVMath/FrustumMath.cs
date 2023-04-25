@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace XIV.XIVMath
+namespace XIV.Core.XIVMath
 {
     // https://docs.unity3d.com/Manual/FrustumSizeAtDistance.html
     public static class FrustumMath

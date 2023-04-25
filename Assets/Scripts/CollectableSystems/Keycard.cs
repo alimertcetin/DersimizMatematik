@@ -5,14 +5,15 @@ using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.Events;
 using XIV;
-using XIV.Easing;
+using XIV.Core;
+using XIV.Core.Extensions;
+using XIV.Core.Utils;
+using XIV.Core.XIVMath;
 using XIV.EventSystem;
 using XIV.EventSystem.Events;
-using XIV.Extensions;
 using XIV.InventorySystem;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.SaveSystems;
-using XIV.XIVMath;
 
 namespace LessonIsMath.CollectableSystems
 {

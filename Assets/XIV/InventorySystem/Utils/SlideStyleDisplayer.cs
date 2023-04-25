@@ -1,9 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using XIV.XIVMath;
+using XIV.Core.Utils;
+using XIV.Core.XIVMath;
 
-namespace XIV.Utils
+namespace XIV.InventorySystem.Utils
 {
     struct SlotData
     {

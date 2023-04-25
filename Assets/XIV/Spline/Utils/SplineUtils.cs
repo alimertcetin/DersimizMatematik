@@ -1,10 +1,9 @@
-﻿using XIV.XIVMath;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using XIV.Core.XIVMath;
 
-namespace XIV.Spline
+namespace XIV.Spline.Utils
 {
-	using System.Collections.Generic;
-	using UnityEngine;
-
 	public static class SplineUtils
 	{
 		/// <summary>

@@ -7,10 +7,10 @@ using LessonIsMath.PlayerSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.Core;
+using XIV.Core.Extensions;
 using XIV.EventSystem;
 using XIV.EventSystem.Events;
-using XIV.Extensions;
-using XIV.XIVMath;
 #if UNITY_EDITOR
 using UnityEditor;
 using XIV;

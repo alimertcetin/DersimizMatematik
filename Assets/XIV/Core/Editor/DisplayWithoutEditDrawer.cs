@@ -1,9 +1,9 @@
-﻿using System;
-using System.Reflection;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
+using XIV.Core;
+using XIV.XIVEditor.Utils;
 
-namespace XIVEditor.Utils
+namespace XIV.XIVEditor
 {
     [CustomPropertyDrawer(typeof(DisplayWithoutEdit))]
     public class DisplayWithoutEditDrawer : PropertyDrawer

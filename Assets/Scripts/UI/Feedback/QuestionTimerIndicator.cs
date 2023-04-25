@@ -4,8 +4,8 @@ using LessonIsMath.DoorSystems;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using XIV.Utils;
-using XIV.XIVMath;
+using XIV.Core.Utils;
+using XIV.Core.XIVMath;
 
 namespace LessonIsMath.UI
 {

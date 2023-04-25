@@ -4,8 +4,8 @@ using LessonIsMath.PlayerSystems;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using XIV;
-using XIV.Extensions;
-using XIV.Utils;
+using XIV.Core.Extensions;
+using XIV.Core.Utils;
 
 namespace LessonIsMath.InteractionSystems
 {

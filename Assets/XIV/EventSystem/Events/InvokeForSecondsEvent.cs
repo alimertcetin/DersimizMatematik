@@ -1,5 +1,5 @@
 ﻿using System;
-using XIV.Utils;
+using XIV.Core.Utils;
 
 namespace XIV.EventSystem.Events
 {

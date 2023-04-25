@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using XIV.Collections;
-using XIV.Utils;
-using XIV.XIVMath;
 
-namespace XIV
+namespace XIV.Core
 {
+    using Collections;
+    using Utils;
+    using XIVMath;
+    
 #if UNITY_EDITOR
     
     public static class XIVDebug

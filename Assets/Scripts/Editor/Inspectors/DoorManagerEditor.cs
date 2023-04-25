@@ -3,8 +3,8 @@ using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.XIVEditor.Windows;
 using UnityEditor;
 using UnityEngine;
-using XIV.Utils;
-using XIVEditor.Utils;
+using XIV.XIVEditor.Utils;
+using XIV.Core.Utils;
 using Object = UnityEngine.Object;
 
 namespace LessonIsMath.XIVEditor.Inspectors

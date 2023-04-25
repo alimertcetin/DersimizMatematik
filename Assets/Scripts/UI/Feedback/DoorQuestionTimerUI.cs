@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using LessonIsMath.DoorSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using UnityEngine;
-using XIV.Utils;
+using XIV.Core.Utils;
 
 namespace LessonIsMath.UI
 {

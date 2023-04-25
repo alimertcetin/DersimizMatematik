@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace XIV.Collections
+namespace XIV.Core.Collections
 {
     public class DynamicArray<T> : IList<T>
     {

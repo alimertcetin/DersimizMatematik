@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace XIV.XIVMath
+namespace XIV.Core.XIVMath
 {
     /// <summary>
     /// Cubic Bezier Math class

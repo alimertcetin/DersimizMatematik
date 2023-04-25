@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using XIV.XIVEditor.Utils;
 using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
-using XIVEditor.Utils;
 
 namespace XIV.InventorySystem.XIVEditor
 {

@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using UnityEditor;
-using XIVEditor.Utils;
+using XIV.XIVEditor.CodeGeneration;
 
-namespace XIVEditor
+namespace XIV.XIVEditor
 {
     public static class MenuItems
     {

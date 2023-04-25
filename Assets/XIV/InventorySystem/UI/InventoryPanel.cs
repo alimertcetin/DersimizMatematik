@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using XIV.InventorySystem.ScriptableObjects;
+﻿using UnityEngine;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
 using XIV.InventorySystem.ScriptableObjects.NonSerializedData;
 

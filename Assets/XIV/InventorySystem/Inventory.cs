@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using XIV.Collections;
+using XIV.Core.Collections;
 
 namespace XIV.InventorySystem
 {

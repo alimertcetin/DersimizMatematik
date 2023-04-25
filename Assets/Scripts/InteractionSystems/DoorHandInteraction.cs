@@ -4,11 +4,12 @@ using LessonIsMath.PlayerSystems;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using XIV;
+using XIV.Core;
+using XIV.Core.Extensions;
+using XIV.Core.Utils;
+using XIV.Core.XIVMath;
 using XIV.EventSystem;
 using XIV.EventSystem.Events;
-using XIV.Extensions;
-using XIV.Utils;
-using XIV.XIVMath;
 using Random = UnityEngine.Random;
 
 namespace LessonIsMath.InteractionSystems

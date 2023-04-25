@@ -2,6 +2,7 @@
 using LessonIsMath.Input;
 using UnityEngine;
 using XIV;
+using XIV.Core;
 using XIV.SaveSystems;
 
 namespace LessonIsMath.PlayerSystems

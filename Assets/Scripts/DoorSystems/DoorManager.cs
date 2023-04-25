@@ -3,7 +3,7 @@ using LessonIsMath.Input;
 using LessonIsMath.InteractionSystems;
 using LessonIsMath.UI;
 using UnityEngine;
-using XIV.Extensions;
+using XIV.Core.Extensions;
 
 namespace LessonIsMath.DoorSystems
 {

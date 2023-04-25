@@ -7,9 +7,9 @@ using LessonIsMath.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using XIV.Core.Utils;
 using XIV.InventorySystem;
 using XIV.InventorySystem.ScriptableObjects.ChannelSOs;
-using XIV.Utils;
 
 namespace LessonIsMath.UI
 {

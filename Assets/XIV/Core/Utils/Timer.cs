@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using XIV.XIVMath;
 
-namespace XIV.Utils
+namespace XIV.Core.Utils
 {
     [System.Serializable]
     public struct Timer

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using XIV.XIVMath;
+using XIV.Core.Utils;
+using XIV.Core.XIVMath;
 
-namespace XIV.Utils
+namespace XIV.InventorySystem.Utils
 {
     public struct ScrollSelector
     {

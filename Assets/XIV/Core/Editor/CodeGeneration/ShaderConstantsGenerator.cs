@@ -1,8 +1,8 @@
 using UnityEditor;
 using UnityEngine;
-using XIV.Utils;
+using XIV.Core.Utils;
 
-namespace XIVEditor.Utils
+namespace XIV.XIVEditor.CodeGeneration
 {
     public static class ShaderConstantsGenerator
     {

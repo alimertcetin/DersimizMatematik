@@ -3,7 +3,7 @@ using LessonIsMath.InventorySystem.ItemsSOs;
 using LessonIsMath.DoorSystems;
 using UnityEditor;
 using UnityEngine;
-using XIVEditor.Utils;
+using XIV.XIVEditor.Utils;
 
 namespace LessonIsMath.XIVEditor.Inspectors
 {

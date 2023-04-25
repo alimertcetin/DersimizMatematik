@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using XIV.Core;
 
 namespace XIV.InventorySystem
 {

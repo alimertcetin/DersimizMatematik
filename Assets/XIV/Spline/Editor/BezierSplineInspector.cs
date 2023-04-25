@@ -1,8 +1,8 @@
-﻿namespace XIV.Spline.Editor
-{
-    using UnityEditor;
-    using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
+namespace XIV.Spline.XIVEditor
+{
     [CustomEditor(typeof(BezierSpline))]
     public class BezierSplineInspector : Editor
     {

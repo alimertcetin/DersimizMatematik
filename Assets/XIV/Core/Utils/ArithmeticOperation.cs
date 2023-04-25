@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace XIV.Utils
+namespace XIV.Core.Utils
 {
     public enum ArithmeticOperationType
     {

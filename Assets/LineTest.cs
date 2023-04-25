@@ -1,6 +1,6 @@
 using UnityEngine;
 using XIV;
-using XIV.XIVMath;
+using XIV.Core.XIVMath;
 
 [ExecuteAlways]
 public class LineTest : MonoBehaviour

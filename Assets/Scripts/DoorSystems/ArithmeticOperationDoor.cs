@@ -3,9 +3,9 @@ using LessonIsMath.InteractionSystems;
 using LessonIsMath.ScriptableObjects.ChannelSOs;
 using LessonIsMath.UI;
 using UnityEngine;
+using XIV.Core.Utils;
 using XIV.EventSystem;
 using XIV.SaveSystems;
-using XIV.Utils;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

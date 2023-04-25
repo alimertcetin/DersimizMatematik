@@ -5,7 +5,7 @@ using LessonIsMath.StatSystems.ScriptableObjects.ChannelSOs;
 using LessonIsMath.StatSystems.Stats;
 using UnityEngine;
 using UnityEngine.UI;
-using XIV.Extensions;
+using XIV.Core.Extensions;
 
 namespace XIV.UI
 {

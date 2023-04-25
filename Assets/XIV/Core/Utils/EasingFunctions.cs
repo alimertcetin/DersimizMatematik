@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace XIV.Easing
+namespace XIV.Core.Utils
 {
     // https://gist.github.com/cjddmut/d789b9eb78216998e95c
     public static class EasingFunction

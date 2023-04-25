@@ -1,6 +1,7 @@
 using UnityEngine;
 using XIV;
-using XIV.XIVMath;
+using XIV.Core;
+using XIV.Core.XIVMath;
 
 namespace LessonIsMath.PlayerSystems
 {

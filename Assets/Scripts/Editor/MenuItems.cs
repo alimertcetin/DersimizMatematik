@@ -5,8 +5,8 @@ using LessonIsMath.XIVEditor.Windows;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using XIV.Extensions;
-using XIVEditor.Utils;
+using XIV.XIVEditor.Utils;
+using XIV.Core.Extensions;
 using Object = UnityEngine.Object;
 
 namespace LessonIsMath.XIVEditor

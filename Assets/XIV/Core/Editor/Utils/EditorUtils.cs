@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace XIVEditor.Utils
+namespace XIV.XIVEditor.Utils
 {
     public static class EditorUtils
     {
